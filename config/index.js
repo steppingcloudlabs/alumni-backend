@@ -1,3 +1,3 @@
-module.exports={
-    JWT_SECRET:'authentication'
+module.exports = {
+  JWT_SECRET: "authentication"
 };
