@@ -10,9 +10,13 @@ mongoose.connect("mongodb://localhost/mydb", { useNewUrlParser: true });
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 
-//Routes
+// User Routes
 const userRoute = require("./routes/userAuth");
 app.use("/user", userRoute);
-const port = 3000;
-app.listen(port);
+
+// Admin Routes
+const adminRoutes = require("./routes/auth/adminAuth");
+app.use("/admin", adminRoutes);
+
+app.listen(PORT);
 console.log("Server is running at 3000");

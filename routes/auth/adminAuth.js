@@ -1,23 +1,26 @@
 const router = require("express-promise-router")();
 const passport = require("passport");
 const { validateBody, schemas } = require("../../validator/authValidate");
-const UserController = require("../../controller/user/user.auth.controller");
+const AdminController = require("../../controller/admin/admin.auth.controller");
 
 // Router Navigations
 router
   .route("/signup")
-  .post(validateBody(schemas.authSchema), UserController.signup);
+  .post(validateBody(schemas.authSchema), AdminController.signup);
 
 router
   .route("/signin")
   .post(
     validateBody(schemas.authSchema),
     passport.authenticate("local", { session: false }),
-    UserController.signin
+    AdminController.signin
   );
 
 router
   .route("/secret")
-  .get(passport.authenticate("jwt", { session: false }), UserController.secret);
+  .get(
+    passport.authenticate("jwt", { session: false }),
+    AdminController.secret
+  );
 
 module.exports = router;
