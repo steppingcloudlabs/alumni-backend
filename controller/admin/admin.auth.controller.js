@@ -1,5 +1,5 @@
 const JWT = require("jsonwebtoken");
-const User = require("../../models/auth");
+const Admin = require("../../models/admin/auth");
 const { JWT_SECRET } = require("../../config");
 signToken = user => {
   return JWT.sign(
@@ -16,11 +16,11 @@ module.exports = {
   signup: async (req, res, next) => {
     const { email, password } = req.value.body;
     //check if there is a user with the same email
-    const foundUser = await User.findOne({ email });
+    const foundUser = await Admin.findOne({ email });
     if (foundUser) {
       res.status(403).send({ error: "email is already in use" });
     }
-    const newUser = new User({ email, password });
+    const newUser = new Admin({ email, password });
     await newUser.save();
     const token = signToken(newUser);
 

@@ -2,6 +2,13 @@ const router = require("express-promise-router")();
 const passport = require("passport");
 const { validateBody, schemas } = require("../../validator/authValidate");
 const UserController = require("../../controller/user/user.auth.controller");
+/*
+NOTE: 
+If we do not include our local passport file in our route file then you'll face belo error 
+              [Error: Unknown authentication strategy "jwt"]
+*/
+require('../../validator/passport')
+
 
 // Router Navigations
 router

@@ -3,6 +3,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const app = express();
 const mongoose = require("mongoose");
+const config=require('./config/index');
 
 mongoose.connect("mongodb://localhost/mydb", { useNewUrlParser: true });
 
@@ -18,5 +19,6 @@ app.use("/user", userRoute);
 const adminRoutes = require("./routes/auth/adminAuth");
 app.use("/admin", adminRoutes);
 
-app.listen(PORT);
-console.log("Server is running at 3000");
+app.listen(config["port"], () => {
+    console.log(`Server listening on port: ${config["port"]}`);
+  });
