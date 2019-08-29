@@ -11,7 +11,7 @@ app.use(morgan("dev"));
 app.use(bodyParser.json());
 
 //Routes
-const userRoute = require("./routes/auth");
+const userRoute = require("./routes/userAuth");
 app.use("/user", userRoute);
 const port = 3000;
 app.listen(port);
