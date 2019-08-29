@@ -11,7 +11,7 @@ app.use(morgan("dev"));
 app.use(bodyParser.json());
 
 // User Routes
-const userRoute = require("./routes/userAuth");
+const userRoute = require("./routes/auth/userAuth");
 app.use("/user", userRoute);
 
 // Admin Routes
