@@ -2,9 +2,8 @@ const passport = require("passport");
 const JwtStrategy = require("passport-jwt").Strategy;
 const LocalStrategy = require("passport-local").Strategy;
 const { ExtractJwt } = require("passport-jwt");
-const { JWT_SECRET } = require("../../config");
-
-const Admin=require("../../models/admin/admin.auth");
+const { JWT_SECRET } = require("../config");
+const User = require("../models/auth");
 passport.use(
   new JwtStrategy(
     {
@@ -13,11 +12,11 @@ passport.use(
     },
     async (payload, done) => {
       try {
-        const admin = await User.findById(payload.sub);
-        if (!admin) {
+        const user = await User.findById(payload.sub);
+        if (!user) {
           return done(null, false);
         }
-        done(null, admin);
+        done(null, user);
       } catch (error) {
         done(error, false);
       }
@@ -32,16 +31,16 @@ passport.use(
     },
     async (email, password, done) => {
       try {
-        const admin = await Admin.findOne({ email });
-        if (!admin) {
+        const user = await User.findOne({ email });
+        if (!user) {
           return done(null, false);
         }
 
-        const isMatch = await admin.isValidPassword(password);
+        const isMatch = await user.isValidPassword(password);
         if (!isMatch) {
           return done(null, false);
         }
-        done(null, admin);
+        done(null, user);
       } catch (error) {
         done(error, false);
       }

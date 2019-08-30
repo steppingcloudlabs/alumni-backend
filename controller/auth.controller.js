@@ -1,6 +1,6 @@
 const JWT = require("jsonwebtoken");
-const User = require("../../models/admin/admin.auth");
-const { JWT_SECRET } = require("../../config");
+const User = require("../models/auth");
+const { JWT_SECRET } = require("../config");
 signToken = user => {
   return JWT.sign(
     {
@@ -27,7 +27,7 @@ module.exports = {
     res.status(200).json({ token });
   },
   signin: async (req, res, next) => {
-    console.log('req.user:',req.user);
+    //console.log('req.user:',req.user);
     const token = signToken(req.user);
 
     res.status(200).json({ token: token, Status: "Login Successful" });
