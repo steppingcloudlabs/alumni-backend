@@ -1,8 +1,8 @@
 const adminrouter = require("express-promise-router")();
 const passport = require("passport");
-const { validateBody, schemas } = require("../../validator/authValidate");
-const AdminController = require("../../controller/admin/admin.auth.controller");
-require("../../validator/admin.passport");
+const { validateBody, schemas } = require("../../../validator/authValidate");
+const AdminController = require("../../../controller/admin/admin.auth.controller");
+require("../../../validator/admin.passport");
 // adminRouter Navigations
 adminrouter
   .route("/signup")

@@ -12,16 +12,17 @@ app.use(morgan("dev"));
 app.use(bodyParser.json());
 
 // User Routes
-const userRoute = require("./routes/auth/userAuth");
+const userRoute = require("./routes/user/auth/userAuth");
 app.use("/user", userRoute);
 
 // Admin Routes
-const adminRoutes = require("./routes/auth/adminAuth");
-app.use("/admin", adminRoutes);
+const adminAuthRoutes = require("./routes/admin/auth/adminAuth");
+app.use("/admin", adminAuthRoutes);
 
-// ODATA ROUTES
-const accessTokenRoute = require("./routes/odata/accesstoken");
-app.use("/api/v1/odata", accessTokenRoute);
+// Admin Actions
+// Admin Routes
+const adminActionsRoutes = require("./routes/admin/auth/adminAuth");
+app.use("/admin", adminActionsRoutes);
 
 app.listen(config["port"], () => {
   console.log(`Server listening on port: ${config["port"]}`);
