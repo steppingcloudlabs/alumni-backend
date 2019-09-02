@@ -16,12 +16,28 @@ const companySchema = new Schema({
     type: mongoose.SchemaTypes.Url,
     required: true
   },
-  provider: {
+  cloudprovider: {
     type: String,
+    required: true
+  },
+  idp: {
+    type: mongoose.SchemaTypes.Url,
     required: true
   },
   tokenurl: {
     type: mongoose.SchemaTypes.Url,
+    required: true
+  },
+  clientid: {
+    type: String,
+    required: true
+  },
+  userid: {
+    type: String,
+    required: true
+  },
+  privatekey: {
+    type: String,
     required: true
   }
 });
