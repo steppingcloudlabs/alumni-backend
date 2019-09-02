@@ -1,6 +1,6 @@
 const router = require("express-promise-router")();
 const passport = require("passport");
-const { validateBody, schemas } = require("../../../validator/authValidate");
+const { validateBody, schemas } = require("../../../validator/authValidateq");
 const UserController = require("../../../controller/user/user.auth.controller");
 /*
 NOTE: 

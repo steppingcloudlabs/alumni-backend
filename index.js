@@ -21,8 +21,8 @@ app.use("/admin", adminAuthRoutes);
 
 // Admin Actions
 // Admin Routes
-const adminActionsRoutes = require("./routes/admin/auth/adminAuth");
-app.use("/admin", adminActionsRoutes);
+const adminActionsRoutes = require("./routes/admin/actions/adminaction");
+app.use("/action", adminActionsRoutes);
 
 app.listen(config["port"], () => {
   console.log(`Server listening on port: ${config["port"]}`);
