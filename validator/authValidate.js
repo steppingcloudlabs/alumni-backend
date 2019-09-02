@@ -19,7 +19,9 @@ module.exports = {
         .string()
         .email()
         .required(),
-      password: joi.string().required()
+      password: joi.string().required(),
+      companyname: joi.string().required(),
+      userid: joi.string().required()
     })
   }
 };

@@ -7,8 +7,7 @@ NOTE:
 If we do not include our local passport file in our route file then you'll face belo error 
               [Error: Unknown authentication strategy "jwt"]
 */
-require('../../../validator/passport')
-
+require("../../../validator/passport");
 
 // Router Navigations
 router
@@ -22,9 +21,4 @@ router
     passport.authenticate("local", { session: false }),
     UserController.signin
   );
-
-router
-  .route("/secret")
-  .get(passport.authenticate("jwt", { session: false }), UserController.secret);
-
 module.exports = router;

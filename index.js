@@ -21,7 +21,7 @@ app.use("/admin", adminAuthRoutes);
 
 // Admin Actions
 // Admin Routes
-const adminActionsRoutes = require("./routes/admin/actions/adminaction");
+const adminActionsRoutes = require("./routes/admin/actions/adminAction");
 app.use("/action", adminActionsRoutes);
 
 app.listen(config["port"], () => {

@@ -13,6 +13,17 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true
+  },
+  companyname: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true
+  },
+  userid: {
+    type: String,
+    required: true,
+    unique: true
   }
 });
 
@@ -20,9 +31,6 @@ userSchema.pre("save", async function(next) {
   try {
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(this.password, salt);
-    console.log("salt", salt);
-    console.log("normal password", this.password);
-    console.log("hashed password", passwordHash);
     this.password = passwordHash;
     next();
   } catch (error) {
