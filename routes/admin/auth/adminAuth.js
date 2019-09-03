@@ -1,26 +1,24 @@
 const adminrouter = require("express-promise-router")();
 const passport = require("passport");
-const { validateBody, schemas } = require("../../../validator/authValidate");
+const { adminSignupValidateBody,  adminSigninValidateBody, adminSignupSchemas , adminSigninSchemas } = require("../../../validator/authValidate");
 const AdminController = require("../../../controller/admin/admin.auth.controller");
-require("../../../validator/admin.passport");
-// adminRouter Navigations
+/*
+NOTE: 
+If we do not include our local passport file in our route file then you'll face belo error 
+              [Error: Unknown authentication strategy "jwt"]
+*/
+require("../../../validator/passport");
+
+// adminrouter Navigations
 adminrouter
   .route("/signup")
-  .post(validateBody(schemas.authSchema), AdminController.signup);
+  .post(adminSignupValidateBody(adminSignupSchemas.authSchema), AdminController.signup);
 
 adminrouter
   .route("/signin")
   .post(
-    validateBody(schemas.authSchema),
+    adminSigninValidateBody(adminSigninSchemas.authSchema),
     passport.authenticate("local", { session: false }),
     AdminController.signin
   );
-
-adminrouter
-  .route("/secret")
-  .get(
-    passport.authenticate("jwt", { session: false }),
-    AdminController.secret
-  );
-
 module.exports = adminrouter;

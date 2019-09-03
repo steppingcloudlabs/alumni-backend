@@ -1,5 +1,5 @@
 const JWT = require("jsonwebtoken");
-const User = require("../../models/user/auth");
+const Admin = require("../../models/admin/auth");
 const { JWT_SECRET } = require("../../config");
 signToken = user => {
   return JWT.sign(
@@ -13,26 +13,26 @@ signToken = user => {
   );
 };
 module.exports = {
-  // SIGN UP
   signup: async (req, res, next) => {
-    const { email, password, companyname, userid } = req.value.body;
+    const { email, password } = req.value.body;
     //check if there is a user with the same email
-    const foundUser = await User.findOne({ email });
+    const foundUser = await Admin.findOne({ email });
     if (foundUser) {
       res.status(403).send({ error: "email is already in use" });
     }
-    const newUser = new User({ email, password, companyname, userid });
+    const newUser = new Admin({ email, password });
     await newUser.save();
     const token = signToken(newUser);
 
     res.status(200).json({ token });
   },
-
-  // SIGN IN
   signin: async (req, res, next) => {
     //console.log('req.user:',req.user);
-    const token = signToken(req.user);
+    
 
-    res.status(200).json({ token: token, Status: "Login Successful" });
+    res.status(200).json({Status: "Login Successful" });
+  },
+  secret: async (req, res, next) => {
+    res.json({ Status: "Managed to get here" });
   }
 };
