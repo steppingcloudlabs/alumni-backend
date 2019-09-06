@@ -25,7 +25,7 @@ passport.use(
   )
 );
 
-passport.use(
+passport.use('admin-local',
   new LocalStrategy(
     {
       usernameField: "email"

@@ -1,6 +1,6 @@
 const router = require("express-promise-router")();
 const passport = require("passport");
-const { validateBody, schemas } = require("../../../validator/authValidate");
+const { signupValidateBody, signupSchemas,signinValidateBody, signinSchemas } = require("../../../validator/authValidate");
 const UserController = require("../../../controller/user/user.auth.controller");
 /*
 NOTE: 
@@ -12,13 +12,15 @@ require("../../../validator/passport");
 // Router Navigations
 router
   .route("/signup")
-  .post(validateBody(schemas.authSchema), UserController.signup);
+  .post(signupValidateBody(signupSchemas.authSchema), UserController.signup);
 
 router
   .route("/signin")
   .post(
-    validateBody(schemas.authSchema),
-    passport.authenticate("local", { session: false }),
+    signinValidateBody(signinSchemas.authSchema),
+    passport.authenticate("user-local", { session: false }),
     UserController.signin
   );
+
+
 module.exports = router;

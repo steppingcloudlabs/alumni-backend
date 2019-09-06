@@ -40,6 +40,7 @@ const companySchema = new Schema({
     type: String,
     required: true
   }
+  
 });
 
 const CompanyActions = mongoose.model("company", companySchema);

@@ -19,10 +19,14 @@ app.use("/user", userRoute);
 const adminAuthRoutes = require("./routes/admin/auth/adminAuth");
 app.use("/admin", adminAuthRoutes);
 
+//odata leavemanagement
+const odatamanagement = require("./routes/odata/leaveManagement/getleave");
+app.use("/odata", odatamanagement);
+
 // Admin Actions
 // Admin Routes
 const adminActionsRoutes = require("./routes/admin/actions/adminAction");
-app.use("/action", adminActionsRoutes);
+app.use("/admin/action", adminActionsRoutes);
 
 app.listen(config["port"], () => {
   console.log(`Server listening on port: ${config["port"]}`);

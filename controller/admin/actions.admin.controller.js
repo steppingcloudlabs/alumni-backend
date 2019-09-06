@@ -24,6 +24,7 @@ module.exports = {
       clientid,
       userid,
       privatekey
+      
     });
     await newCompany.save();
     res.status(200).json({ Status: "Company Added Successfully" });
