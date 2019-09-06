@@ -31,8 +31,8 @@ module.exports = {
   // SIGN IN
   signin: async (req, res, next) => {
     //console.log('req.user:',req.user);
-    const token = signToken(req.user);
+    
 
-    res.status(200).json({ token: token, Status: "Login Successful" });
+    res.status(200).json({  Status: "Login Successful" });
   }
 };

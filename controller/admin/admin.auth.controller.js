@@ -28,9 +28,9 @@ module.exports = {
   },
   signin: async (req, res, next) => {
     //console.log('req.user:',req.user);
-    const token = signToken(req.user);
+   
 
-    res.status(200).json({ token: token, Status: "Login Successful" });
+    res.status(200).json({ Status: "Login Successful" });
   },
   secret: async (req, res, next) => {
     res.json({ Status: "Managed to get here" });
