@@ -34,16 +34,16 @@ passport.use('admin-local',
       try {
         const admin = await Admin.findOne({ email });
         if (!admin) {
-          return done(null, false);
+          return done(null,{message:"Incorrect Admin"});
         }
 
         const isMatch = await admin.isValidPassword(password);
         if (!isMatch) {
-          return done(null, false);
+          return done(null,{message:"Incorrect password"});
         }
         done(null, admin);
       } catch (error) {
-        done(error, false);
+        done(error);
       }
     }
   )

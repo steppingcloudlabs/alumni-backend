@@ -11,6 +11,13 @@ mongoose.connect("mongodb://localhost/mydb", { useNewUrlParser: true });
 app.use(morgan("dev"));
 app.use(bodyParser.json());
 
+//CORC Headers
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 // User Routes
 const userRoute = require("./routes/user/auth/userAuth");
 app.use("/user", userRoute);
