@@ -35,17 +35,18 @@ passport.use('user-local',
       try {
         const user = await User.findOne({ email });
         if (!user) {
-          return done(null, false);
+          return done(null,{message:"Incorrect username"});
         }
 
         const isMatch = await user.isValidPassword(password);
         if (!isMatch) {
-          return done(null, false);
+          return done(null,{message:"Incorrect password"});
         }
         done(null, user);
       } catch (error) {
-        done(error, false);
+        done(error);
       }
+        
     }
   )
 );
