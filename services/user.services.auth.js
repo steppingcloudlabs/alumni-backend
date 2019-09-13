@@ -5,18 +5,14 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             try {
                 getDataFromMaster('masterdata', { user_id: parseInt(userid) }, (err, response) => {
-
                     if (response) {                        
-                        resolve(response);
-                    }
-                    else if (err) {
-                        reject({
-                            message: "User doesn't exist",
-                            status: 400
-                        });
+                        resolve(response);  
+                    }else{
+                    reject(err)
                     }
                 })
-                // const response = await Masterdata.findOne({ user_id: payload.userid});
+                
+                
 
             } catch (error) {
                 reject(error);
