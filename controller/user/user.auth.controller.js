@@ -54,8 +54,7 @@ else{
     res.status(200).send({ 
                     status:200,
                     message: { "Status": "Login Successful",
-                                "firstName": response[0].first_name_personal_information,
-                                "lastName": response[0].last_name_personal_information,
+                                "data": response[0],
                                 "result": "IMPLEMENTED " 
                               }
                   });
