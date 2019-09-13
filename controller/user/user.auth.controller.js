@@ -1,14 +1,15 @@
 const JWT = require("jsonwebtoken");
 const User = require("../../models/user/auth");
+const userServices=require("../../services/user.services.auth");
 require('../../validator/passport');
 const { JWT_SECRET } = require("../../config");
 signToken = user => {
   return JWT.sign(
     {
-      iss: "Coder",
+      iss: "Cool",
       sub: user._id,
       iat: new Date().getTime(),
-      exp: new Date().setDate(new Date().getDate() + 1)
+      exp: new Date().setTime(new Date().getTime()+1200000)  
     },
     JWT_SECRET
   );
@@ -25,13 +26,21 @@ module.exports = {
     const newUser = new User({ email, password, companyname, userid });
     await newUser.save();
     const token = signToken(newUser);
-
-    res.status(200).json({ token });
+    const response = await userServices.username(userid);
+    //console.log(response);
+    
+    res.status(200).send({ 
+                    status:200,
+                    message: { "token": token,
+                                "firstName": response[0].first_name_personal_information,
+                                "lastName": response[0].last_name_personal_information,
+                                "result": "IMPLEMENTED " 
+                              }
+                  });
   },
 
   // SIGN IN
   signin: async (req, res, next) => {
-    //console.log('req.user:',req.user);
     if (req.user.message == "Incorrect username"){
       res.status(200).json({Status : "User doesn't Exist"});
     
@@ -41,7 +50,16 @@ module.exports = {
     
     }
 else{
-    res.status(200).json({  Status: "Login Successful" });
+    const response = await userServices.username(req.user.userid);
+    res.status(200).send({ 
+                    status:200,
+                    message: { "Status": "Login Successful",
+                                "firstName": response[0].first_name_personal_information,
+                                "lastName": response[0].last_name_personal_information,
+                                "result": "IMPLEMENTED " 
+                              }
+                  });
+    
 }
   }
 };
