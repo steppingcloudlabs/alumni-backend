@@ -18,12 +18,10 @@ module.exports = {
   // SIGN UP
   signup: async (req, res, next) => {
     const { email, password, companyname, userid } = req.value.body;
-    //check if there is a user with the same email
     const foundUser = await User.findOne({ email });
     if (foundUser) {
       res.status(200).send({ error: "email is already in use" });
     }
-    
     const response = await userServices.username(userid);
     if (response && response.length == 0) {
       res.status(200).send({
