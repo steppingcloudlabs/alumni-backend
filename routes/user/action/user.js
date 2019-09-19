@@ -1,0 +1,23 @@
+const router = require("express-promise-router")();
+const PersonalController = require("../../../controller/user/user.action.controller")();
+
+
+// Router Navigations
+router
+  .route("/user/:userid")
+  .get((req,res,next)=>
+  PersonalController.user(req,res,next));
+
+  router
+  .route('/user/document/:userid')
+  .get((req,res,next)=>
+  PersonalController.userDocument(req,res,next));
+
+  router
+  .route('/user/status/:userid')
+  .get((req,res,next)=>
+  PersonalController.userStatus(req,res,next));
+
+
+
+module.exports = router;

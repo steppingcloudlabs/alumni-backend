@@ -5,7 +5,7 @@ const app = express();
 const mongoose = require("mongoose");
 const config = require("./config/index");
 
-mongoose.connect("mongodb://localhost/mydb", { useNewUrlParser: true });
+mongoose.connect("mongodb+srv://root:password@123@dev-i9qmj.mongodb.net/mydb?retryWrites=true&w=majority", { useNewUrlParser: true });
 
 //middleware
 app.use(morgan("dev"));
@@ -34,6 +34,10 @@ app.use("/odata", odatamanagement);
 // Admin Routes
 const adminActionsRoutes = require("./routes/admin/actions/adminAction");
 app.use("/admin/action", adminActionsRoutes);
+
+//user personal info routes
+const personalRoutes = require("./routes/user/action/user");
+app.use("/personal", personalRoutes);
 
 app.listen(config["port"], () => {
   console.log(`Server listening on port: ${config["port"]}`);
