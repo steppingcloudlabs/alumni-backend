@@ -4,8 +4,8 @@ module.exports = () => {
     const addNews = ({ payload }) => {
         return new Promise(async(resolve, reject) => {
             try {
-                const { title, content, tags, date } = payload
-                const news = new newsSchema({ title, content, tags, date });
+                const { title, content, tags, date,author } = payload
+                const news = new newsSchema({ title, content, tags, date,author});
                 await news.save();
                 resolve(payload)
 
@@ -17,7 +17,7 @@ module.exports = () => {
     const viewNews = ({ payload }) => {
         return new Promise(async(resolve, reject) => {
             try {
-                const { title, content, tags, date } = payload
+                const { title, content, tags, date,author } = payload
                 const foundNews = await newsSchema.findOne({ title })
                 resolve(foundNews)
 
@@ -29,8 +29,8 @@ module.exports = () => {
     const addEvents = ({ payload }) => {
         return new Promise(async(resolve, reject) => {
             try {
-                const { title, content, tags, date } = payload
-                const news = new eventSchema({ title, content, tags, date });
+                const { title, content, tags, date,author } = payload
+                const news = new eventSchema({ title, content, tags, date,author });
                 await news.save();
                 resolve(payload)
 
@@ -42,7 +42,7 @@ module.exports = () => {
     const viewEvents = ({ payload }) => {
         return new Promise(async(resolve, reject) => {
             try {
-                const { title, content, tags, date } = payload
+                const { title, content, tags, date,author } = payload
                 const foundNews = await eventSchema.findOne({ title })
                 resolve(foundNews)
 
