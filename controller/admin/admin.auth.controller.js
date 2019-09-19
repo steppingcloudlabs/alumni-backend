@@ -18,7 +18,7 @@ module.exports = {
     //check if there is a user with the same email
     const foundUser = await Admin.findOne({ email });
     if (foundUser) {
-      res.status(403).send({ error: "email is already in use" });
+      res.status(200).send({ error: "email is already in use" });
     }
     const newUser = new Admin({ email, password });
     await newUser.save();
@@ -28,9 +28,18 @@ module.exports = {
   },
   signin: async (req, res, next) => {
     //console.log('req.user:',req.user);
-   
+    if (req.user.message == "Incorrect Admin"){
+      res.status(200).json({Status : "Admin doesn't Exist"});
+    
+    }
+    else if (req.user.message == "Incorrect password"){
+      res.status(200).json({Status : "Incorrect Password"});
+    
+    }
+else{
 
     res.status(200).json({ Status: "Login Successful" });
+}
   },
   secret: async (req, res, next) => {
     res.json({ Status: "Managed to get here" });
