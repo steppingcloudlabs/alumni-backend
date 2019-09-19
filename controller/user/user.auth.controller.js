@@ -1,9 +1,6 @@
 const JWT = require("jsonwebtoken");
 const User = require("../../models/user/auth");
-<<<<<<< HEAD
 const userServices = require("../../services/user.services.auth");
-=======
->>>>>>> origin/master
 require('../../validator/passport');
 const { JWT_SECRET } = require("../../config");
 signToken = user => {
@@ -52,7 +49,6 @@ module.exports = {
 
   // SIGN IN
   signin: async (req, res, next) => {
-<<<<<<< HEAD
     if (req.user.message == "Incorrect username") {
       res.status(200).json({ Status: "User doesn't Exist" });
 
@@ -73,7 +69,6 @@ module.exports = {
       });
 
     }
-=======
     //console.log('req.user:',req.user);
     if (req.user.message == "Incorrect username"){
       res.status(200).json({Status : "User doesn't Exist"});
@@ -86,6 +81,5 @@ module.exports = {
 else{
     res.status(200).json({  Status: "Login Successful" });
 }
->>>>>>> origin/master
   }
 };
