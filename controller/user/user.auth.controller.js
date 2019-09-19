@@ -69,6 +69,7 @@ module.exports = {
       });
 
     }
+<<<<<<< HEAD
     //console.log('req.user:',req.user);
     if (req.user.message == "Incorrect username"){
       res.status(200).json({Status : "User doesn't Exist"});
@@ -81,5 +82,7 @@ module.exports = {
 else{
     res.status(200).json({  Status: "Login Successful" });
 }
+=======
+>>>>>>> hot-fix--Status-Codes
   }
 };
