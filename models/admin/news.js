@@ -15,7 +15,7 @@ const news = new Schema({
     tags: {
         type: Array
     },
-    timestamp: {
+    date: {
         type: String
     }
 

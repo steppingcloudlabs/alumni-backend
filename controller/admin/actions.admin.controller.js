@@ -33,7 +33,7 @@ module.exports = {
     addNews: async(req, res) => {
         payload = req.body;
         const reponse = await AdminActionSerivce.addNews({ payload })
-        res.status(200).json({ "status:": "200 OK", "New Entry saved for ": reponse });
+        res.status(200).send({ "status:": "200 OK", "New Entry saved for ": reponse });
     },
     viewNews: async(req, res) => {
         payload = req.body;
