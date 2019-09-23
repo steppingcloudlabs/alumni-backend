@@ -49,5 +49,15 @@ module.exports = {
         payload = req.body;
         const reponse = await AdminActionSerivce.viewEvents({ payload })
         res.status(200).json({ reponse });
+    },
+    addFaq: async(req, res) => {
+        payload = req.body;
+        const reponse = await AdminActionSerivce.addFaq({ payload })
+        res.status(200).json({ "status:": "200 OK", "New Entry saved for ": reponse });
+    },
+    viewFaq: async(req, res) => {
+        payload = req.body;
+        const reponse = await AdminActionSerivce.viewFaq({ payload })
+        res.status(200).json({ reponse });
     }
 };

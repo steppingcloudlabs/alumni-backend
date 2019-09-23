@@ -1,6 +1,7 @@
 module.exports = () => {
     const eventSchema = require("../models/admin/event")
     const newsSchema = require("../models/admin/news")
+    const faqSchema=require("../models/admin/faq")
     const addNews = ({ payload }) => {
         return new Promise(async(resolve, reject) => {
             try {
@@ -51,10 +52,38 @@ module.exports = () => {
             }
         })
     }
+
+    const addFaq = ({ payload }) => {
+        return new Promise(async(resolve, reject) => {
+            try {
+                const { question,answer} = payload
+                const faqs = new faqSchema({ question,answer });
+                await faqs.save();
+                resolve(payload)
+
+            } catch (error) {
+                reject(error)
+            }
+        })
+    }
+    const viewFaq = ({ payload }) => {
+        return new Promise(async(resolve, reject) => {
+            try {
+                const { question,answer } = payload
+                const foundFaq= await faqSchema.findOne({ question })
+                resolve(foundFaq)
+
+            } catch (error) {
+                reject(error)
+            }
+        })
+    }
     return {
         addNews,
         viewNews,
         addEvents,
-        viewEvents
+        viewEvents,
+        addFaq,
+        viewFaq
     }
 };

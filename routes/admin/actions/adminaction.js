@@ -12,5 +12,10 @@ router
     .route("/add/event")
     .post((req, res, next) => AdminController.addEvents(req, res, next))
     .get((req, res, next) => AdminController.viewEvents(req, res, next))
+router
+    .route("/add/faq")
+    .post((req, res, next) => AdminController.addFaq(req, res, next))
+    .get((req, res, next) => AdminController.viewFaq(req, res, next))
+
 
 module.exports = router;

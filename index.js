@@ -38,6 +38,7 @@ app.use("/admin/action", adminActionsRoutes);
 const personalRoutes = require("./routes/user/action/user");
 app.use("/personal", personalRoutes);
 
+
 app.listen(config["port"], () => {
     console.log(`Server listening on port: ${config["port"]}`);
 });
