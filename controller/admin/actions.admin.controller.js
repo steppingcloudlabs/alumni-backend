@@ -59,5 +59,30 @@ module.exports = {
         payload = req.body;
         const reponse = await AdminActionSerivce.viewFaq({ payload })
         res.status(200).json({ reponse });
+    },
+    deleteFaq: async(req, res) => {
+        payload = req.body;
+        const response = await AdminActionSerivce.deleteFaq({ payload })
+        if (response){
+        res.status(200).send({
+            status: 200,
+            message: { "response":"FAQ Deleted",
+            "No. of Deleted Documents":response.deletedCount ,
+             "result": "IMPLEMENTED " }
+        });
+    }
+    },
+    user: async(req, res,next) => {
+        try {
+            const payload = req.params
+            const  response = await AdminActionSerivce.user({payload});
+            res.status(200).send({
+                status: 200,
+                message: { "response": response,
+                 "result": "IMPLEMENTED " }
+            });
+        } catch (error) {
+            next(error);
+        }
     }
 };
