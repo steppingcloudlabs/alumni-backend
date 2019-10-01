@@ -49,5 +49,60 @@ module.exports = {
         payload = req.body;
         const reponse = await AdminActionSerivce.viewEvents({ payload })
         res.status(200).json({ reponse });
+    },
+    addFaq: async(req, res) => {
+        payload = req.body;
+        const reponse = await AdminActionSerivce.addFaq({ payload })
+        res.status(200).json({ "status:": "200 OK", "New Entry saved for ": reponse });
+    },
+    viewFaq: async(req, res) => {
+        payload = req.body;
+        const reponse = await AdminActionSerivce.viewFaq({ payload })
+        res.status(200).json({ reponse });
+    },
+    deleteFaq: async(req, res) => {
+        payload = req.body;
+        const response = await AdminActionSerivce.deleteFaq({ payload })
+        if (response){
+        res.status(200).send({
+            status: 200,
+            message: { "response":"FAQ Deleted",
+            "No. of Deleted Documents":response.deletedCount ,
+             "result": "IMPLEMENTED " }
+        });
+    }
+    },
+    user: async(req, res,next) => {
+        try {
+            const payload = req.params
+            const  response = await AdminActionSerivce.user({payload});
+            res.status(200).send({
+                status: 200,
+                message: { "response": response,
+                 "result": "IMPLEMENTED " }
+            });
+        } catch (error) {
+            next(error);
+        }
+    },
+    createalumni: async(req, res) => {
+        payload = req.body;
+        const response = await AdminActionSerivce.createalumni({ payload })
+        res.status(200).json({ "status:": "200 OK", "New Entry saved for ": response });
+    },
+    viewalumni: async(req, res) => {
+        payload = req.body;
+        const reponse = await AdminActionSerivce.viewalumni({ payload })
+        res.status(200).json({ reponse });
+    },
+    updatealumni: async(req, res)=>{
+        payload = req.body;
+        const reponse = await AdminActionSerivce.updatealumni({ payload })
+        res.status(200).send({
+            status:"Ok",
+            message:"Alumni Information Uodated"
+
+         });
+
     }
 };

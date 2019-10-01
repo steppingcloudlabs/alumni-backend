@@ -6,6 +6,8 @@ const NewsController = require("../../../controller/admin/actions.admin.controll
 router
     .route("/user/:userid")
     .get((req, res, next) =>
+        PersonalController.user(req, res, next))
+    .post((req, res, next) =>
         PersonalController.user(req, res, next));
 
 router
@@ -19,6 +21,6 @@ router
         PersonalController.userStatus(req, res, next));
 router
     .route("/add/news")
-    .get((req, res, next) => (NewsController.addNews((req, res, next))))
+    .get((req, res, next) => (NewsController.viewNews((req, res, next))))
 
 module.exports = router;
