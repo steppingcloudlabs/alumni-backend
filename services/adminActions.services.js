@@ -2,6 +2,7 @@ module.exports = () => {
     const eventSchema = require("../models/admin/event")
     const newsSchema = require("../models/admin/news")
     const faqSchema=require("../models/admin/faq")
+    const masterdata=require("../models/admin/masterdata")
     const { getDataFromMaster }=require("../models/user/action");
     const addNews = ({ payload }) => {
         return new Promise(async(resolve, reject) => {
@@ -83,7 +84,6 @@ module.exports = () => {
         return new Promise(async(resolve, reject) => {
             try {
                 const deletedFaq= await faqSchema.remove({ question: payload.question })
-                console.log(deletedFaq)
                 resolve(deletedFaq)
 
             } catch (error) {
@@ -111,8 +111,45 @@ module.exports = () => {
                 reject(error);
             }
         });
-    };
+    }
+    const createalumni = ({ payload }) => {
+        return new Promise(async(resolve, reject) => {
+            try {
+            const {relieving_date,user_id,date_of_resignation,last_working_day_as_per_notice_period,personal_email_id,first_name_personal_information,last_name_personal_information,middle_name_personal_information,nationality_personal_information,salutation_personal_information,city_addresses,phone_number_phone_information,manager_job_information,designation_job_information}=payload
+            const master = new masterdata({relieving_date,user_id,date_of_resignation,last_working_day_as_per_notice_period,personal_email_id,first_name_personal_information,last_name_personal_information,middle_name_personal_information,nationality_personal_information,salutation_personal_information,city_addresses,phone_number_phone_information,manager_job_information,designation_job_information});
+            const test=await master.save();
+            
+            resolve(payload)
+            
+            } catch (error) {
+               reject(error)
+            }     
+        })
+    }
+    const viewalumni = ({ payload }) => {
+        return new Promise(async(resolve, reject) => {
+            try {
+                const { user_id } = payload
+                const foundalumni= await masterdata.findOne({user_id})
+                resolve(foundalumni)
 
+            } catch (error) {
+                reject(error)
+            }
+        })
+    }
+    const updatealumni=({payload})=>{
+        return new Promise(async(resolve, reject) => {
+            try {
+                const user_id = parseInt(payload.user_id)
+                const updatealumni= await masterdata.findOneAndUpdate({user_id},{$set:payload},{ multi: true })
+                resolve(updatealumni)
+
+            } catch (error) {
+                reject(error)
+            }
+        })
+    }
 
     return {
         addNews,
@@ -122,6 +159,9 @@ module.exports = () => {
         addFaq,
         viewFaq,
         deleteFaq,
-        user
+        user,
+        createalumni,
+        viewalumni,
+        updatealumni
     }
 };

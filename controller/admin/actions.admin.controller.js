@@ -84,5 +84,25 @@ module.exports = {
         } catch (error) {
             next(error);
         }
+    },
+    createalumni: async(req, res) => {
+        payload = req.body;
+        const response = await AdminActionSerivce.createalumni({ payload })
+        res.status(200).json({ "status:": "200 OK", "New Entry saved for ": response });
+    },
+    viewalumni: async(req, res) => {
+        payload = req.body;
+        const reponse = await AdminActionSerivce.viewalumni({ payload })
+        res.status(200).json({ reponse });
+    },
+    updatealumni: async(req, res)=>{
+        payload = req.body;
+        const reponse = await AdminActionSerivce.updatealumni({ payload })
+        res.status(200).send({
+            status:"Ok",
+            message:"Alumni Information Uodated"
+
+         });
+
     }
 };

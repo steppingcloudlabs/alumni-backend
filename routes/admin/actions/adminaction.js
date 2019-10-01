@@ -27,6 +27,13 @@ router
 router
     .route("/delete/faq")
     .delete((req, res, next) => AdminController.deleteFaq(req, res, next))
+router
+    .route("/alumni")
+    .post((req,res,next)=>AdminController.createalumni(req,res,next))
+    .get((req, res, next) => AdminController.viewalumni(req, res, next))
+router
+    .route("/updatealumni")
+    .post((req,res,next)=>AdminController.updatealumni(req,res,next))
 
 
 module.exports = router;
