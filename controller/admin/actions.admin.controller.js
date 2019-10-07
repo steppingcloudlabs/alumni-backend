@@ -74,6 +74,7 @@ module.exports = {
         const reponse = await AdminActionSerivce.viewEvents({ payload })
         res.status(200).json({ reponse });
     },
+
     viewallEvents: async(req, res) => {
         payload = req.body;
         const reponse = await AdminActionSerivce.viewallEvents({ payload })
@@ -98,6 +99,7 @@ module.exports = {
         });
     }
     },
+
     addFaq: async(req, res) => {
         payload = req.body;
         const reponse = await AdminActionSerivce.addFaq({ payload })
@@ -108,6 +110,7 @@ module.exports = {
         const reponse = await AdminActionSerivce.viewFaq({ payload })
         res.status(200).json({ reponse });
     },
+
     viewallFaq: async(req, res) => {
         payload = req.body;
         const reponse = await AdminActionSerivce.viewallFaq({ payload })
@@ -120,6 +123,7 @@ module.exports = {
             status:200,
             "message":"FAQs Updated" });
     },
+
     deleteFaq: async(req, res) => {
         payload = req.body;
         const response = await AdminActionSerivce.deleteFaq({ payload })

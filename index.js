@@ -42,8 +42,10 @@ app.use("/personal", personalRoutes);
 const adminpersonalRoutes = require("./routes/admin/actions/adminaction");
 app.use("/personal", adminpersonalRoutes);
 
+
 const awsadminRoutes = require("./routes/admin/actions/adminaction");
 app.use("/awsadmin", awsadminRoutes);
+
 
 
 

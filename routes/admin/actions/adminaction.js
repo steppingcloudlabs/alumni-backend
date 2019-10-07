@@ -30,6 +30,7 @@ router
     .route("/add/event")
     .post((req, res, next) => AdminController.addEvents(req, res, next))
     .get((req, res, next) => AdminController.viewEvents(req, res, next))
+
     router
     .route("/allevent")
     .get((req, res, next) => AdminController.viewallEvents(req, res, next))
@@ -39,11 +40,13 @@ router
 router
     .route("/deleteevent")
     .delete((req, res, next) => AdminController.deleteEvents(req, res, next))
+
 router
     .route("/add/faq")
     .post((req, res, next) => AdminController.addFaq(req, res, next))
     .get((req, res, next) => AdminController.viewFaq(req, res, next))
 router
+
     .route("/allfaq")
     .get((req, res, next) => AdminController.viewallFaq(req, res, next))
 router
@@ -59,11 +62,13 @@ router
 router
     .route("/updatealumni")
     .post((req,res,next)=>AdminController.updatealumni(req,res,next))
+
 router
     .route("/userupload")
     .post((req,res,next)=>AdminController.userupload(req,res,next))
 router
     .route("/documentupload")
     .post((req,res,next)=>AdminController.documentupload(req,res,next))
+
 
 module.exports = router;
