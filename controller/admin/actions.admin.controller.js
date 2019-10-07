@@ -40,6 +40,30 @@ module.exports = {
         const reponse = await AdminActionSerivce.viewNews({ payload })
         res.status(200).json({ reponse });
     },
+    viewallNews: async(req, res) => {
+        payload = req.body;
+        const reponse = await AdminActionSerivce.viewallNews({ payload })
+        res.status(200).json({ reponse });
+    },
+    updateNews: async(req, res) => {
+        payload = req.body;
+        const reponse = await AdminActionSerivce.updateNews({ payload })
+        res.status(200).send({ 
+            status:200,
+            "message":"News Section Updated" });
+    },
+    deleteNews: async(req, res) => {
+        payload = req.body;
+        const response = await AdminActionSerivce.deleteNews({ payload })
+        if (response){
+        res.status(200).send({
+            status: 200,
+            message: { "response":"News Deleted",
+            "No. of Deleted Documents":response.deletedCount ,
+             "result": "IMPLEMENTED " }
+        });
+    }
+    },
     addEvents: async(req, res) => {
         payload = req.body;
         const reponse = await AdminActionSerivce.addEvents({ payload })
@@ -50,6 +74,30 @@ module.exports = {
         const reponse = await AdminActionSerivce.viewEvents({ payload })
         res.status(200).json({ reponse });
     },
+    viewallEvents: async(req, res) => {
+        payload = req.body;
+        const reponse = await AdminActionSerivce.viewallEvents({ payload })
+        res.status(200).json({ reponse });
+    },
+    updateEvents: async(req, res) => {
+        payload = req.body;
+        const reponse = await AdminActionSerivce.updateEvents({ payload })
+        res.status(200).send({ 
+            status:200,
+            "message":"Evemts Section Updated" });
+    },
+    deleteEvents: async(req, res) => {
+        payload = req.body;
+        const response = await AdminActionSerivce.deleteEvents({ payload })
+        if (response){
+        res.status(200).send({
+            status: 200,
+            message: { "response":"Event Deleted",
+            "No. of Deleted Documents":response.deletedCount ,
+             "result": "IMPLEMENTED " }
+        });
+    }
+    },
     addFaq: async(req, res) => {
         payload = req.body;
         const reponse = await AdminActionSerivce.addFaq({ payload })
@@ -59,6 +107,18 @@ module.exports = {
         payload = req.body;
         const reponse = await AdminActionSerivce.viewFaq({ payload })
         res.status(200).json({ reponse });
+    },
+    viewallFaq: async(req, res) => {
+        payload = req.body;
+        const reponse = await AdminActionSerivce.viewallFaq({ payload })
+        res.status(200).json({ reponse });
+    },
+    updatefaq: async(req, res) => {
+        payload = req.body;
+        const reponse = await AdminActionSerivce.updatefaq({ payload })
+        res.status(200).send({ 
+            status:200,
+            "message":"FAQs Updated" });
     },
     deleteFaq: async(req, res) => {
         payload = req.body;
@@ -103,6 +163,26 @@ module.exports = {
             message:"Alumni Information Uodated"
 
          });
+
+    },
+    userupload: async(req,res,next)=>{
+        const response = await AdminActionSerivce.userupload()
+        res.status(200).send({
+            status:"200",
+            message:"welcome Maaz",
+            message2:response
+
+        })
+
+    },
+    documentupload: async(req,res,next)=>{
+        const response = await AdminActionSerivce.documentupload()
+        res.status(200).send({
+            status:"200",
+            message:"welcome Maaz",
+            message2:response
+
+        })
 
     }
 };
