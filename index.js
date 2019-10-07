@@ -31,7 +31,7 @@ const odatamanagement = require("./routes/odata/leaveManagement/getleave");
 app.use("/odata", odatamanagement);
 
 // Admin Routes
-const adminActionsRoutes = require("./routes/admin/actions/adminAction");
+const adminActionsRoutes = require("./routes/admin/actions/adminaction");
 app.use("/admin/action", adminActionsRoutes);
 
 //user personal info routes
@@ -41,6 +41,12 @@ app.use("/personal", personalRoutes);
 //admin personal route 
 const adminpersonalRoutes = require("./routes/admin/actions/adminaction");
 app.use("/personal", adminpersonalRoutes);
+
+
+const awsadminRoutes = require("./routes/admin/actions/adminaction");
+app.use("/awsadmin", awsadminRoutes);
+
+
 
 
 app.listen(config["port"], () => {
