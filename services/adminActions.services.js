@@ -9,8 +9,8 @@ module.exports = () => {
     const AWS = require('aws-sdk');
 
     AWS.config.update({
-        accessKeyId: "AKIARKLS7FT44XJEYAFI",
-        secretAccessKey: "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"
+        accessKeyId: "",
+        secretAccessKey: ""
     });
     // Create S3 service object
     s3 = new AWS.S3();
