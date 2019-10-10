@@ -69,6 +69,7 @@ router
 router
     .route("/documentupload")
     .post((req,res,next)=>AdminController.documentupload(req,res,next))
+    .get((req,res,next)=>AdminController.viewdocument(req,res,next))
 
 
 module.exports = router;

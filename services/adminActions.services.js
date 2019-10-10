@@ -352,36 +352,48 @@ module.exports = () => {
     const documentupload = ({ payload }) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const fileName = payload.fileaddress;
-
-                const type = payload.type
-                const userId = payload.userid
+                const path = payload.fileaddress
+                const filename=payload.filename
+                const fileName=filename.toLowerCase();
+                const userId = parseInt(payload.userid)
                 const uploadFile = () => {
-                    fs.readFile(fileName, (err, data) => {
+                    fs.readFile(path, (err, data) => {
                         if (err) throw err;
                         const params = {
                             Bucket: config["aws_bucket_name"],
-                            Key: `crux/users/${payload.userid}/${payload.filename}`,
+                            Key: `crux/users/${payload.userid}/${fileName}`,
                             Body: data
                         };
                         s3.upload(params, async (s3Err, data) => {
                             if (s3Err) throw s3Err
-                            const link = data.Location
-                            const updatealumni = await personalinformation.findOneAndUpdate({ userId }, { $set: { 'form16': 'payload' } })
-                            resolve(updatealumni)
+                            resolve(data)
 
                         });
                     });
                 };
 
                 uploadFile();
-                //  const url = s3.getSignedUrl('getObject', {
-                //         Bucket: config["aws_bucket_name"],
-                //         Key: `crux/users/${payload.userid}/xyz.pdf`,
-                //         Expires:60*5
-                //     })
+            }
+            catch (error) {
+                reject(error)
+            }
+        })
+    }
+    const viewdocument = ({ payload }) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const type = payload.filename;
+                const fileName=type.toLowerCase();
+                console.log(type)
+                const userId = parseInt(payload.userid)
+                
+                 const url = s3.getSignedUrl('getObject', {
+                        Bucket: config["aws_bucket_name"],
+                        Key: `crux/users/${userId}/${fileName}`,
+                        Expires:60*5
+                    })
 
-                //     console.log(url)
+                    resolve(url)
 
 
 
@@ -391,7 +403,6 @@ module.exports = () => {
             }
         })
     }
-
 
     return {
         addNews,
@@ -419,8 +430,11 @@ module.exports = () => {
         createalumni,
         viewalumni,
         updatealumni,
+
+
         userupload,
-        documentupload
+        documentupload,
+        viewdocument
 
     }
 };
