@@ -162,12 +162,23 @@ module.exports = {
     updatealumni: async(req, res)=>{
         payload = req.body;
         const reponse = await AdminActionSerivce.updatealumni({ payload })
+        if(reponse ==null)
+        { res.status(200).send({
+            status: 400,
+            message: {
+              "result": "UserId doesn't exist"
+            }
+          });
+        }
+
+        else{
         res.status(200).send({
             status:"Ok",
-            message:"Alumni Information Uodated"
+            message:"Alumni Information Uodated",
+            message2:reponse
 
          });
-
+        }
     },
     userupload: async(req,res,next)=>{
         const response = await AdminActionSerivce.userupload()

@@ -1,8 +1,8 @@
 module.exports = () => {
     const eventSchema = require("../models/admin/event")
     const newsSchema = require("../models/admin/news")
-    const config=require("../config/index")
-    const personalinformation=require("../models/user/personal")
+    const config = require("../config/index")
+    const personalinformation = require("../models/user/personal")
     const faqSchema = require("../models/admin/faq")
     const masterdata = require("../models/admin/masterdata")
     const { getDataFromMaster } = require("../models/user/action");
@@ -12,10 +12,10 @@ module.exports = () => {
         accessKeyId: config["aws_access_key"],
         secretAccessKey: config["aws_secret_key"],
         region: config["aws_region"]
-      };
-      
-      AWS.config.update(config);
-    
+    };
+
+    AWS.config.update(config);
+
     // Create S3 service object
     s3 = new AWS.S3();
 
@@ -37,9 +37,9 @@ module.exports = () => {
     const viewNews = ({ payload }) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const {id,title, content, tags, date, author } = payload
-                const _id =payload.id;
-                const foundNews = await newsSchema.findOne({_id })
+                const { id, title, content, tags, date, author } = payload
+                const _id = payload.id;
+                const foundNews = await newsSchema.findOne({ _id })
                 resolve(foundNews)
 
             } catch (error) {
@@ -51,8 +51,8 @@ module.exports = () => {
         return new Promise(async (resolve, reject) => {
             try {
 
-                const {id,title, content, tags, date, author } = payload
-                
+                const { id, title, content, tags, date, author } = payload
+
                 const foundNews = await newsSchema.find({})
 
                 resolve(foundNews)
@@ -63,24 +63,23 @@ module.exports = () => {
         })
     }
     const updateNews = ({ payload }) => {
-        return new Promise(async (resolve, reject,error) => {
+        return new Promise(async (resolve, reject, error) => {
             try {
                 const _id = payload.id
 
-                if(await newsSchema.findOne({_id })==null)
-                {
-                const { title, content, tags, date, author } = payload
-                const news = new newsSchema({ title, content, tags, date, author });
-                await news.save();
-                resolve(payload)
-                
+                if (await newsSchema.findOne({ _id }) == null) {
+                    const { title, content, tags, date, author } = payload
+                    const news = new newsSchema({ title, content, tags, date, author });
+                    await news.save();
+                    resolve(payload)
+
                     // console.log(error)
                 }
-                else{
-                const updatedNews = await newsSchema.findOneAndUpdate({ _id }, { $set: payload }, { multi: true })
-                
-                resolve(updatedNews)
-                
+                else {
+                    const updatedNews = await newsSchema.findOneAndUpdate({ _id }, { $set: payload }, { multi: true })
+
+                    resolve(updatedNews)
+
                 }
             } catch (error) {
                 reject(error)
@@ -118,8 +117,8 @@ module.exports = () => {
             try {
 
                 const { title, content, tags, date, author } = payload
-                const _id =payload.id;
-                const foundevent = await eventSchema.findOne({_id })
+                const _id = payload.id;
+                const foundevent = await eventSchema.findOne({ _id })
                 resolve(foundevent)
 
             } catch (error) {
@@ -130,8 +129,8 @@ module.exports = () => {
     const viewallEvents = ({ payload }) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const {id,title, content, tags, date, author } = payload
-                
+                const { id, title, content, tags, date, author } = payload
+
                 const foundNews = await eventSchema.find({})
 
                 resolve(foundNews)
@@ -143,25 +142,24 @@ module.exports = () => {
     }
 
     const updateEvents = ({ payload }) => {
-        return new Promise(async (resolve, reject,error) => {
+        return new Promise(async (resolve, reject, error) => {
             try {
                 const _id = payload.id
-            
 
-                if(await eventSchema.findOne({_id })==null)
-                {
-                const { title, content, tags, date, author } = payload
-                const news = new eventSchema({ title, content, tags, date, author });
-                await news.save();
-                resolve(payload)
-                
+
+                if (await eventSchema.findOne({ _id }) == null) {
+                    const { title, content, tags, date, author } = payload
+                    const news = new eventSchema({ title, content, tags, date, author });
+                    await news.save();
+                    resolve(payload)
+
                     // console.log(error)
                 }
-                else{
-                const updatedNews = await eventSchema.findOneAndUpdate({ _id }, { $set: payload }, { multi: true })
-                
-                resolve(updatedNews)
-                
+                else {
+                    const updatedNews = await eventSchema.findOneAndUpdate({ _id }, { $set: payload }, { multi: true })
+
+                    resolve(updatedNews)
+
                 }
             } catch (error) {
                 reject(error)
@@ -198,8 +196,8 @@ module.exports = () => {
 
         return new Promise(async (resolve, reject) => {
             try {
-                const { id,question, answer } = payload
-                const _id =payload.id; 
+                const { id, question, answer } = payload
+                const _id = payload.id;
                 const foundFaq = await faqSchema.findOne({ _id })
                 resolve(foundFaq)
 
@@ -211,7 +209,7 @@ module.exports = () => {
     const viewallFaq = ({ payload }) => {
         return new Promise(async (resolve, reject) => {
             try {
-               
+
                 const foundFaq = await faqSchema.find({})
 
                 resolve(foundFaq)
@@ -228,7 +226,7 @@ module.exports = () => {
                 const _id = payload.id
                 const updatedfaq = await faqSchema.findOneAndUpdate({ _id }, { $set: payload }, { multi: true })
                 resolve(updatedfaq)
-                
+
 
             } catch (error) {
                 reject(error)
@@ -272,9 +270,15 @@ module.exports = () => {
     const createalumni = ({ payload }) => {
         return new Promise(async (resolve, reject) => {
             try {
+
+                // const usering=await masterdata.findOne({user_id})
+                // if(usering)
+                // {
+                //     console.log("maaz")
+                // }
                 const { relieving_date, user_id, date_of_resignation, last_working_day_as_per_notice_period, personal_email_id, first_name_personal_information, last_name_personal_information, middle_name_personal_information, nationality_personal_information, salutation_personal_information, city_addresses, phone_number_phone_information, manager_job_information, designation_job_information } = payload
                 const master = new masterdata({ relieving_date, user_id, date_of_resignation, last_working_day_as_per_notice_period, personal_email_id, first_name_personal_information, last_name_personal_information, middle_name_personal_information, nationality_personal_information, salutation_personal_information, city_addresses, phone_number_phone_information, manager_job_information, designation_job_information });
-                const test = await master.save();
+                await master.save();
 
                 resolve(payload)
 
@@ -287,7 +291,7 @@ module.exports = () => {
         return new Promise(async (resolve, reject) => {
             try {
                 const { user_id } = payload
-                const foundalumni = await masterdata.findOne({ user_id })
+                const foundalumni = await masterdata.find({})
 
                 resolve(foundalumni)
 
@@ -315,12 +319,12 @@ module.exports = () => {
         return new Promise(async (resolve, reject) => {
             try {
                 const fileName = 'C:/Users/Admin/Desktop/alumni.csv';
-                
+
                 const uploadFile = () => {
                     fs.readFile(fileName, (err, data) => {
                         if (err) throw err;
                         const params = {
-                            Bucket:config["aws_bucket_name"],
+                            Bucket: config["aws_bucket_name"],
                             Key: 'production/userprofile/alumni.csv',
                             Body: data
                         };
@@ -337,7 +341,7 @@ module.exports = () => {
                 //         Key: 'crux/users/alumni.csv',
                 //         Expires:60*5
                 //     })
-                    
+
                 //     resolve(url)
             }
             catch (error) {
@@ -345,13 +349,13 @@ module.exports = () => {
             }
         })
     }
-    const documentupload = ({payload}) => {
+    const documentupload = ({ payload }) => {
         return new Promise(async (resolve, reject) => {
             try {
                 const fileName = payload.fileaddress;
-                const userId=(payload.userid)
-                const type=payload.type
-                
+
+                const type = payload.type
+                const userId = payload.userid
                 const uploadFile = () => {
                     fs.readFile(fileName, (err, data) => {
                         if (err) throw err;
@@ -360,12 +364,12 @@ module.exports = () => {
                             Key: `crux/users/${payload.userid}/${payload.filename}`,
                             Body: data
                         };
-                        s3.upload(params, async (s3Err, data)=> {
+                        s3.upload(params, async (s3Err, data) => {
                             if (s3Err) throw s3Err
-                            
-                            const result = await personalinformation.find({})
-                            resolve(result)
-                            
+                            const link = data.Location
+                            const updatealumni = await personalinformation.findOneAndUpdate({ userId }, { $set: { 'form16': 'payload' } })
+                            resolve(updatealumni)
+
                         });
                     });
                 };
@@ -376,11 +380,11 @@ module.exports = () => {
                 //         Key: `crux/users/${payload.userid}/xyz.pdf`,
                 //         Expires:60*5
                 //     })
-                    
+
                 //     console.log(url)
-            
-                    
-                
+
+
+
             }
             catch (error) {
                 reject(error)
@@ -404,7 +408,7 @@ module.exports = () => {
         deleteEvents,
 
 
-        
+
         addFaq,
         viewFaq,
         viewallFaq,
