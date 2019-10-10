@@ -1,17 +1,21 @@
 module.exports = () => {
     const eventSchema = require("../models/admin/event")
     const newsSchema = require("../models/admin/news")
-
+    const config=require("../config/index")
+    const personalinformation=require("../models/user/personal")
     const faqSchema = require("../models/admin/faq")
     const masterdata = require("../models/admin/masterdata")
     const { getDataFromMaster } = require("../models/user/action");
     const fs = require('fs');
     const AWS = require('aws-sdk');
-
-    AWS.config.update({
-        accessKeyId: "",
-        secretAccessKey: ""
-    });
+    const options = {
+        accessKeyId: config["aws_access_key"],
+        secretAccessKey: config["aws_secret_key"],
+        region: config["aws_region"]
+      };
+      
+      AWS.config.update(config);
+    
     // Create S3 service object
     s3 = new AWS.S3();
 
@@ -265,7 +269,7 @@ module.exports = () => {
             }
         });
     }
-    const createalumni = ({ payload }) => 
+    const createalumni = ({ payload }) => {
         return new Promise(async (resolve, reject) => {
             try {
                 const { relieving_date, user_id, date_of_resignation, last_working_day_as_per_notice_period, personal_email_id, first_name_personal_information, last_name_personal_information, middle_name_personal_information, nationality_personal_information, salutation_personal_information, city_addresses, phone_number_phone_information, manager_job_information, designation_job_information } = payload
@@ -311,14 +315,14 @@ module.exports = () => {
         return new Promise(async (resolve, reject) => {
             try {
                 const fileName = 'C:/Users/Admin/Desktop/alumni.csv';
-
+                
                 const uploadFile = () => {
                     fs.readFile(fileName, (err, data) => {
                         if (err) throw err;
                         const params = {
-                            Bucket: 'sclabs-titan',
+                            Bucket:config["aws_bucket_name"],
                             Key: 'production/userprofile/alumni.csv',
-                            Body: JSON.stringify(data, null, 2)
+                            Body: data
                         };
                         s3.upload(params, function (s3Err, data) {
                             if (s3Err) throw s3Err
@@ -341,27 +345,41 @@ module.exports = () => {
             }
         })
     }
-    const documentupload = () => {
+    const documentupload = ({payload}) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const fileName = 'C:/Users/Admin/Desktop/alumni.csv';
-
+                const fileName = payload.fileaddress;
+                const userId=(payload.userid)
+                const type=payload.type
+                
                 const uploadFile = () => {
                     fs.readFile(fileName, (err, data) => {
                         if (err) throw err;
                         const params = {
-                            Bucket: 'sclabs-titan',
-                            Key: 'crux/users/alumni.csv',
-                            Body: JSON.stringify(data, null, 2)
+                            Bucket: config["aws_bucket_name"],
+                            Key: `crux/users/${payload.userid}/${payload.filename}`,
+                            Body: data
                         };
-                        s3.upload(params, function (s3Err, data) {
+                        s3.upload(params, async (s3Err, data)=> {
                             if (s3Err) throw s3Err
-                            resolve(data)
+                            
+                            const result = await personalinformation.find({})
+                            resolve(result)
+                            
                         });
                     });
                 };
 
                 uploadFile();
+                //  const url = s3.getSignedUrl('getObject', {
+                //         Bucket: config["aws_bucket_name"],
+                //         Key: `crux/users/${payload.userid}/xyz.pdf`,
+                //         Expires:60*5
+                //     })
+                    
+                //     console.log(url)
+            
+                    
                 
             }
             catch (error) {
