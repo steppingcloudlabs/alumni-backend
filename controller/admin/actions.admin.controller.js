@@ -173,14 +173,15 @@ module.exports = {
         const response = await AdminActionSerivce.userupload()
         res.status(200).send({
             status:"200",
-            message:"welcome Maaz",
+            message:"Hello Bro howdy You",
             message2:response
 
         })
 
     },
     documentupload: async(req,res,next)=>{
-        const response = await AdminActionSerivce.documentupload()
+        payload = req.body;
+        const response = await AdminActionSerivce.documentupload({payload})
         res.status(200).send({
             status:"200",
             message:"welcome Maaz",
