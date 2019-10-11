@@ -145,29 +145,35 @@ module.exports = {
             });
         }
     },
-    user: async (req, res, next) => {
-        try {
-            const payload = req.params
-            const response = await AdminActionSerivce.user({ payload });
-            res.status(200).send({
-                status: 200,
-                message: {
-                    "response": response,
-                    "result": "IMPLEMENTED "
-                }
-            });
-        } catch (error) {
-            next(error);
-        }
-    },
     createalumni: async (req, res) => {
         payload = req.body;
         const response = await AdminActionSerivce.createalumni({ payload })
+        if(response=='founduser'){
+            res.status(200).json({ "status:": 400,
+             "Message":"User Id already exists"  });
+        }
+        else{
         res.status(200).json({ "status:": "200 OK", "New Entry saved for ": response });
+        }
     },
     viewalumni: async (req, res) => {
         payload = req.body;
-        const reponse = await AdminActionSerivce.viewalumni({ payload })
+        const response = await AdminActionSerivce.viewalumni({ payload })
+        if (response == null) {
+            res.status(200).send({
+                status: 400,
+                message: {
+                    "result": "User doesn't exist"
+                }
+            });
+        }
+        else {
+        res.status(200).json({ response });
+        }
+    },
+    allalumni: async (req, res) => {
+        payload = req.body;
+        const reponse = await AdminActionSerivce.allalumni({})
         res.status(200).json({ reponse });
     },
     updatealumni: async (req, res) => {
@@ -181,13 +187,24 @@ module.exports = {
                 }
             });
         }
-
         else {
             res.status(200).send({
                 status: "Ok",
-                message: "Alumni Information Uodated",
-                message2: reponse
-
+                message: "Alumni Information Uodated"
+            });
+        }
+    },
+    deletealumni: async (req, res) => {
+        payload = req.body;
+        const response = await AdminActionSerivce.deletealumni({ payload })
+        if (response) {
+            res.status(200).send({
+                status: 200,
+                message: {
+                    "response": "Alumni Information Deleted",
+                    "No. of Deleted Documents": response.deletedCount,
+                    "result": "Ok "
+                }
             });
         }
     },

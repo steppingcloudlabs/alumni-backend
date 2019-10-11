@@ -236,7 +236,7 @@ module.exports = () => {
     const deleteFaq = ({ payload }) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const deletedFaq = await faqSchema.remove({ question: payload.question })
+                const deletedFaq = await faqSchema.remove({  _id: payload.id })
 
                 resolve(deletedFaq)
 
@@ -270,18 +270,17 @@ module.exports = () => {
     const createalumni = ({ payload }) => {
         return new Promise(async (resolve, reject) => {
             try {
-
-                // const usering=await masterdata.findOne({user_id})
-                // if(usering)
-                // {
-                //     console.log("maaz")
-                // }
+                if(await masterdata.findOne({user_id:payload.user_id}))
+                {
+                    resolve("founduser")
+                }
+                else{
                 const { relieving_date, user_id, date_of_resignation, last_working_day_as_per_notice_period, personal_email_id, first_name_personal_information, last_name_personal_information, middle_name_personal_information, nationality_personal_information, salutation_personal_information, city_addresses, phone_number_phone_information, manager_job_information, designation_job_information } = payload
                 const master = new masterdata({ relieving_date, user_id, date_of_resignation, last_working_day_as_per_notice_period, personal_email_id, first_name_personal_information, last_name_personal_information, middle_name_personal_information, nationality_personal_information, salutation_personal_information, city_addresses, phone_number_phone_information, manager_job_information, designation_job_information });
                 await master.save();
 
                 resolve(payload)
-
+                }
             } catch (error) {
                 reject(error)
             }
@@ -290,7 +289,19 @@ module.exports = () => {
     const viewalumni = ({ payload }) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const { user_id } = payload
+                const user_id  = parseInt(payload.userid)
+                const foundalumni = await masterdata.findOne({user_id})
+
+                resolve(foundalumni)
+
+            } catch (error) {
+                reject(error)
+            }
+        })
+    }
+    const allalumni = ({}) => {
+        return new Promise(async (resolve, reject) => {
+            try {
                 const foundalumni = await masterdata.find({})
 
                 resolve(foundalumni)
@@ -308,6 +319,17 @@ module.exports = () => {
                 const updatealumni = await masterdata.findOneAndUpdate({ user_id }, { $set: payload }, { multi: true })
 
                 resolve(updatealumni)
+
+            } catch (error) {
+                reject(error)
+            }
+        })
+    }
+    const deletealumni = ({ payload }) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const deleted = await masterdata.remove({ user_id: payload.userid })
+                 resolve(deleted)
 
             } catch (error) {
                 reject(error)
@@ -413,12 +435,9 @@ module.exports = () => {
 
         addEvents,
         viewEvents,
-
         viewallEvents,
         updateEvents,
         deleteEvents,
-
-
 
         addFaq,
         viewFaq,
@@ -427,9 +446,12 @@ module.exports = () => {
         deleteFaq,
 
         user,
+
         createalumni,
         viewalumni,
+        allalumni,
         updatealumni,
+        deletealumni,
 
 
         userupload,

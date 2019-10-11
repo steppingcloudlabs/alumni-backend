@@ -4,13 +4,6 @@ const AdminController = require("../../../controller/admin/actions.admin.control
 require("../../../validator/admin.passport");
 // adminRouter Navigations
 
-router
-    .route("/admin/:userid")
-    .get((req, res, next) =>
-        AdminController.user(req, res, next))
-    .post((req, res, next) =>
-        AdminController.user(req, res, next));
-
 router.route("/add/company").post(AdminController.add);
 router
     .route("/add/news")
@@ -46,7 +39,6 @@ router
     .post((req, res, next) => AdminController.addFaq(req, res, next))
     .get((req, res, next) => AdminController.viewFaq(req, res, next))
 router
-
     .route("/allfaq")
     .get((req, res, next) => AdminController.viewallFaq(req, res, next))
 router
@@ -62,6 +54,12 @@ router
 router
     .route("/updatealumni")
     .post((req,res,next)=>AdminController.updatealumni(req,res,next))
+router
+    .route("/allalumni")
+    .get((req,res,next)=>AdminController.allalumni(req,res,next))
+router
+    .route("/deletealumni")
+    .delete((req,res,next)=>AdminController.deletealumni(req,res,next))
 
 router
     .route("/userupload")
