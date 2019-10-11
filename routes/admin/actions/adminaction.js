@@ -60,7 +60,6 @@ router
 router
     .route("/deletealumni")
     .delete((req,res,next)=>AdminController.deletealumni(req,res,next))
-
 router
     .route("/userupload")
     .post((req,res,next)=>AdminController.userupload(req,res,next))
