@@ -438,7 +438,6 @@ module.exports = () => {
         viewallEvents,
         updateEvents,
         deleteEvents,
-
         addFaq,
         viewFaq,
         viewallFaq,
