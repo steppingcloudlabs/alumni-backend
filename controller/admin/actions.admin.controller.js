@@ -32,25 +32,27 @@ module.exports = {
     },
     addNews: async (req, res) => {
         payload = req.body;
-        const reponse = await AdminActionSerivce.addNews({ payload })
-        res.status(200).send({ "status:": "200 OK", "New Entry saved for ": reponse });
+        const response = await AdminActionSerivce.addNews({ payload })
+        res.status(200).send({ "status:": "200 OK", "New Entry saved for ": response });
     },
     viewNews: async (req, res) => {
         payload = req.body;
-        const reponse = await AdminActionSerivce.viewNews({ payload })
-        res.status(200).json({ reponse });
+        const response = await AdminActionSerivce.viewNews({ payload })
+        res.status(200).json({ 
+            status:200,
+            result:response });
     },
     viewallNews: async (req, res) => {
         payload = req.body;
-        const reponse = await AdminActionSerivce.viewallNews({ payload })
-        res.status(200).json({ reponse });
+        const response = await AdminActionSerivce.viewallNews({ payload })
+        res.status(200).json({ response });
     },
     updateNews: async (req, res) => {
         payload = req.body;
-        const reponse = await AdminActionSerivce.updateNews({ payload })
+        const response = await AdminActionSerivce.updateNews({ payload })
         res.status(200).send({
             status: 200,
-            "message": "News Section Updated"
+            "result": "News Section Updated"
         });
     },
     deleteNews: async (req, res) => {
@@ -59,36 +61,33 @@ module.exports = {
         if (response) {
             res.status(200).send({
                 status: 200,
-                message: {
-                    "response": "News Deleted",
-                    "No. of Deleted Documents": response.deletedCount,
-                    "result": "IMPLEMENTED "
-                }
+                result: "News Deleted"
+                
             });
         }
     },
     addEvents: async (req, res) => {
         payload = req.body;
-        const reponse = await AdminActionSerivce.addEvents({ payload })
-        res.status(200).json({ "status:": "200 OK", "New Entry saved for ": reponse });
+        const response = await AdminActionSerivce.addEvents({ payload })
+        res.status(200).json({ "status:": "200 OK", "New Entry saved for ": response });
     },
     viewEvents: async (req, res) => {
         payload = req.body;
-        const reponse = await AdminActionSerivce.viewEvents({ payload })
-        res.status(200).json({ reponse });
+        const response = await AdminActionSerivce.viewEvents({ payload })
+        res.status(200).json({ response });
     },
 
     viewallEvents: async (req, res) => {
         payload = req.body;
-        const reponse = await AdminActionSerivce.viewallEvents({ payload })
-        res.status(200).json({ reponse });
+        const response = await AdminActionSerivce.viewallEvents({ payload })
+        res.status(200).json({ response });
     },
     updateEvents: async (req, res) => {
         payload = req.body;
-        const reponse = await AdminActionSerivce.updateEvents({ payload })
+        const response = await AdminActionSerivce.updateEvents({ payload })
         res.status(200).send({
             status: 200,
-            "message": "Evemts Section Updated"
+            "result": "Evemts Section Updated"
         });
     },
     deleteEvents: async (req, res) => {
@@ -97,7 +96,7 @@ module.exports = {
         if (response) {
             res.status(200).send({
                 status: 200,
-                message: {
+                result: {
                     "response": "Event Deleted",
                     "No. of Deleted Documents": response.deletedCount,
                     "result": "IMPLEMENTED "
@@ -108,26 +107,32 @@ module.exports = {
 
     addFaq: async (req, res) => {
         payload = req.body;
-        const reponse = await AdminActionSerivce.addFaq({ payload })
-        res.status(200).json({ "status:": "200 OK", "New Entry saved for ": reponse });
+        const response = await AdminActionSerivce.addFaq({ payload })
+        res.status(200).json({ "status:": "200 OK", 
+        "New Entry saved for ": response });
     },
     viewFaq: async (req, res) => {
         payload = req.body;
-        const reponse = await AdminActionSerivce.viewFaq({ payload })
-        res.status(200).json({ reponse });
+        const response = await AdminActionSerivce.viewFaq({ payload })
+        res.status(200).json({ 
+            status:200,
+            result:response }
+            );
     },
 
     viewallFaq: async (req, res) => {
         payload = req.body;
-        const reponse = await AdminActionSerivce.viewallFaq({ payload })
-        res.status(200).json({ reponse });
+        const response = await AdminActionSerivce.viewallFaq({ payload })
+        res.status(200).json({
+            status:200,
+            result:response });
     },
     updatefaq: async (req, res) => {
         payload = req.body;
-        const reponse = await AdminActionSerivce.updatefaq({ payload })
+        const response = await AdminActionSerivce.updatefaq({ payload })
         res.status(200).send({
             status: 200,
-            "message": "FAQs Updated"
+            "result": "FAQs Updated"
         });
     },
 
@@ -137,10 +142,8 @@ module.exports = {
         if (response) {
             res.status(200).send({
                 status: 200,
-                message: {
-                    "response": "FAQ Deleted",
-                    "No. of Deleted Documents": response.deletedCount,
-                    "result": "IMPLEMENTED "
+                result: {
+                    "response": "FAQ Deleted"
                 }
             });
         }
@@ -150,7 +153,7 @@ module.exports = {
         const response = await AdminActionSerivce.createalumni({ payload })
         if(response=='founduser'){
             res.status(200).json({ "status:": 400,
-             "Message":"User Id already exists"  });
+             "result":"User Id already exists"  });
         }
         else{
         res.status(200).json({ "status:": "200 OK", "New Entry saved for ": response });
@@ -162,35 +165,33 @@ module.exports = {
         if (response == null) {
             res.status(200).send({
                 status: 400,
-                message: {
-                    "result": "User doesn't exist"
-                }
+                result:  "User doesn't exist"
             });
         }
         else {
-        res.status(200).json({ response });
+        res.status(200).json({ 
+            status:200,
+            result:response });
         }
     },
     allalumni: async (req, res) => {
         payload = req.body;
-        const reponse = await AdminActionSerivce.allalumni({})
-        res.status(200).json({ reponse });
+        const response = await AdminActionSerivce.allalumni({})
+        res.status(200).json({ response });
     },
     updatealumni: async (req, res) => {
         payload = req.body;
-        const reponse = await AdminActionSerivce.updatealumni({ payload })
-        if (reponse == null) {
+        const response = await AdminActionSerivce.updatealumni({ payload })
+        if (response == null) {
             res.status(200).send({
                 status: 400,
-                message: {
-                    "result": "UserId doesn't exist"
-                }
+                result: "UserId doesn't exist"
             });
         }
         else {
             res.status(200).send({
-                status: "Ok",
-                message: "Alumni Information Uodated"
+                status: "200",
+                result: "Alumni Information Uodated"
             });
         }
     },
@@ -200,19 +201,21 @@ module.exports = {
         if (response) {
             res.status(200).send({
                 status: 200,
-                message: {
-                    "response": "Alumni Information Deleted",
-                    "No. of Deleted Documents": response.deletedCount,
-                    "result": "Ok "
-                }
+                result:  "Alumni Information Deleted",
             });
+        }
+        else{
+            res.status(200).send({
+                status: 400,
+                result: "Error while deleting",
+            }); 
         }
     },
     userupload: async (req, res, next) => {
         const response = await AdminActionSerivce.userupload()
         res.status(200).send({
             status: "200",
-            message: "User Data uploaded",
+            result: "User Data uploaded",
 
         })
 
@@ -223,7 +226,7 @@ module.exports = {
         if (response) {
             res.status(200).send({
                 status: "200",
-                message: "Document Uploaded",
+                result: "Document Uploaded",
 
 
             })
@@ -231,7 +234,7 @@ module.exports = {
         else {
             res.status(200).send({
                 status: 400,
-                message: "errror while uploading"
+                result: "errror while uploading"
             })
         }
 
@@ -239,18 +242,17 @@ module.exports = {
     viewdocument: async (req, res, next) => {
         payload = req.body;
         const response = await AdminActionSerivce.viewdocument({ payload })
-        console.log(response)
         if(response=='founduser'){
             res.status(200).send({
                 status: "400",
-                message: "User Doesnot Exist",
+                result: "User Doesnot Exist",
     
             })
         }
         else{
         res.status(200).send({
             status: "200",
-            message: response
+            result: response
 
         })
     }
