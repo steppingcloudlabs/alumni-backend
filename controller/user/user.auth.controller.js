@@ -25,12 +25,19 @@ module.exports = {
       });
     }
     const response = await userServices.username(userid);
-    if (response && response.length == 0) {
+    if (response==null) {
       res.status(200).send({
         status: 400,
-        result: 'User doesn\'t exist',
+        result: 'User is not an Alumni',
       });
-    } else {
+    }
+    else if(response=='founduser'){
+      res.status(200).send({
+        status: 400,
+        result: 'UserId already Exists',
+      });
+    } 
+    else {
       const newUser = new User({email, password, companyname, userid});
       await newUser.save();
       const token = signToken(newUser);
@@ -38,8 +45,10 @@ module.exports = {
         status: 200,
         result: {
           'token': token,
-          'firstName': response[0].first_name_personal_information,
-          'lastName': response[0].last_name_personal_information,
+          "data":{
+          'firstName': response.first_name_personal_information,
+          'lastName': response.last_name_personal_information,
+          }
         },
       });
     }
@@ -47,42 +56,28 @@ module.exports = {
 
   // SIGN IN
   signin: async (req, res, next) => {
-    if (req.user.result == 'Incorrect username') {
+    console.log(req.user.message )
+    if (req.user.message =='Incorrect username') {
       res.status(200).send({
         status: '401',
         result: 'User doesn\'t Exist',
       });
-    } else if (req.user.result == 'Incorrect password') {
+    } else if (req.user.message=='Incorrect password') {
       res.status(200).send({
         status: 401,
         result: 'Incorrect Password',
       });
     } else {
-      const response = await userServices.username(req.user.userid);
+      const response = await userServices.usersignin(req.user.userid);
       res.status(200).send({
         status: 200,
         result: {
           'status': 'Login Successful',
-          'data': response[0],
+          'data': response,
         },
       });
     }
     // console.log('req.user:',req.user);
-    if (req.user.result == 'Incorrect username') {
-      res.status(200).send({
-        status: 401,
-        result: 'User doesn\'t Exist',
-      });
-    } else if (req.user.result == 'Incorrect password') {
-      res.status(200).send({
-        status: 401,
-        result: 'Incorrect Password',
-      });
-    } else {
-      res.status(200).send({
-        status: 200,
-        result: 'Login Successful',
-      });
-    }
+    
   },
 };

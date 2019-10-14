@@ -212,8 +212,7 @@ module.exports = {
         const response = await AdminActionSerivce.userupload()
         res.status(200).send({
             status: "200",
-            message: "Hello Bro howdy You",
-            message2: response
+            message: "User Data uploaded",
 
         })
 
@@ -240,12 +239,20 @@ module.exports = {
     viewdocument: async (req, res, next) => {
         payload = req.body;
         const response = await AdminActionSerivce.viewdocument({ payload })
+        console.log(response)
+        if(response=='founduser'){
+            res.status(200).send({
+                status: "400",
+                message: "User Doesnot Exist",
+    
+            })
+        }
+        else{
         res.status(200).send({
             status: "200",
-            message: "welcome Maaz",
-            message2: response
+            message: response
 
         })
-
+    }
     }
 };

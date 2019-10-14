@@ -406,17 +406,22 @@ module.exports = () => {
             try {
                 const type = payload.filename;
                 const fileName=type.toLowerCase();
-                console.log(type)
                 const userId = parseInt(payload.userid)
-                
-                 const url = s3.getSignedUrl('getObject', {
+                const user_id= parseInt(payload.userid)
+                if(await masterdata.findOne({user_id}))
+                {
+                    const url = s3.getSignedUrl('getObject', {
                         Bucket: config["aws_bucket_name"],
                         Key: `crux/users/${userId}/${fileName}`,
                         Expires:60*5
                     })
 
                     resolve(url)
-
+                    
+                }
+                else{
+                    resolve("founduser")
+                }
 
 
             }

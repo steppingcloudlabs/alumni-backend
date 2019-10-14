@@ -1,16 +1,33 @@
-const { getDataFromMaster } = require("../models/user/action");
+const masterdata= require("../models/admin/masterdata");
+const users=require("../models/user/auth")
 module.exports = {
 
     username: async (userid) => {
         return new Promise(async (resolve, reject) => {
             try {
-                getDataFromMaster('masterdata', { user_id: parseInt(userid) }, (err, response) => {
-                    if (response) {                        
+                if(await users.findOne({userid: parseInt(userid)}))
+                {
+                    resolve("founduser")
+                }
+                else{
+               const response=await masterdata.findOne({user_id: parseInt(userid)})                       
                         resolve(response);  
-                    }else{
-                    reject(err)
-                    }
-                })
+               
+                }
+                
+
+            } catch (error) {
+                reject(error);
+            }
+        });
+    },
+    usersignin: async (userid) => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                
+               const response=await masterdata.findOne({user_id: parseInt(userid)})                       
+                        resolve(response);  
+               
                 
                 
 
@@ -19,7 +36,6 @@ module.exports = {
             }
         });
     }
-
 
 
 };
