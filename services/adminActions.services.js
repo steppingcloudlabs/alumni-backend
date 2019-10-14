@@ -26,8 +26,16 @@ module.exports = () => {
                 const { title, content, tags, date, author } = payload
                 const news = new newsSchema({ title, content, tags, date, author });
 
-                await news.save();
-                resolve(payload)
+                await news.save(function(err, result){
+                    if(err) {
+                      response = { error: true};
+                    } else {
+                      response = {id: result._id };
+                    }
+                    resolve(response)
+                  });
+
+               
 
             } catch (error) {
                 reject(error)
@@ -104,10 +112,18 @@ module.exports = () => {
                 const { title, content, tags, date, author } = payload
                 const news = new eventSchema({ title, content, tags, date, author });
 
-                await news.save();
-                resolve(payload)
+                await news.save(function(err, result){
+                    if(err) {
+                      response = { error: true};
+                    } else {
+                      response = {id: result._id };
+                    }
+                    resolve(response)
+                  });
 
-            } catch (error) {
+                }
+
+             catch (error) {
                 reject(error)
             }
         })
@@ -184,9 +200,14 @@ module.exports = () => {
                 const { question, answer } = payload
                 const faqs = new faqSchema({ question, answer });
 
-                await faqs.save();
-                resolve(payload)
-
+                await faqs.save(function(err, result){
+                    if(err) {
+                      response = { error: true};
+                    } else {
+                      response = {id: result._id };
+                    }
+                    resolve(response)
+                  });
             } catch (error) {
                 reject(error)
             }

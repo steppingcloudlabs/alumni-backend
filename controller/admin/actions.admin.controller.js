@@ -33,7 +33,7 @@ module.exports = {
     addNews: async (req, res) => {
         payload = req.body;
         const response = await AdminActionSerivce.addNews({ payload })
-        res.status(200).send({ "status:": "200 OK", "New Entry saved for ": response });
+        res.status(200).send({ "status:": "200", "New Entry saved for ": response });
     },
     viewNews: async (req, res) => {
         payload = req.body;
@@ -69,7 +69,7 @@ module.exports = {
     addEvents: async (req, res) => {
         payload = req.body;
         const response = await AdminActionSerivce.addEvents({ payload })
-        res.status(200).json({ "status:": "200 OK", "New Entry saved for ": response });
+        res.status(200).json({ "status:": "200", "result": response });
     },
     viewEvents: async (req, res) => {
         payload = req.body;
@@ -96,11 +96,8 @@ module.exports = {
         if (response) {
             res.status(200).send({
                 status: 200,
-                result: {
-                    "response": "Event Deleted",
-                    "No. of Deleted Documents": response.deletedCount,
-                    "result": "IMPLEMENTED "
-                }
+                result:"Event Deleted",
+                   
             });
         }
     },
@@ -108,7 +105,7 @@ module.exports = {
     addFaq: async (req, res) => {
         payload = req.body;
         const response = await AdminActionSerivce.addFaq({ payload })
-        res.status(200).json({ "status:": "200 OK", 
+        res.status(200).json({ "status:": "200", 
         "New Entry saved for ": response });
     },
     viewFaq: async (req, res) => {
@@ -156,7 +153,7 @@ module.exports = {
              "result":"User Id already exists"  });
         }
         else{
-        res.status(200).json({ "status:": "200 OK", "New Entry saved for ": response });
+        res.status(200).json({ "status:": "200", "New Entry saved for ": response });
         }
     },
     viewalumni: async (req, res) => {
