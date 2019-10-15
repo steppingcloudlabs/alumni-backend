@@ -33,11 +33,11 @@ app.use('/admin/action', adminActionsRoutes);
 
 // user personal info routes
 const personalRoutes = require('./routes/user/action/user');
-app.use('/personal', personalRoutes);
+app.use('/personaluser', personalRoutes);
 
 // admin personal route
-const adminpersonalRoutes = require('./routes/admin/actions/adminaction');
-app.use('/personal', adminpersonalRoutes);
+// const adminpersonalRoutes = require('./routes/admin/actions/adminaction');
+// app.use('/personal', adminpersonalRoutes);
 
 
 const awsadminRoutes = require('./routes/admin/actions/adminaction');

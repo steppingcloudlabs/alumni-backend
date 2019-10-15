@@ -1,27 +1,30 @@
 module.exports = () => {
   const userServices = require('../../services/user.services')();
   // personal user function
-  const user = async (req, res, next) => {
+  const userinfo = async (req, res, next) => {
     try {
-      const payload = req.params;
-      const response = await userServices.user(payload);
-      if (!response) {
+      const payload = req.body;
+      const response = await userServices.userinfo(payload);
+      if (response.length==0) {
         res.status(200).send({
           status: '400',
           result: 'Error while getting user',
         });
       }
+      else
+      {
       res.status(200).send({
         status: '200 OK',
         result: response,
       });
+    }
     } catch (error) {
       next(error);
     }
   };
   const userDocument = async (req, res, next) => {
     try {
-      const payload = req.params;
+      const payload = req.body;
       const response = await userServices.userDocument(payload);
       if (response && response.length == 0) {
         res.status(200).send({
@@ -40,8 +43,9 @@ module.exports = () => {
   };
   const userStatus = async (req, res, next) => {
     try {
-      const payload = req.params;
-      const response = await userServices.userStatus(payload);
+      const payload = req.body;
+      const response = await userServices.userstatus({payload});
+      // console.log(response)
       if (response && response.length == 0) {
         res.status(200).send({
           status: 400,
@@ -58,7 +62,7 @@ module.exports = () => {
     }
   };
   return {
-    user,
+    userinfo,
     userDocument,
     userStatus,
   };

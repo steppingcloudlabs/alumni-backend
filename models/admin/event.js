@@ -13,7 +13,7 @@ const event = new Schema({
     type: String,
   },
   tags: {
-    type: Array,
+    type: String,
   },
   timestamp: {
     type: String,

@@ -4,21 +4,21 @@ const NewsController = require("../../../controller/admin/actions.admin.controll
 
 // Router Navigations
 router
-    .route("/user/:userid")
+    .route("/userinfo")
     .get((req, res, next) =>
-        PersonalController.user(req, res, next))
+        PersonalController.userinfo(req, res, next))
     .post((req, res, next) =>
-        PersonalController.user(req, res, next));
+        PersonalController.userinfo(req, res, next));
 
 router
-    .route('/user/document/:userid')
+    .route('/user/document')
     .get((req, res, next) =>
         PersonalController.userDocument(req, res, next));
 
 router
-    .route('/user/status/:userid')
+    .route('/user/status')
     .get((req, res, next) =>
-        PersonalController.userStatus(req, res, next));
+    PersonalController.userStatus(req, res, next));
 router
     .route("/add/news")
     .get((req, res, next) => (NewsController.viewNews((req, res, next))))

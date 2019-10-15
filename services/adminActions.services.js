@@ -19,29 +19,6 @@ module.exports = () => {
     // Create S3 service object
     s3 = new AWS.S3();
 
-    const addNews = ({ payload }) => {
-        return new Promise(async (resolve, reject) => {
-            try {
-
-                const { title, content, tags, date, author } = payload
-                const news = new newsSchema({ title, content, tags, date, author });
-
-                await news.save(function(err, result){
-                    if(err) {
-                      response = { error: true};
-                    } else {
-                      response = {id: result._id };
-                    }
-                    resolve(response)
-                  });
-
-               
-
-            } catch (error) {
-                reject(error)
-            }
-        })
-    }
     const viewNews = ({ payload }) => {
         return new Promise(async (resolve, reject) => {
             try {
@@ -70,25 +47,36 @@ module.exports = () => {
             }
         })
     }
+    //update news and post if new id is given
     const updateNews = ({ payload }) => {
         return new Promise(async (resolve, reject, error) => {
             try {
                 const _id = payload.id
-
+                //if id present, update news section
+                if(_id){
+                    //no such record with id present then save the new record
                 if (await newsSchema.findOne({ _id }) == null) {
                     const { title, content, tags, date, author } = payload
                     const news = new newsSchema({ title, content, tags, date, author });
-                    await news.save();
+                   await news.save();
                     resolve(payload)
-
-                    // console.log(error)
                 }
                 else {
                     const updatedNews = await newsSchema.findOneAndUpdate({ _id }, { $set: payload }, { multi: true })
 
-                    resolve(updatedNews)
+                    resolve(payload)
 
                 }
+            }
+            //if id not present, save the data to news section
+            else{
+                const { title, content, tags, date, author }=payload
+                const news = new newsSchema({ title, content, tags, date, author });
+                const response =await news.save()
+                    resolve(response)
+                   
+                 
+            }
             } catch (error) {
                 reject(error)
             }
@@ -105,29 +93,7 @@ module.exports = () => {
             }
         })
     }
-    const addEvents = ({ payload }) => {
-        return new Promise(async (resolve, reject) => {
-            try {
-
-                const { title, content, tags, date, author } = payload
-                const news = new eventSchema({ title, content, tags, date, author });
-
-                await news.save(function(err, result){
-                    if(err) {
-                      response = { error: true};
-                    } else {
-                      response = {id: result._id };
-                    }
-                    resolve(response)
-                  });
-
-                }
-
-             catch (error) {
-                reject(error)
-            }
-        })
-    }
+   
     const viewEvents = ({ payload }) => {
         return new Promise(async (resolve, reject) => {
             try {
@@ -161,22 +127,29 @@ module.exports = () => {
         return new Promise(async (resolve, reject, error) => {
             try {
                 const _id = payload.id
-
-
+                //if id present, update news section
+                if(_id){
+                    //no such record with id present then save the new record
                 if (await eventSchema.findOne({ _id }) == null) {
                     const { title, content, tags, date, author } = payload
-                    const news = new eventSchema({ title, content, tags, date, author });
-                    await news.save();
+                    const events = new eventSchema({ title, content, tags, date, author });
+                   await events.save();
                     resolve(payload)
-
-                    // console.log(error)
                 }
                 else {
-                    const updatedNews = await eventSchema.findOneAndUpdate({ _id }, { $set: payload }, { multi: true })
+                    await eventSchema.findOneAndUpdate({ _id }, { $set: payload }, { multi: true })
 
-                    resolve(updatedNews)
+                    resolve(payload)
 
                 }
+            }
+            //if id not present, save the data to events section
+            else{
+                const { title, content, tags, date, author }=payload
+                const events = new eventSchema({ title, content, tags, date, author });
+                const response =await events.save()
+                    resolve(response)   
+            }
             } catch (error) {
                 reject(error)
             }
@@ -194,25 +167,7 @@ module.exports = () => {
         })
     }
 
-    const addFaq = ({ payload }) => {
-        return new Promise(async (resolve, reject) => {
-            try {
-                const { question, answer } = payload
-                const faqs = new faqSchema({ question, answer });
-
-                await faqs.save(function(err, result){
-                    if(err) {
-                      response = { error: true};
-                    } else {
-                      response = {id: result._id };
-                    }
-                    resolve(response)
-                  });
-            } catch (error) {
-                reject(error)
-            }
-        })
-    }
+    
     const viewFaq = ({ payload }) => {
 
         return new Promise(async (resolve, reject) => {
@@ -245,10 +200,29 @@ module.exports = () => {
         return new Promise(async (resolve, reject) => {
             try {
                 const _id = payload.id
-                const updatedfaq = await faqSchema.findOneAndUpdate({ _id }, { $set: payload }, { multi: true })
-                resolve(updatedfaq)
+                //if id present, update news section
+                if(_id){
+                    //no such record with id present then save the new record
+                if (await faqSchema.findOne({ _id }) == null) {
+                    const {question, answer } = payload
+                    const faqs = new faqSchema({question, answer});
+                    await faqs.save();
+                    resolve(payload)
+                }
+                else {
+                    await faqSchema.findOneAndUpdate({ _id }, { $set: payload }, { multi: true })
 
+                    resolve(payload)
 
+                }
+            }
+            //if id not present, save the data to events section
+            else{
+                const {question, answer } = payload
+                const faqs = new faqSchema({ question, answer });
+                const response =await faqs.save()
+                    resolve(response)   
+            }
             } catch (error) {
                 reject(error)
             }
@@ -453,19 +427,19 @@ module.exports = () => {
     }
 
     return {
-        addNews,
+        
         viewNews,
         viewallNews,
         updateNews,
         deleteNews,
 
-        addEvents,
+        
         viewEvents,
         viewallEvents,
         updateEvents,
         deleteEvents,
       
-        addFaq,
+       
         viewFaq,
         viewallFaq,
         updatefaq,
