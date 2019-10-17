@@ -1,4 +1,7 @@
 /* eslint-disable max-len */
+
+const config = require('../config/index');
+
 module.exports = () => {
   const {getDataFromMaster, getDataFromPersonal, getDataFromPersonalStatus} = require('../models/user/action');
   const user = (payload) => {
