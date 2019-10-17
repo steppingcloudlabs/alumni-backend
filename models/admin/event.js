@@ -13,11 +13,14 @@ const event = new Schema({
     type: String,
   },
   tags: {
-    type: Array,
+    type: String,
   },
   timestamp: {
     type: String,
   },
+  photo:{
+    type:String
+  }
 });
 
 const eventSchema = mongoose.model('events', event);

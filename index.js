@@ -3,6 +3,10 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require('mongoose');
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+mongoose.set('useUnifiedTopology', true);
 const config = require('./config/index');
 
 db = mongoose.connect('mongodb+srv://root:password@123@dev-i9qmj.mongodb.net/mydb?retryWrites=true&w=majority', {useNewUrlParser: true});
@@ -33,11 +37,11 @@ app.use('/admin/action', adminActionsRoutes);
 
 // user personal info routes
 const personalRoutes = require('./routes/user/action/user');
-app.use('/personal', personalRoutes);
+app.use('/personaluser', personalRoutes);
 
 // admin personal route
-const adminpersonalRoutes = require('./routes/admin/actions/adminaction');
-app.use('/personal', adminpersonalRoutes);
+// const adminpersonalRoutes = require('./routes/admin/actions/adminaction');
+// app.use('/personal', adminpersonalRoutes);
 
 
 const awsadminRoutes = require('./routes/admin/actions/adminaction');

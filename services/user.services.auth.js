@@ -5,12 +5,12 @@ module.exports = {
     username: async (userid) => {
         return new Promise(async (resolve, reject) => {
             try {
-                if(await users.findOne({userid: parseInt(userid)}))
+                if(await users.findOne({userid: (userid)}))
                 {
                     resolve("founduser")
                 }
                 else{
-               const response=await masterdata.findOne({user_id: parseInt(userid)})                       
+               const response=await masterdata.findOne({user_id:(userid)})                      
                         resolve(response);  
                
                 }

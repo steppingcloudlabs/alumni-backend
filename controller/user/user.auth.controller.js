@@ -56,7 +56,6 @@ module.exports = {
 
   // SIGN IN
   signin: async (req, res, next) => {
-    console.log(req.user.message )
     if (req.user.message =='Incorrect username') {
       res.status(200).send({
         status: '401',

@@ -8,4 +8,5 @@ module.exports = {
   aws_bucket_name: process.env.AWS_BUCKET_NAME,
   aws_region: process.env.AWS_REGION,
   from_adderess: process.env.FROM_ADDERESS,
+  aws_bucket_name2: process.env.AWS_BUCKET_NAME2,
 };

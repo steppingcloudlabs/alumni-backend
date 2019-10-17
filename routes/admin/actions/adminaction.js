@@ -6,10 +6,8 @@ require('../../../validator/admin.passport');
 
 router.route('/add/company').post(AdminController.add);
 router
-    .route('/add/news')
-    .post((req, res, next) => AdminController.addNews(req, res, next))
-    .get((req, res, next) => AdminController.viewNews(req, res, next));
-
+    .route("/add/news")
+    .get((req, res, next) => AdminController.viewNews(req, res, next))
 router
     .route('/allnews')
     .get((req, res, next) => AdminController.viewallNews(req, res, next));
@@ -20,9 +18,8 @@ router
     .route('/deletenews')
     .delete((req, res, next) => AdminController.deleteNews(req, res, next));
 router
-    .route('/add/event')
-    .post((req, res, next) => AdminController.addEvents(req, res, next))
-    .get((req, res, next) => AdminController.viewEvents(req, res, next));
+    .route("/add/event")
+    .get((req, res, next) => AdminController.viewEvents(req, res, next))
 
 router
     .route('/allevent')
@@ -34,10 +31,10 @@ router
     .route('/deleteevent')
     .delete((req, res, next) => AdminController.deleteEvents(req, res, next));
 
-router
-    .route('/add/faq')
-    .post((req, res, next) => AdminController.addFaq(req, res, next))
-    .get((req, res, next) => AdminController.viewFaq(req, res, next));
+router    
+    .route("/add/faq")
+    .get((req, res, next) => AdminController.viewFaq(req, res, next))
+
 router
     .route('/allfaq')
     .get((req, res, next) => AdminController.viewallFaq(req, res, next));
