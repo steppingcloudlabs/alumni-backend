@@ -3,6 +3,10 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require('mongoose');
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
+mongoose.set('useUnifiedTopology', true);
 const config = require('./config/index');
 
 db = mongoose.connect('mongodb+srv://root:password@123@dev-i9qmj.mongodb.net/mydb?retryWrites=true&w=majority', {useNewUrlParser: true});

@@ -18,6 +18,9 @@ const news = new Schema({
   date: {
     type: String,
   },
+  photo:{
+    type:String
+  }
 
 });
 

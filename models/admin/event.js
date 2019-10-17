@@ -18,6 +18,9 @@ const event = new Schema({
   timestamp: {
     type: String,
   },
+  photo:{
+    type:String
+  }
 });
 
 const eventSchema = mongoose.model('events', event);
