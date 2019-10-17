@@ -25,208 +25,225 @@ module.exports = {
       clientid,
       userid,
       privatekey,
-        });
-        await newCompany.save();
-        res.status(200).send({ Status: "Company Added Successfully" });
-    },
-    
-    viewNews: async (req, res) => {
-        payload = req.body;
-        const response = await AdminActionSerivce.viewNews({ payload })
-        res.status(200).json({ 
-            status:200,
-            result:response });
-    },
-    viewallNews: async (req, res) => {
-        payload = req.body;
-        const response = await AdminActionSerivce.viewallNews({ payload })
-        res.status(200).send({ 
-            status: 200,
-            "result":response });
-    },
-    updateNews: async (req, res) => {
-        payload = req.body;
-        const response = await AdminActionSerivce.updateNews({ payload })
-        res.status(200).send({
-        status: 200,
-        "result":response });
-       
+    });
+    await newCompany.save();
+    res.status(200).send({ Status: "Company Added Successfully" });
+  },
 
-    },
-    deleteNews: async (req, res) => {
-        payload = req.body;
-        const response = await AdminActionSerivce.deleteNews({ payload })
-        if (response) {
-            res.status(200).send({
-                status: 200,
-                result: "News Deleted"
-                
-            });
-        }
-    },
-    
-    viewEvents: async (req, res) => {
-        payload = req.body;
-        const response = await AdminActionSerivce.viewEvents({ payload })
-        res.status(200).json({ response });
-    },
-
-    viewallEvents: async (req, res) => {
-        payload = req.body;
-        const response = await AdminActionSerivce.viewallEvents({ payload })
-        res.status(200).json({ response });
-    },
-    updateEvents: async (req, res) => {
-        payload = req.body;
-        const response = await AdminActionSerivce.updateEvents({ payload })
-        res.status(200).send({ "status:": "200", 
-        "result": response });
-    },
-    deleteEvents: async (req, res) => {
-        payload = req.body;
-        const response = await AdminActionSerivce.deleteEvents({ payload })
-        if (response) {
-            res.status(200).send({
-                status: 200,
-                result:"Event Deleted",
-                   
-            });
-        }
-    },
-
-   
-    viewFaq: async (req, res) => {
-        payload = req.body;
-        const response = await AdminActionSerivce.viewFaq({ payload })
-        res.status(200).json({ 
-            status:200,
-            result:response }
-            );
-    },
-
-    viewallFaq: async (req, res) => {
-        payload = req.body;
-        const response = await AdminActionSerivce.viewallFaq({ payload })
-        res.status(200).json({
-            status:200,
-            result:response });
-    },
-    updatefaq: async (req, res) => {
-        payload = req.body;
-        const response = await AdminActionSerivce.updatefaq({ payload })
-        res.status(200).send({ 
-        "status:": "200", 
-        "result": response });
-    },
-
-    deleteFaq: async (req, res) => {
-        payload = req.body;
-        const response = await AdminActionSerivce.deleteFaq({ payload })
-        if (response) {
-            res.status(200).send({
-                status: 200,
-                result: {
-                    "response": "FAQ Deleted"
-                }
-            });
-        }
-    },
-    createalumni: async (req, res) => {
-        payload = req.body;
-        const response = await AdminActionSerivce.createalumni({ payload })
-        if(response=='founduser'){
-            res.status(200).json({ "status:": 400,
-             "result":"User Id already exists"  });
-        }
-        else{
-        res.status(200).json({ "status:": "200", "New Entry saved for ": response });
-        }
-    },
-    viewalumni: async (req, res) => {
-        payload = req.body;
-        const response = await AdminActionSerivce.viewalumni({ payload })
-        if (response == null) {
-            res.status(200).send({
-                status: 400,
-                result:  "User doesn't exist"
-            });
-        }
-        else {
-        res.status(200).json({ 
-            status:200,
-            result:response });
-        }
-    },
-    allalumni: async (req, res) => {
-        payload = req.body;
-        const response = await AdminActionSerivce.allalumni({})
-        res.status(200).json({ response });
-    },
-    updatealumni: async (req, res) => {
-        payload = req.body;
-        const response = await AdminActionSerivce.updatealumni({ payload })
-        if (response == null) {
-            res.status(200).send({
-                status: 400,
-                result: "UserId doesn't exist"
-            });
-        }
-        else {
-            res.status(200).send({
-                status: "200",
-                result: "Alumni Information Uodated"
-            });
-        }
-    },
-    deletealumni: async (req, res) => {
-        payload = req.body;
-        const response = await AdminActionSerivce.deletealumni({ payload })
-        if (response) {
-            res.status(200).send({
-                status: 200,
-                result:  "Alumni Information Deleted",
-            });
-        }
-        else{
-            res.status(200).send({
-                status: 400,
-                result: "Error while deleting",
-            }); 
-        }
-    },
-    userupload: async (req, res, next) => {
-        const response = await AdminActionSerivce.userupload()
-        res.status(200).send({
-            status: "200",
-            result: "User Data uploaded",
-
-  deleteFaq: async (req, res) => {
+  viewNews: async (req, res) => {
     payload = req.body;
-    const response = await AdminActionSerivce.deleteFaq({payload});
+    const response = await AdminActionSerivce.viewNews({ payload })
+    res.status(200).json({
+      status: 200,
+      result: response
+    });
+  },
+  viewallNews: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.viewallNews({ payload })
+    res.status(200).send({
+      status: 200,
+      "result": response
+    });
+  },
+  updateNews: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.updateNews({ payload })
+    res.status(200).send({
+      status: 200,
+      "result": response
+    });
+
+
+  },
+  deleteNews: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.deleteNews({ payload })
     if (response) {
       res.status(200).send({
         status: 200,
-        result: {
-          'response': 'FAQ Deleted',
-        },
+        result: "News Deleted"
+
+      });
+    }
+  },
+
+  viewEvents: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.viewEvents({ payload })
+    res.status(200).json({
+      status: 200,
+      result: response
+    });
+  },
+
+  viewallEvents: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.viewallEvents({ payload })
+    res.status(200).json({
+      status: 200,
+      result: response
+    });
+  },
+  updateEvents: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.updateEvents({ payload })
+    res.status(200).send({
+      "status:": 200,
+      "result": response
+    });
+  },
+  deleteEvents: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.deleteEvents({ payload })
+    if (response) {
+      res.status(200).send({
+        status: 200,
+        result: "Event Deleted",
+
+      });
+    }
+  },
+
+
+  viewFaq: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.viewFaq({ payload })
+    res.status(200).json({
+      status: 200,
+      result: response
+    }
+    );
+  },
+
+  viewallFaq: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.viewallFaq({ payload })
+    res.status(200).json({
+      status: 200,
+      result: response
+    });
+  },
+  updatefaq: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.updatefaq({ payload })
+    res.status(200).send({
+      "status": 200,
+      "result": response
+    });
+  },
+
+  deleteFaq: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.deleteFaq({ payload })
+    if (response) {
+      res.status(200).send({
+        status: 200,
+        result: "FAQ Deleted"
       });
     }
   },
   createalumni: async (req, res) => {
     payload = req.body;
-    const response = await AdminActionSerivce.createalumni({payload});
+    const response = await AdminActionSerivce.createalumni({ payload })
     if (response == 'founduser') {
       res.status(200).json({
-        'status:': 400,
-        'result': 'User Id already exists',
+        "status": 400,
+        "result": "User Id already exists"
       });
-    } else {
-      res.status(200).json({'status:': '200 OK', 'New Entry saved for ': response});
+    }
+    else {
+      res.status(200).json({
+        status: 200,
+        "result": response
+      });
     }
   },
   viewalumni: async (req, res) => {
     payload = req.body;
-    const response = await AdminActionSerivce.viewalumni({payload});
+    const response = await AdminActionSerivce.viewalumni({ payload })
+    if (response == null) {
+      res.status(200).send({
+        status: 400,
+        result: "User doesn't exist"
+      });
+    }
+    else {
+      res.status(200).json({
+        status: 200,
+        result: response
+      });
+    }
+  },
+  allalumni: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.allalumni({})
+    res.status(200).json({
+      status: 200,
+      result: response
+    });
+  },
+  updatealumni: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.updatealumni({ payload })
+    if (response == null) {
+      res.status(200).send({
+        status: 400,
+        result: "UserId doesn't exist"
+      });
+    }
+    else {
+      res.status(200).send({
+        status: 200,
+        result: "Alumni Information Uodated"
+      });
+    }
+  },
+  deletealumni: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.deletealumni({ payload })
+    if (response) {
+      res.status(200).send({
+        status: 200,
+        result: "Alumni Information Deleted",
+      });
+    }
+    else {
+      res.status(200).send({
+        status: 400,
+        result: "Error while deleting",
+      });
+    }
+  },
+
+  deleteFaq: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.deleteFaq({ payload });
+    if (response) {
+      res.status(200).send({
+        status: 200,
+        result: 'FAQ Deleted',
+      });
+    }
+  },
+  createalumni: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.createalumni({ payload });
+    if (response == 'founduser') {
+      res.status(200).json({
+        'status': 400,
+        'result': 'User Id already exists',
+      });
+    } else {
+      res.status(200).json({
+        'status:': 200,
+        'result': response
+      });
+    }
+  },
+  viewalumni: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.viewalumni({ payload });
     if (response == null) {
       res.status(200).send({
         status: 400,
@@ -242,11 +259,14 @@ module.exports = {
   allalumni: async (req, res) => {
     payload = req.body;
     const response = await AdminActionSerivce.allalumni({});
-    res.status(200).json({response});
+    res.status(200).json({
+      status: 200,
+      result: response
+    });
   },
   updatealumni: async (req, res) => {
     payload = req.body;
-    const response = await AdminActionSerivce.updatealumni({payload});
+    const response = await AdminActionSerivce.updatealumni({ payload });
     if (response == null) {
       res.status(200).send({
         status: 400,
@@ -261,7 +281,7 @@ module.exports = {
   },
   deletealumni: async (req, res) => {
     payload = req.body;
-    const response = await AdminActionSerivce.deletealumni({payload});
+    const response = await AdminActionSerivce.deletealumni({ payload });
     if (response) {
       res.status(200).send({
         status: 200,
@@ -284,7 +304,7 @@ module.exports = {
   },
   documentupload: async (req, res, next) => {
     payload = req.body;
-    const response = await AdminActionSerivce.documentupload({payload});
+    const response = await AdminActionSerivce.documentupload({ payload });
     if (response) {
       res.status(200).send({
         status: '200',
@@ -301,7 +321,7 @@ module.exports = {
   },
   viewdocument: async (req, res, next) => {
     payload = req.body;
-    const response = await AdminActionSerivce.viewdocument({payload});
+    const response = await AdminActionSerivce.viewdocument({ payload });
     if (response == 'founduser') {
       res.status(200).send({
         status: '400',
@@ -334,6 +354,6 @@ module.exports = {
     } catch (error) {
       next(error);
     }
-  },
+  }
 
 };

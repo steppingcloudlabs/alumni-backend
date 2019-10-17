@@ -1,6 +1,6 @@
 const JWT = require('jsonwebtoken');
 const Admin = require('../../models/admin/auth');
-const {JWT_SECRET} = require('../../config');
+const { JWT_SECRET } = require('../../config');
 signToken = (user) => {
   return JWT.sign({
     iss: 'Coder',
@@ -8,21 +8,21 @@ signToken = (user) => {
     iat: new Date().getTime(),
     exp: new Date().setDate(new Date().getDate() + 1),
   },
-  JWT_SECRET
+    JWT_SECRET
   );
 };
 module.exports = {
   signup: async (req, res, next) => {
-    const {email, password} = req.value.body;
+    const { email, password } = req.value.body;
     // check if there is a user with the same email
-    const foundUser = await Admin.findOne({email});
+    const foundUser = await Admin.findOne({ email });
     if (foundUser) {
       res.status(200).send({
         status: 400,
         result: 'email is already in use',
       });
     }
-    const newUser = new Admin({email, password});
+    const newUser = new Admin({ email, password });
     await newUser.save();
     const token = signToken(newUser);
     if (!token) {
@@ -32,7 +32,7 @@ module.exports = {
       });
     }
     res.status(200).json({
-      status: '200 OK',
+      status: '200',
       result: token,
     });
   },
@@ -50,12 +50,12 @@ module.exports = {
       });
     } else {
       res.status(200).send({
-        status: '200 OK',
+        status: '200',
         result: 'Login Successful',
       });
     }
   },
   secret: async (req, res, next) => {
-    res.json({Status: 'Managed to get here'});
+    res.json({ Status: 'Managed to get here' });
   },
 };

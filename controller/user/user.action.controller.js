@@ -5,19 +5,18 @@ module.exports = () => {
     try {
       const payload = req.body;
       const response = await userServices.userinfo(payload);
-      if (response.length==0) {
+      if (response.length == 0) {
         res.status(200).send({
           status: '400',
           result: 'Error while getting user',
         });
       }
-      else
-      {
-      res.status(200).send({
-        status: '200 OK',
-        result: response,
-      });
-    }
+      else {
+        res.status(200).send({
+          status: '200',
+          result: response,
+        });
+      }
     } catch (error) {
       next(error);
     }
@@ -33,7 +32,7 @@ module.exports = () => {
         });
       } else {
         res.status(200).send({
-          status: '200 OK',
+          status: '200',
           result: response,
         });
       }
@@ -44,7 +43,7 @@ module.exports = () => {
   const userStatus = async (req, res, next) => {
     try {
       const payload = req.body;
-      const response = await userServices.userstatus({payload});
+      const response = await userServices.userstatus({ payload });
       // console.log(response)
       if (response && response.length == 0) {
         res.status(200).send({

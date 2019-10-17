@@ -16,20 +16,17 @@ const adminSchema = new Schema({
   },
 });
 
-adminSchema.pre('save', async function(next) {
+adminSchema.pre('save', async function (next) {
   try {
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(this.password, salt);
-    console.log('salt', salt);
-    console.log('normal password', this.password);
-    console.log('hashed password', passwordHash);
     this.password = passwordHash;
     next();
   } catch (error) {
     next(error);
   }
 });
-adminSchema.methods.isValidPassword = async function(newPassword) {
+adminSchema.methods.isValidPassword = async function (newPassword) {
   try {
     return await bcrypt.compare(newPassword, this.password);
   } catch (error) {
