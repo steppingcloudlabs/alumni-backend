@@ -37,10 +37,9 @@ module.exports = () => {
         return new Promise(async (resolve, reject) => {
             try {
 
-                const { id, title, content, tags, date, author } = payload
-
-                const foundNews = await newsSchema.find({})
-
+                const {skip,limit } = payload
+                const foundNews = await newsSchema.find().skip(skip).limit(limit)
+                // console.log(foundNews)
                 resolve(foundNews)
 
             } catch (error) {
@@ -157,9 +156,9 @@ module.exports = () => {
     const viewallEvents = ({ payload }) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const { id, title, content, tags, date, author } = payload
-
-                const foundNews = await eventSchema.find({})
+                
+                const {skip,limit } = payload
+                const foundNews = await eventSchema.find({}).skip(skip).limit(limit)
 
                 resolve(foundNews)
 
@@ -279,7 +278,9 @@ module.exports = () => {
         return new Promise(async (resolve, reject) => {
             try {
 
-                const foundFaq = await faqSchema.find({})
+                const {skip,limit } = payload
+                const foundFaq = await faqSchema.find({}).skip(skip).limit(limit)
+
 
                 resolve(foundFaq)
 
@@ -389,7 +390,8 @@ module.exports = () => {
     const allalumni = ({ }) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const foundalumni = await masterdata.find({})
+                const {skip,limit } = payload
+                const foundalumni = await masterdata.find({}).skip(skip).limit(limit)
 
                 resolve(foundalumni)
 
