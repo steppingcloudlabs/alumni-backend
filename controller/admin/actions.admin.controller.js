@@ -1,31 +1,30 @@
-const Company = require("../../models/admin/register");
-const AdminActionSerivce = require("../../services/adminActions.services")();
-const express = require("express");
+const Company = require('../../models/admin/register');
+const AdminActionSerivce = require('../../services/adminActions.services')();
+const express = require('express');
 module.exports = {
-    add: async (req, res, next) => {
-        const {
-            companyname,
-            companyid,
-            companyurl,
-            cloudprovider,
-            idp,
-            tokenurl,
-            clientid,
-            userid,
-            privatekey
-        } = req.body;
+  add: async (req, res, next) => {
+    const {
+      companyname,
+      companyid,
+      companyurl,
+      cloudprovider,
+      idp,
+      tokenurl,
+      clientid,
+      userid,
+      privatekey,
+    } = req.body;
 
-        const newCompany = new Company({
-            companyname,
-            companyid,
-            companyurl,
-            cloudprovider,
-            idp,
-            tokenurl,
-            clientid,
-            userid,
-            privatekey
-
+    const newCompany = new Company({
+      companyname,
+      companyid,
+      companyurl,
+      cloudprovider,
+      idp,
+      tokenurl,
+      clientid,
+      userid,
+      privatekey,
         });
         await newCompany.save();
         res.status(200).send({ Status: "Company Added Successfully" });
@@ -201,45 +200,140 @@ module.exports = {
             status: "200",
             result: "User Data uploaded",
 
-        })
-
-    },
-    documentupload: async (req, res, next) => {
-        payload = req.body;
-        const response = await AdminActionSerivce.documentupload({ payload })
-        if (response) {
-            res.status(200).send({
-                status: "200",
-                result: "Document Uploaded",
-
-
-            })
-        }
-        else {
-            res.status(200).send({
-                status: 400,
-                result: "errror while uploading"
-            })
-        }
-
-    },
-    viewdocument: async (req, res, next) => {
-        payload = req.body;
-        const response = await AdminActionSerivce.viewdocument({ payload })
-        if(response=='founduser'){
-            res.status(200).send({
-                status: "400",
-                result: "User Doesnot Exist",
-    
-            })
-        }
-        else{
-        res.status(200).send({
-            status: "200",
-            result: response
-
-        })
+  deleteFaq: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.deleteFaq({payload});
+    if (response) {
+      res.status(200).send({
+        status: 200,
+        result: {
+          'response': 'FAQ Deleted',
+        },
+      });
     }
-    },
-    
+  },
+  createalumni: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.createalumni({payload});
+    if (response == 'founduser') {
+      res.status(200).json({
+        'status:': 400,
+        'result': 'User Id already exists',
+      });
+    } else {
+      res.status(200).json({'status:': '200 OK', 'New Entry saved for ': response});
+    }
+  },
+  viewalumni: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.viewalumni({payload});
+    if (response == null) {
+      res.status(200).send({
+        status: 400,
+        result: 'User doesn\'t exist',
+      });
+    } else {
+      res.status(200).json({
+        status: 200,
+        result: response,
+      });
+    }
+  },
+  allalumni: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.allalumni({});
+    res.status(200).json({response});
+  },
+  updatealumni: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.updatealumni({payload});
+    if (response == null) {
+      res.status(200).send({
+        status: 400,
+        result: 'UserId doesn\'t exist',
+      });
+    } else {
+      res.status(200).send({
+        status: '200',
+        result: 'Alumni Information Uodated',
+      });
+    }
+  },
+  deletealumni: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.deletealumni({payload});
+    if (response) {
+      res.status(200).send({
+        status: 200,
+        result: 'Alumni Information Deleted',
+      });
+    } else {
+      res.status(200).send({
+        status: 400,
+        result: 'Error while deleting',
+      });
+    }
+  },
+  userupload: async (req, res, next) => {
+    const response = await AdminActionSerivce.userupload();
+    res.status(200).send({
+      status: '200',
+      result: 'User Data uploaded',
+
+    });
+  },
+  documentupload: async (req, res, next) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.documentupload({payload});
+    if (response) {
+      res.status(200).send({
+        status: '200',
+        result: 'Document Uploaded',
+
+
+      });
+    } else {
+      res.status(200).send({
+        status: 400,
+        result: 'errror while uploading',
+      });
+    }
+  },
+  viewdocument: async (req, res, next) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.viewdocument({payload});
+    if (response == 'founduser') {
+      res.status(200).send({
+        status: '400',
+        result: 'User Doesnot Exist',
+
+      });
+    } else {
+      res.status(200).send({
+        status: '200',
+        result: response,
+
+      });
+    }
+  },
+  askHr: async (req, res, next) => {
+    try {
+      const payload = req.body;
+      const response = await AdminActionSerivce.askHr(payload);
+      if (response && response.length == 0) {
+        res.status(200).send({
+          status: 400,
+          result: 'User doesn\'t exist',
+        });
+      } else {
+        res.status(200).send({
+          status: 200,
+          result: response,
+        });
+      }
+    } catch (error) {
+      next(error);
+    }
+  },
+
 };

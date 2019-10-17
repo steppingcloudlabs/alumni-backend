@@ -518,40 +518,79 @@ module.exports = () => {
             }
         })
     }
+    const askHr = (payload) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const {subject, body} = payload;
+        console.log(payload);
+        const params = {
+          Source: config['from_adderess'],
+          Destination: {
+            ToAddresses: [
+              config['from_adderess'],
+            ],
+          },
+          ReplyToAddresses: [
+            config['from_adderess'],
+          ],
+          Message: {
+            Body: {
+
+              Text: {
+                Charset: 'UTF-8',
+                Data: body,
+              },
+            },
+            Subject: {
+              Charset: 'UTF-8',
+              Data: subject,
+            },
+          },
+        };
+
+
+        // Create the promise and SES service object
+        const sendPromise = new AWS.SES({apiVersion: '2010-12-01'})
+            .sendEmail(params).promise();
+
+        // Handle promise's fulfilled/rejected states
+        sendPromise.then(
+            function(data) {
+              resolve(data);
+            }).catch(
+            function(err) {
+              reject(err.stack);
+            });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+
 
 
     return {
-
         viewNews,
         viewallNews,
         updateNews,
         deleteNews,
-
-
         viewEvents,
         viewallEvents,
         updateEvents,
         deleteEvents,
-
-
         viewFaq,
         viewallFaq,
         updatefaq,
         deleteFaq,
-
         user,
-
         createalumni,
         viewalumni,
         allalumni,
         updatealumni,
         deletealumni,
-
-
         userupload,
         documentupload,
-        viewdocument
-
-
+        viewdocument,
+        askHr,
     }
 };

@@ -61,9 +61,11 @@ module.exports = () => {
       next(error);
     }
   };
+
   return {
     userinfo,
     userDocument,
     userStatus,
+
   };
 };
