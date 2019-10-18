@@ -460,13 +460,6 @@ module.exports = () => {
                 };
 
                 uploadFile();
-                // const url = s3.getSignedUrl('getObject', {
-                //         Bucket: 'sclabs-titan',
-                //         Key: 'crux/users/alumni.csv',
-                //         Expires:60*5
-                //     })
-
-                //     resolve(url)
             }
             catch (error) {
                 reject(error)
