@@ -322,7 +322,7 @@ module.exports = {
   viewdocument: async (req, res, next) => {
     payload = req.body;
     const response = await AdminActionSerivce.viewdocument({ payload });
-    if (response == 'founduser') {
+    if (response == 'notfounduser') {
       res.status(200).send({
         status: '400',
         result: 'User Doesnot Exist',

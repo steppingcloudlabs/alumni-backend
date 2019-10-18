@@ -8,6 +8,7 @@ module.exports = () => {
     const masterdata = require("../models/admin/masterdata")
     const { getDataFromMaster } = require("../models/user/action");
     const fs = require('fs');
+    const util = require('../utils/index')
     const AWS = require('aws-sdk');
     const options = {
         accessKeyId: config["aws_access_key"],
@@ -37,7 +38,7 @@ module.exports = () => {
         return new Promise(async (resolve, reject) => {
             try {
 
-                const {skip,limit } = payload
+                const { skip, limit } = payload
                 const foundNews = await newsSchema.find().skip(skip).limit(limit)
                 // console.log(foundNews)
                 resolve(foundNews)
@@ -54,73 +55,79 @@ module.exports = () => {
                 const _id = payload.id
                 //if id present, update news section
                 if (_id) {
-                   
-                        await newsSchema.findOneAndUpdate({ _id }, { $set: payload }, { multi: true })
-                        const fileName = payload.photo;
-                        const ext = path.extname(fileName)
-                        const uploadFile = () => {
-                            fs.readFile(fileName, (err, data) => {
-                                if (err) throw err;
-                                const params = {
-                                    Bucket: config["aws_bucket_name2"],
-                                    Key: `news/${payload.id}${ext}`,
-                                    Body: data
-                                };
-                                s3.upload(params, async (s3Err, data) =>{
-                                    if (s3Err) throw s3Err
-                                    // console.log(data.Location)
-                                    let [user]=await newsSchema.find({
-                                        "_id":payload.id});
-                                
-                                    if (user) {
-                                        user=await user.updateOne({
-                                            photo: data.Location},
-                                            {new: true
-                                        });
-                                        user.ok === 1
-                                            ? resolve(await newsSchema.findOne({_id }))
-                                            : resolve("Updation Failed, Please Check");
-                                    }
+
+                    await newsSchema.findOneAndUpdate({ _id }, { $set: payload }, { multi: true })
+                    const fileName = payload.photo;
+                    const ext = path.extname(fileName)
+                    const uploadFile = () => {
+                        fs.readFile(fileName, (err, data) => {
+                            if (err) throw err;
+                            const params = {
+                                Bucket: config["aws_bucket_name2"],
+                                Key: `news/${payload.id}${ext}`,
+                                Body: data
+                            };
+                            s3.upload(params, async (s3Err, data) => {
+                                if (s3Err) throw s3Err
+                                // console.log(data.Location)
+                                let [user] = await newsSchema.find({
+                                    "_id": payload.id
                                 });
-                            })
-                        }
-                            uploadFile();                        
+
+                                if (user) {
+                                    user = await user.updateOne({
+                                        photo: data.Location
+                                    },
+                                        {
+                                            new: true
+                                        });
+                                    user.ok === 1
+                                        ? resolve(await newsSchema.findOne({ _id }))
+                                        : resolve("Updation Failed, Please Check");
+                                }
+                            });
+                        })
                     }
-                
-            //if id not present, save the data to news section
-            else {
+                    uploadFile();
+                }
+
+                //if id not present, save the data to news section
+                else {
                     const { title, content, tags, date, author, photo } = payload
                     const news = new newsSchema({ title, content, tags, date, author, photo });
                     const response = await news.save()
                     const fileName = payload.photo;
-                        const ext = path.extname(fileName)
-                        const uploadFile = () => {
-                            fs.readFile(fileName, (err, data) => {
-                                if (err) throw err;
-                                const params = {
-                                    Bucket: config["aws_bucket_name2"],
-                                    Key: `news/${response._id}${ext}`,
-                                    Body: data
-                                };
-                                s3.upload(params, async (s3Err, data) =>{
-                                    if (s3Err) throw s3Err
-                                    //  console.log(data.Location)
-                                    let [user]=await newsSchema.find({
-                                        "_id":response._id});
-                                
-                                    if (user) {
-                                        user=await user.updateOne({
-                                            photo: data.Location},
-                                            {new: true
-                                        });
-                                        user.ok === 1
-                                            ? resolve(await newsSchema.findOne({_id:response._id }))
-                                            : resolve("Updation Failed, Please Check");
-                                    }
+                    const ext = path.extname(fileName)
+                    const uploadFile = () => {
+                        fs.readFile(fileName, (err, data) => {
+                            if (err) throw err;
+                            const params = {
+                                Bucket: config["aws_bucket_name2"],
+                                Key: `news/${response._id}${ext}`,
+                                Body: data
+                            };
+                            s3.upload(params, async (s3Err, data) => {
+                                if (s3Err) throw s3Err
+                                //  console.log(data.Location)
+                                let [user] = await newsSchema.find({
+                                    "_id": response._id
                                 });
-                            })
-                        }
-                            uploadFile();  
+
+                                if (user) {
+                                    user = await user.updateOne({
+                                        photo: data.Location
+                                    },
+                                        {
+                                            new: true
+                                        });
+                                    user.ok === 1
+                                        ? resolve(await newsSchema.findOne({ _id: response._id }))
+                                        : resolve("Updation Failed, Please Check");
+                                }
+                            });
+                        })
+                    }
+                    uploadFile();
                 }
             } catch (error) {
                 reject(error)
@@ -156,8 +163,8 @@ module.exports = () => {
     const viewallEvents = ({ payload }) => {
         return new Promise(async (resolve, reject) => {
             try {
-                
-                const {skip,limit } = payload
+
+                const { skip, limit } = payload
                 const foundNews = await eventSchema.find({}).skip(skip).limit(limit)
 
                 resolve(foundNews)
@@ -174,73 +181,79 @@ module.exports = () => {
                 const _id = payload.id
                 //if id present, update news section
                 if (_id) {
-                   
-                        await eventSchema.findOneAndUpdate({ _id }, { $set: payload }, { multi: true })
-                        const fileName = payload.photo;
-                        const ext = path.extname(fileName)
-                        const uploadFile = () => {
-                            fs.readFile(fileName, (err, data) => {
-                                if (err) throw err;
-                                const params = {
-                                    Bucket: config["aws_bucket_name2"],
-                                    Key: `events/${payload.id}${ext}`,
-                                    Body: data
-                                };
-                                s3.upload(params, async (s3Err, data) =>{
-                                    if (s3Err) throw s3Err
-                                    // console.log(data.Location)
-                                    let [user]=await eventSchema.find({
-                                        "_id":payload.id});
-                                
-                                    if (user) {
-                                        user=await user.updateOne({
-                                            photo: data.Location},
-                                            {new: true
-                                        });
-                                        user.ok === 1
-                                            ? resolve(await eventSchema.findOne({_id }))
-                                            : resolve("Updation Failed, Please Check");
-                                    }
+
+                    await eventSchema.findOneAndUpdate({ _id }, { $set: payload }, { multi: true })
+                    const fileName = payload.photo;
+                    const ext = path.extname(fileName)
+                    const uploadFile = () => {
+                        fs.readFile(fileName, (err, data) => {
+                            if (err) throw err;
+                            const params = {
+                                Bucket: config["aws_bucket_name2"],
+                                Key: `events/${payload.id}${ext}`,
+                                Body: data
+                            };
+                            s3.upload(params, async (s3Err, data) => {
+                                if (s3Err) throw s3Err
+                                // console.log(data.Location)
+                                let [user] = await eventSchema.find({
+                                    "_id": payload.id
                                 });
-                            })
-                        }
-                            uploadFile();                        
+
+                                if (user) {
+                                    user = await user.updateOne({
+                                        photo: data.Location
+                                    },
+                                        {
+                                            new: true
+                                        });
+                                    user.ok === 1
+                                        ? resolve(await eventSchema.findOne({ _id }))
+                                        : resolve("Updation Failed, Please Check");
+                                }
+                            });
+                        })
                     }
-                
-            //if id not present, save the data to news section
-            else {
+                    uploadFile();
+                }
+
+                //if id not present, save the data to news section
+                else {
                     const { title, content, tags, date, author, photo } = payload
                     const events = new eventSchema({ title, content, tags, date, author, photo });
                     const response = await events.save()
                     const fileName = payload.photo;
-                        const ext = path.extname(fileName)
-                        const uploadFile = () => {
-                            fs.readFile(fileName, (err, data) => {
-                                if (err) throw err;
-                                const params = {
-                                    Bucket: config["aws_bucket_name2"],
-                                    Key: `events/${response._id}${ext}`,
-                                    Body: data
-                                };
-                                s3.upload(params, async (s3Err, data) =>{
-                                    if (s3Err) throw s3Err
-                                    //  console.log(data.Location)
-                                    let [user]=await eventSchema.find({
-                                        "_id":response._id});
-                                
-                                    if (user) {
-                                        user=await user.updateOne({
-                                            photo: data.Location},
-                                            {new: true
-                                        });
-                                        user.ok === 1
-                                            ? resolve(await eventSchema.findOne({_id:response._id }))
-                                            : resolve("Updation Failed, Please Check");
-                                    }
+                    const ext = path.extname(fileName)
+                    const uploadFile = () => {
+                        fs.readFile(fileName, (err, data) => {
+                            if (err) throw err;
+                            const params = {
+                                Bucket: config["aws_bucket_name2"],
+                                Key: `events/${response._id}${ext}`,
+                                Body: data
+                            };
+                            s3.upload(params, async (s3Err, data) => {
+                                if (s3Err) throw s3Err
+                                //  console.log(data.Location)
+                                let [user] = await eventSchema.find({
+                                    "_id": response._id
                                 });
-                            })
-                        }
-                            uploadFile();  
+
+                                if (user) {
+                                    user = await user.updateOne({
+                                        photo: data.Location
+                                    },
+                                        {
+                                            new: true
+                                        });
+                                    user.ok === 1
+                                        ? resolve(await eventSchema.findOne({ _id: response._id }))
+                                        : resolve("Updation Failed, Please Check");
+                                }
+                            });
+                        })
+                    }
+                    uploadFile();
                 }
             } catch (error) {
                 reject(error)
@@ -278,7 +291,7 @@ module.exports = () => {
         return new Promise(async (resolve, reject) => {
             try {
 
-                const {skip,limit } = payload
+                const { skip, limit } = payload
                 const foundFaq = await faqSchema.find({}).skip(skip).limit(limit)
 
 
@@ -390,7 +403,7 @@ module.exports = () => {
     const allalumni = ({ }) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const {skip,limit } = payload
+                const { skip, limit } = payload
                 const foundalumni = await masterdata.find({}).skip(skip).limit(limit)
 
                 resolve(foundalumni)
@@ -463,27 +476,30 @@ module.exports = () => {
     const documentupload = ({ payload }) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const path = payload.fileaddress
-                const filename = payload.filename
-                const fileName = filename.toLowerCase();
-                const userId = parseInt(payload.userid)
-                const uploadFile = () => {
-                    fs.readFile(path, (err, data) => {
-                        if (err) throw err;
-                        const params = {
-                            Bucket: config["aws_bucket_name"],
-                            Key: `crux/users/${payload.userid}/${fileName}`,
-                            Body: data
-                        };
-                        s3.upload(params, async (s3Err, data) => {
-                            if (s3Err) throw s3Err
-                            resolve(data)
+                const stream = payload.stream
+                const filetype = payload.type
+                const x = util[filetype]
 
-                        });
+                const uploadFile = () => {
+                    const buf = new Buffer((stream).toString('base64'), 'base64')
+                    var params = {
+                        Bucket: config["aws_bucket_name"],
+                        Key: `crux/users/${payload.userid}/${x}.pdf`,
+                        Body: buf,
+                        ContentType: 'application/pdf',
+                        ContentDisposition: 'inline'
+                    };
+                    s3.upload(params, async (s3Err, buf) => {
+                        if (s3Err) throw s3Err
+                        resolve(buf)
+
+
                     });
+
                 };
 
                 uploadFile();
+
             }
             catch (error) {
                 reject(error)
@@ -493,14 +509,14 @@ module.exports = () => {
     const viewdocument = ({ payload }) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const type = payload.filename;
-                const fileName = type.toLowerCase();
+                const filename = payload.filename;
+                const x = util[filename]
                 const userId = parseInt(payload.userid)
                 const user_id = parseInt(payload.userid)
                 if (await masterdata.findOne({ user_id })) {
                     const url = s3.getSignedUrl('getObject', {
                         Bucket: config["aws_bucket_name"],
-                        Key: `crux/users/${userId}/${fileName}`,
+                        Key: `crux/users/${userId}/${x}.pdf`,
                         Expires: 60 * 5
                     })
 
@@ -508,7 +524,7 @@ module.exports = () => {
 
                 }
                 else {
-                    resolve("founduser")
+                    resolve("notfounduser")
                 }
 
 
@@ -519,53 +535,53 @@ module.exports = () => {
         })
     }
     const askHr = (payload) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        const {subject, body} = payload;
-        console.log(payload);
-        const params = {
-          Source: config['from_adderess'],
-          Destination: {
-            ToAddresses: [
-              config['from_adderess'],
-            ],
-          },
-          ReplyToAddresses: [
-            config['from_adderess'],
-          ],
-          Message: {
-            Body: {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const { subject, body } = payload;
+                console.log(payload);
+                const params = {
+                    Source: config['from_adderess'],
+                    Destination: {
+                        ToAddresses: [
+                            config['from_adderess'],
+                        ],
+                    },
+                    ReplyToAddresses: [
+                        config['from_adderess'],
+                    ],
+                    Message: {
+                        Body: {
 
-              Text: {
-                Charset: 'UTF-8',
-                Data: body,
-              },
-            },
-            Subject: {
-              Charset: 'UTF-8',
-              Data: subject,
-            },
-          },
-        };
+                            Text: {
+                                Charset: 'UTF-8',
+                                Data: body,
+                            },
+                        },
+                        Subject: {
+                            Charset: 'UTF-8',
+                            Data: subject,
+                        },
+                    },
+                };
 
 
-        // Create the promise and SES service object
-        const sendPromise = new AWS.SES({apiVersion: '2010-12-01'})
-            .sendEmail(params).promise();
+                // Create the promise and SES service object
+                const sendPromise = new AWS.SES({ apiVersion: '2010-12-01' })
+                    .sendEmail(params).promise();
 
-        // Handle promise's fulfilled/rejected states
-        sendPromise.then(
-            function(data) {
-              resolve(data);
-            }).catch(
-            function(err) {
-              reject(err.stack);
-            });
-      } catch (error) {
-        reject(error);
-      }
-    });
-  };
+                // Handle promise's fulfilled/rejected states
+                sendPromise.then(
+                    function (data) {
+                        resolve(data);
+                    }).catch(
+                        function (err) {
+                            reject(err.stack);
+                        });
+            } catch (error) {
+                reject(error);
+            }
+        });
+    };
 
 
 
