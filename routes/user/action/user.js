@@ -6,9 +6,9 @@ const NewsController = require('../../../controller/admin/actions.admin.controll
 router
     .route('/userinfo')
     .post((req, res, next) =>
-      PersonalController.userinfo(req, res, next))
-    .post((req, res, next) =>
       PersonalController.userinfo(req, res, next));
+    // .post((req, res, next) =>
+    //   PersonalController.userinfo(req, res, next));
 
 router
     .route('/user/document')

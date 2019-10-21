@@ -46,7 +46,9 @@ router
     .delete((req, res, next) => AdminController.deleteFaq(req, res, next));
 router
     .route('/alumni')
-    .post((req, res, next) => AdminController.createalumni(req, res, next))
+    .post((req, res, next) => AdminController.createalumni(req, res, next));
+router
+    .route('/alumniview')
     .post((req, res, next) => AdminController.viewalumni(req, res, next));
 router
     .route('/updatealumni')
@@ -62,7 +64,9 @@ router
     .post((req, res, next) => AdminController.userupload(req, res, next));
 router
     .route('/documentupload')
-    .post((req, res, next) => AdminController.documentupload(req, res, next))
+    .post((req, res, next) => AdminController.documentupload(req, res, next));
+router
+    .route('/documentdownlaod')
     .post((req, res, next) => AdminController.viewdocument(req, res, next));
 router
     .route('/ask-hr')
