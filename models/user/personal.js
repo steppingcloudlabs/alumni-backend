@@ -5,6 +5,7 @@ require('mongoose-type-url');
 const personalschema = new Schema({
   userId: {
     type: String,
+    unique: true,
   },
   form16: {
     type: String,

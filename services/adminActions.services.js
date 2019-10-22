@@ -387,8 +387,13 @@ module.exports = () => {
                     const master = new masterdata({ relieving_date, user_id, date_of_resignation, last_working_day_as_per_notice_period, personal_email_id, first_name_personal_information, last_name_personal_information, middle_name_personal_information, nationality_personal_information, salutation_personal_information, city_addresses, phone_number_phone_information, manager_job_information, designation_job_information });
                     const response = await master.save();
                     // console.log(response)
-                    await personalinformation.insertMany({ "userId": response.user_id })
-
+                    const response2 = await personalinformation.insertMany({
+                        "userId": response.user_id,
+                        "fnfStatus": "Not Available",
+                        "pfTransferStatus": "Not Available",
+                        "form16Status": "Not Available",
+                        "uanDetails": "Not Available"
+                    })
                     resolve(payload)
                 }
             } catch (error) {
@@ -440,6 +445,7 @@ module.exports = () => {
         return new Promise(async (resolve, reject) => {
             try {
                 const deleted = await masterdata.remove({ user_id: payload.userid })
+                await personalinformation.remove({ userId: payload.userid })
                 resolve(deleted)
 
             } catch (error) {
