@@ -3,11 +3,11 @@
 const config = require('../config/index');
 
 module.exports = () => {
-  const {getDataFromMaster, getDataFromPersonal, getDataFromPersonalStatus} = require('../models/user/action');
+  const { getDataFromMaster, getDataFromPersonal, getDataFromPersonalStatus } = require('../models/user/action');
   const userinfo = (payload) => {
     return new Promise(async (resolve, reject) => {
       try {
-        getDataFromMaster('masterdatas', {user_id:(payload.userid)}, (err, response) => {
+        getDataFromMaster('masterdatas', { user_id: (payload.userid) }, (err, response) => {
           if (response) {
             resolve(response);
           } else if (err) {
@@ -29,7 +29,7 @@ module.exports = () => {
   const userDocument = (payload) => {
     return new Promise(async (resolve, reject) => {
       try {
-        getDataFromPersonal('personalinformation', {userId: parseInt(payload.userid)}, (err, response) => {
+        getDataFromPersonal('personalinformation', { userId: parseInt(payload.userid) }, (err, response) => {
           if (response) {
             resolve(response);
           } else if (err) {
@@ -46,10 +46,10 @@ module.exports = () => {
       }
     });
   };
-  const userstatus = ({payload}) => {
+  const userstatus = ({ payload }) => {
     return new Promise(async (resolve, reject) => {
       try {
-        getDataFromPersonalStatus('personalinformation', {userId: parseInt(payload.userid)}, (err, response) => {
+        getDataFromPersonalStatus('personalinformation', { userId: parseInt(payload.userid) }, (err, response) => {
           if (response) {
             resolve(response);
           } else if (err) {
