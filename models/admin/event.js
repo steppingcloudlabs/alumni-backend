@@ -15,11 +15,11 @@ const event = new Schema({
   tags: {
     type: String,
   },
-  timestamp: {
-    type: String,
+  date: {
+    type: Date,
   },
-  photo:{
-    type:String
+  photo: {
+    type: String
   }
 });
 

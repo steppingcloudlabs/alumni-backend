@@ -16,10 +16,10 @@ const news = new Schema({
     type: Array,
   },
   date: {
-    type: String,
+    type: Date,
   },
-  photo:{
-    type:String
+  photo: {
+    type: String
   }
 
 });

@@ -45,6 +45,6 @@ const masterschema = new Schema({
   },
 
 });
-
+masterschema.index({ '$**': 'text' })
 const masterdata = mongoose.model('masterdata', masterschema);
 module.exports = masterdata;

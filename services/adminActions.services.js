@@ -39,7 +39,7 @@ module.exports = () => {
             try {
 
                 const { skip, limit } = payload
-                const foundNews = await newsSchema.find().skip(skip).limit(limit)
+                const foundNews = await newsSchema.find().sort({ date: -1 }).skip(skip).limit(limit)
                 // console.log(foundNews)
                 resolve(foundNews)
 
@@ -170,7 +170,8 @@ module.exports = () => {
             try {
 
                 const { skip, limit } = payload
-                const foundNews = await eventSchema.find({}).skip(skip).limit(limit)
+
+                const foundNews = await eventSchema.find({}).sort({ date: -1 }).skip(skip).limit(limit)
 
                 resolve(foundNews)
 
@@ -387,7 +388,7 @@ module.exports = () => {
                     const master = new masterdata({ relieving_date, user_id, date_of_resignation, last_working_day_as_per_notice_period, personal_email_id, first_name_personal_information, last_name_personal_information, middle_name_personal_information, nationality_personal_information, salutation_personal_information, city_addresses, phone_number_phone_information, manager_job_information, designation_job_information });
                     const response = await master.save();
                     // console.log(response)
-                    const response2 = await personalinformation.insertMany({
+                    await personalinformation.insertMany({
                         "userId": response.user_id,
                         "fnfStatus": "Not Available",
                         "pfTransferStatus": "Not Available",
@@ -417,10 +418,23 @@ module.exports = () => {
     const allalumni = ({ }) => {
         return new Promise(async (resolve, reject) => {
             try {
-                const { skip, limit } = payload
-                const foundalumni = await masterdata.find({}).skip(skip).limit(limit)
+                const { skip, limit, keyword } = payload
 
-                resolve(foundalumni)
+                if (keyword) {
+                    const foundalumni = await masterdata.find({ $text: { $search: keyword } }).skip(skip).limit(limit)
+
+                    if (foundalumni.length == 0) {
+                        resolve("null")
+                    }
+                    else {
+                        resolve(foundalumni)
+                    }
+                }
+                else {
+                    const foundalumni = await masterdata.find({}).skip(skip).limit(limit)
+                    resolve(foundalumni)
+                }
+
 
             } catch (error) {
                 reject(error)
