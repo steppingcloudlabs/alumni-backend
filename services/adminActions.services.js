@@ -185,7 +185,7 @@ module.exports = () => {
         return new Promise(async (resolve, reject, error) => {
             try {
                 const _id = payload.id
-                //if id present, update news section
+                //if id present, update events section
                 if (_id) {
 
                     await eventSchema.findOneAndUpdate({ _id }, { $set: payload }, { multi: true })
@@ -202,7 +202,6 @@ module.exports = () => {
                         };
                         s3.upload(params, async (s3Err, data) => {
                             if (s3Err) throw s3Err
-                            // console.log(data.Location)
                             let [user] = await eventSchema.find({
                                 "_id": payload.id
                             });
@@ -422,13 +421,8 @@ module.exports = () => {
 
                 if (keyword) {
                     const foundalumni = await masterdata.find({ $text: { $search: keyword } }).skip(skip).limit(limit)
+                    resolve(foundalumni)
 
-                    if (foundalumni.length == 0) {
-                        resolve("null")
-                    }
-                    else {
-                        resolve(foundalumni)
-                    }
                 }
                 else {
                     const foundalumni = await masterdata.find({}).skip(skip).limit(limit)
@@ -501,7 +495,6 @@ module.exports = () => {
                 const stream = payload.stream
                 const filetype = payload.type
                 const x = util[filetype]
-
                 const uploadFile = () => {
                     const buf = new Buffer((stream).toString('base64'), 'base64')
                     var params = {
@@ -513,7 +506,27 @@ module.exports = () => {
                     };
                     s3.upload(params, async (s3Err, buf) => {
                         if (s3Err) throw s3Err
-                        resolve(buf)
+                        // resolve(buf)
+                        let [user] = await personalinformation.find({
+                            "userId": payload.userid
+                        });
+
+
+                        if (user) {
+                            user = await user.updateOne({
+
+                            },
+                                {
+                                    new: true
+                                },
+                                function (err, success) {
+                                    if (err) return handleError(err);
+                                });
+                            console.log(user)
+                            user.ok === 1
+                                ? resolve(buf)
+                                : resolve("failed");
+                        }
 
 
                     });
