@@ -510,19 +510,11 @@ module.exports = () => {
                         let [user] = await personalinformation.find({
                             "userId": payload.userid
                         });
-
+                        updatedJson = {}
+                        updatedJson[x] = "available"
 
                         if (user) {
-                            user = await user.updateOne({
-
-                            },
-                                {
-                                    new: true
-                                },
-                                function (err, success) {
-                                    if (err) return handleError(err);
-                                });
-                            console.log(user)
+                            user = await user.updateOne(updatedJson, { new: true });
                             user.ok === 1
                                 ? resolve(buf)
                                 : resolve("failed");
