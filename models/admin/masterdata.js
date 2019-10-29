@@ -43,6 +43,9 @@ const masterschema = new Schema({
   designation_job_information: {
     type: String,
   },
+  skill: {
+    type: String
+  }
 
 });
 masterschema.index({ '$**': 'text' })

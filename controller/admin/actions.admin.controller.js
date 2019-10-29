@@ -183,22 +183,7 @@ module.exports = {
       result: response
     });
   },
-  updatealumni: async (req, res) => {
-    payload = req.body;
-    const response = await AdminActionSerivce.updatealumni({ payload })
-    if (response == null) {
-      res.status(200).send({
-        status: 400,
-        result: "UserId doesn't exist"
-      });
-    }
-    else {
-      res.status(200).send({
-        status: 200,
-        result: "Alumni Information Uodated"
-      });
-    }
-  },
+
   deletealumni: async (req, res) => {
     payload = req.body;
     const response = await AdminActionSerivce.deletealumni({ payload })
