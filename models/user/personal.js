@@ -7,6 +7,12 @@ const personalschema = new Schema({
     type: String,
     unique: true,
   },
+  fnfStatus: {
+    type: String,
+  },
+  pfTransferStatus: {
+    type: String,
+  },
   form16: {
     type: String,
   },
@@ -19,15 +25,7 @@ const personalschema = new Schema({
   salarylast: {
     type: String,
   },
-  fnfStatus: {
-    type: String,
-  },
-  pfTransferStatus: {
-    type: String,
-  },
-  form16Status: {
-    type: String,
-  },
+
   uanDetails: {
     type: String,
   },

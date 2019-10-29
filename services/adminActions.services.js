@@ -391,7 +391,10 @@ module.exports = () => {
                         "userId": response.user_id,
                         "fnfStatus": "Not Available",
                         "pfTransferStatus": "Not Available",
-                        "form16Status": "Not Available",
+                        "form16": "Not Available",
+                        "salarycurrent": "Not Available",
+                        "salaryprevious": "Not Available",
+                        "salarylast": "Not Available",
                         "uanDetails": "Not Available"
                     })
                     resolve(payload)
@@ -511,10 +514,10 @@ module.exports = () => {
                             "userId": payload.userid
                         });
                         updatedJson = {}
-                        updatedJson[x] = "available"
+                        updatedJson[x] = "Available"
 
                         if (user) {
-                            user = await user.updateOne(updatedJson, { new: true });
+                            user = await user.updateOne({ $set: updatedJson }, { new: true });
                             user.ok === 1
                                 ? resolve(buf)
                                 : resolve("failed");
