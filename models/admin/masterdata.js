@@ -48,6 +48,9 @@ const masterschema = new Schema({
   }
 
 });
+
+//finding keywords based search on masterdata
 masterschema.index({ '$**': 'text' })
+
 const masterdata = mongoose.model('masterdata', masterschema);
 module.exports = masterdata;

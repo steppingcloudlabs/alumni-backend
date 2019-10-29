@@ -29,7 +29,7 @@ module.exports = {
     await newCompany.save();
     res.status(200).send({ Status: "Company Added Successfully" });
   },
-
+  // News Controller
   viewNews: async (req, res) => {
     payload = req.body;
     const response = await AdminActionSerivce.viewNews({ payload })
@@ -53,8 +53,6 @@ module.exports = {
       status: 200,
       "result": response
     });
-
-
   },
   deleteNews: async (req, res) => {
     payload = req.body;
@@ -68,6 +66,7 @@ module.exports = {
     }
   },
 
+  //Event Controller
   viewEvents: async (req, res) => {
     payload = req.body;
     const response = await AdminActionSerivce.viewEvents({ payload })
@@ -76,7 +75,6 @@ module.exports = {
       result: response
     });
   },
-
   viewallEvents: async (req, res) => {
     payload = req.body;
     const response = await AdminActionSerivce.viewallEvents({ payload })
@@ -115,7 +113,6 @@ module.exports = {
     }
     );
   },
-
   viewallFaq: async (req, res) => {
     payload = req.body;
     const response = await AdminActionSerivce.viewallFaq({ payload })
@@ -132,7 +129,6 @@ module.exports = {
       "result": response
     });
   },
-
   deleteFaq: async (req, res) => {
     payload = req.body;
     const response = await AdminActionSerivce.deleteFaq({ payload })
@@ -143,6 +139,8 @@ module.exports = {
       });
     }
   },
+
+  //alumni Controller
   createalumni: async (req, res) => {
     payload = req.body;
     const response = await AdminActionSerivce.createalumni({ payload })
@@ -200,55 +198,6 @@ module.exports = {
       });
     }
   },
-
-  deleteFaq: async (req, res) => {
-    payload = req.body;
-    const response = await AdminActionSerivce.deleteFaq({ payload });
-    if (response) {
-      res.status(200).send({
-        status: 200,
-        result: 'FAQ Deleted',
-      });
-    }
-  },
-  createalumni: async (req, res) => {
-    payload = req.body;
-    const response = await AdminActionSerivce.createalumni({ payload });
-    if (response == 'founduser') {
-      res.status(200).json({
-        'status': 400,
-        'result': 'User Id already exists',
-      });
-    } else {
-      res.status(200).json({
-        'status:': 200,
-        'result': response
-      });
-    }
-  },
-  viewalumni: async (req, res) => {
-    payload = req.body;
-    const response = await AdminActionSerivce.viewalumni({ payload });
-    if (response == null) {
-      res.status(200).send({
-        status: 400,
-        result: 'User doesn\'t exist',
-      });
-    } else {
-      res.status(200).json({
-        status: 200,
-        result: response,
-      });
-    }
-  },
-  allalumni: async (req, res) => {
-    payload = req.body;
-    const response = await AdminActionSerivce.allalumni({});
-    res.status(200).json({
-      status: 200,
-      result: response
-    });
-  },
   updatealumni: async (req, res) => {
     payload = req.body;
     const response = await AdminActionSerivce.updatealumni({ payload });
@@ -260,25 +209,14 @@ module.exports = {
     } else {
       res.status(200).send({
         status: '200',
-        result: 'Alumni Information Uodated',
+        result: 'Alumni Information Updated',
       });
     }
   },
-  deletealumni: async (req, res) => {
-    payload = req.body;
-    const response = await AdminActionSerivce.deletealumni({ payload });
-    if (response) {
-      res.status(200).send({
-        status: 200,
-        result: 'Alumni Information Deleted',
-      });
-    } else {
-      res.status(200).send({
-        status: 400,
-        result: 'Error while deleting',
-      });
-    }
-  },
+
+
+
+  //AWS Upload; Mass Upload of User Data
   userupload: async (req, res, next) => {
     const response = await AdminActionSerivce.userupload();
     res.status(200).send({
@@ -287,6 +225,7 @@ module.exports = {
 
     });
   },
+  //AWS Document Upload
   documentupload: async (req, res, next) => {
     payload = req.body;
     const response = await AdminActionSerivce.documentupload({ payload });
@@ -304,6 +243,8 @@ module.exports = {
       });
     }
   },
+
+  //Signed URL for AWS
   viewdocument: async (req, res, next) => {
     payload = req.body;
     const response = await AdminActionSerivce.viewdocument({ payload });
@@ -321,6 +262,8 @@ module.exports = {
       });
     }
   },
+
+  //ASK HR
   askHr: async (req, res, next) => {
     try {
       const payload = req.body;
