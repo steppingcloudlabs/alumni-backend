@@ -43,9 +43,9 @@ const masterschema = new Schema({
   designation_job_information: {
     type: String,
   },
-  skill: {
+  skill: [{
     type: String
-  }
+  }]
 
 });
 
