@@ -60,7 +60,7 @@ module.exports = () => {
                     const fileName = payload.photo;
                     const ext = path.extname(fileName)
                     const uploadFile = () => {
-                        const buf = new Buffer((fileName).toString('base64'), 'base64')
+                        const buf = Buffer.from((fileName).toString('base64'), 'base64')
                         var params = {
                             Bucket: config["aws_bucket_name2"],
                             Key: `news/${payload.id}${ext}`,
@@ -101,7 +101,7 @@ module.exports = () => {
                     const fileName = payload.photo;
                     const ext = path.extname(fileName)
                     const uploadFile = () => {
-                        const buf = new Buffer((fileName).toString('base64'), 'base64')
+                        const buf = Buffer.from((fileName).toString('base64'), 'base64')
                         var params = {
                             Bucket: config["aws_bucket_name2"],
                             Key: `news/${response._id}${ext}`,
@@ -192,7 +192,7 @@ module.exports = () => {
                     const fileName = payload.photo;
                     const ext = path.extname(fileName)
                     const uploadFile = () => {
-                        const buf = new Buffer((fileName).toString('base64'), 'base64')
+                        const buf = Buffer.from((fileName).toString('base64'), 'base64')
                         var params = {
                             Bucket: config["aws_bucket_name2"],
                             Key: `events/${payload.id}${ext}`,
@@ -231,7 +231,7 @@ module.exports = () => {
                     const fileName = payload.photo;
                     const ext = path.extname(fileName)
                     const uploadFile = () => {
-                        const buf = new Buffer((fileName).toString('base64'), 'base64')
+                        const buf = Buffer.from((fileName).toString('base64'), 'base64')
                         var params = {
                             Bucket: config["aws_bucket_name2"],
                             Key: `events/${response._id}${ext}`,
@@ -499,7 +499,7 @@ module.exports = () => {
                 const filetype = payload.type
                 const x = util[filetype]
                 const uploadFile = () => {
-                    const buf = new Buffer((stream).toString('base64'), 'base64')
+                    const buf = Buffer.from((stream).toString('base64'), 'base64')
                     var params = {
                         Bucket: config["aws_bucket_name"],
                         Key: `crux/users/${payload.userid}/${x}.pdf`,

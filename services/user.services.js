@@ -18,9 +18,6 @@ module.exports = () => {
             });
           }
         });
-
-
-        // const response = await Masterdata.findOne({ user_id: payload.userid});
       } catch (error) {
         reject(error);
       }
