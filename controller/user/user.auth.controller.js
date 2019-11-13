@@ -2,22 +2,12 @@ const JWT = require('jsonwebtoken');
 const User = require('../../models/user/auth');
 const userServices = require('../../services/user.services.auth');
 require('../../validator/passport');
-const { JWT_SECRET } = require('../../config');
-signToken = (user) => {
-  return JWT.sign({
-    iss: 'Cool',
-    sub: user._id,
-    iat: new Date().getTime(),
-    exp: new Date().setTime(new Date().getTime() + 1200000),
-  },
-    JWT_SECRET
-  );
-};
+const {JWT_SECRET} = require('../../config');
 module.exports = {
   // SIGN UP
   signup: async (req, res, next) => {
-    const { email, password, companyname, userid } = req.value.body;
-    const foundUser = await User.findOne({ email });
+    const {email, password, companyname, userid} = req.value.body;
+    const foundUser = await User.findOne({email});
     if (foundUser) {
       res.status(200).send({
         status: '200 OK',
@@ -38,16 +28,23 @@ module.exports = {
       });
     }
     else {
-      const newUser = new User({ email, password, companyname, userid });
+      const newUser = new User({email, password, companyname, userid});
       await newUser.save();
-      const token = signToken(newUser);
+      const token = JWT.sign({
+        iss: 'steppingcloud',
+        sub: newUser._id,
+        jwtKey: 'mysecret',
+        algorithm: 'HS256',
+        iat: new Date().getTime(),
+        exp: new Date().setTime(new Date().getTime() + 900000),
+      },
+      JWT_SECRET);
       res.status(200).send({
         status: 200,
         result: {
           'token': token,
           'firstName': response.first_name_personal_information,
           'lastName': response.last_name_personal_information,
-
         },
       });
     }
