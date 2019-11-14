@@ -16,11 +16,11 @@ const event = new Schema({
     type: String,
   },
   date: {
-    type: Date,
+    type: String,
   },
   photo: {
-    type: String
-  }
+    type: String,
+  },
 });
 
 const eventSchema = mongoose.model('events', event);
