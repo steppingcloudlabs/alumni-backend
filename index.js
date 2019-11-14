@@ -9,14 +9,14 @@ mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 const config = require('./config/index');
 
-db = mongoose.connect('mongodb+srv://root:password@123@dev-i9qmj.mongodb.net/mydb?retryWrites=true&w=majority', { useNewUrlParser: true });
+db = mongoose.connect('mongodb://18.190.14.5:1000/titan', {useNewUrlParser: true});
 
 // middleware
 app.use(morgan('dev'));
-app.use(bodyParser.json({ limit: '200mb' }));
+app.use(bodyParser.json({limit: '200mb'}));
 
 // CORS Headers
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE,');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -51,3 +51,5 @@ app.use('/awsadmin', awsadminRoutes);
 app.listen(config['port'], () => {
   console.log(`Server listening on port: ${config['port']}`);
 });
+
+

@@ -5,17 +5,25 @@ module.exports = () => {
     try {
       const payload = req.body;
       const response = await userServices.userinfo(payload);
-      if (response.length == 0) {
+      if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
-          result: 'Error while getting user',
+          result: 'Token expired, Please Login Again',
         });
       }
       else {
-        res.status(200).send({
-          status: '200',
-          result: response,
-        });
+        if (response.length == 0) {
+          res.status(200).send({
+            status: '400',
+            result: 'Error while getting user',
+          });
+        }
+        else {
+          res.status(200).send({
+            status: '200',
+            result: response,
+          });
+        }
       }
     } catch (error) {
       next(error);
@@ -24,18 +32,25 @@ module.exports = () => {
   const userStatus = async (req, res, next) => {
     try {
       const payload = req.body;
-      const response = await userServices.userstatus({ payload });
-      // console.log(response)
-      if (response && response.length == 0) {
+      const response = await userServices.userstatus({payload});
+      if (response == 'tokenexpired') {
         res.status(200).send({
-          status: 400,
-          result: 'User doesn\'t exist',
+          status: '400',
+          result: 'Token expired, Please Login Again',
         });
-      } else {
-        res.status(200).send({
-          status: 200,
-          result: response,
-        });
+      }
+      else {
+        if (response && response.length == 0) {
+          res.status(200).send({
+            status: 400,
+            result: 'User doesn\'t exist',
+          });
+        } else {
+          res.status(200).send({
+            status: 200,
+            result: response,
+          });
+        }
       }
     } catch (error) {
       next(error);

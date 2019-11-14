@@ -1,5 +1,6 @@
 module.exports = () => {
-  let path = require('path');
+  const decodetoken = require('../utils/jwt.decode')();
+  const path = require('path');
   const eventSchema = require('../models/admin/event');
   const newsSchema = require('../models/admin/news');
   const config = require('../config/index');
@@ -15,20 +16,22 @@ module.exports = () => {
     secretAccessKey: config['aws_secret_key'],
     region: config['aws_region'],
   };
-
   AWS.config.update(config);
-
   // Create S3 service object
   s3 = new AWS.S3();
-
   const viewNews = ({payload}) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const {id, title, content, tags, date, author} = payload;
-        const _id = payload.id;
-        const foundNews = await newsSchema.findOne({_id});
-        resolve(foundNews);
-
+        const expirytimefromtoken = await decodetoken.decodejwt(payload.token);
+        if ((Date.now()) > expirytimefromtoken) {
+          resolve('tokenexpired');
+        }
+        else {
+          const {id, title, content, tags, date, author} = payload;
+          const _id = payload.id;
+          const foundNews = await newsSchema.findOne({_id});
+          resolve(foundNews);
+        }
       } catch (error) {
         reject(error);
       }
@@ -37,12 +40,16 @@ module.exports = () => {
   const viewallNews = ({payload}) => {
     return new Promise(async (resolve, reject) => {
       try {
-
+        const expirytimefromtoken = await decodetoken.decodejwt(payload.token);
+        if ((Date.now()) > expirytimefromtoken) {
+          resolve('tokenexpired');
+        }
+        else {
         const {skip, limit} = payload;
         const foundNews = await newsSchema.find().sort({date: -1}).skip(skip).limit(limit);
         // console.log(foundNews)
         resolve(foundNews);
-
+        }
       } catch (error) {
         reject(error);
       }
@@ -61,7 +68,7 @@ module.exports = () => {
           const ext = path.extname(fileName);
           const uploadFile = () => {
             const buf = Buffer.from((fileName).toString('base64'), 'base64');
-            let params = {
+            const params = {
               Bucket: config['aws_bucket_name2'],
               Key: `news/${payload.id}${ext}`,
               Body: buf,
@@ -82,9 +89,9 @@ module.exports = () => {
                 {
                   new: true,
                 });
-                                user.ok === 1
-                                    ? resolve(await newsSchema.findOne({_id}))
-                                    : resolve('Updation Failed, Please Check');
+                user.ok === 1
+                  ? resolve(await newsSchema.findOne({_id}))
+                  : resolve('Updation Failed, Please Check');
               }
             });
 
@@ -102,7 +109,7 @@ module.exports = () => {
           const ext = path.extname(fileName);
           const uploadFile = () => {
             const buf = Buffer.from((fileName).toString('base64'), 'base64');
-            let params = {
+            const params = {
               Bucket: config['aws_bucket_name2'],
               Key: `news/${response._id}${ext}`,
               Body: buf,
@@ -123,9 +130,9 @@ module.exports = () => {
                 {
                   new: true,
                 });
-                                user.ok === 1
-                                    ? resolve(await newsSchema.findOne({_id: response._id}))
-                                    : resolve('Updation Failed, Please Check');
+                user.ok === 1
+                  ? resolve(await newsSchema.findOne({_id: response._id}))
+                  : resolve('Updation Failed, Please Check');
               }
             });
 
@@ -154,12 +161,16 @@ module.exports = () => {
   const viewEvents = ({payload}) => {
     return new Promise(async (resolve, reject) => {
       try {
-
+        const expirytimefromtoken = await decodetoken.decodejwt(payload.token);
+        if ((Date.now()) > expirytimefromtoken) {
+          resolve('tokenexpired');
+        }
+        else {
         const {title, content, tags, date, author} = payload;
         const _id = payload.id;
         const foundevent = await eventSchema.findOne({_id});
         resolve(foundevent);
-
+        }
       } catch (error) {
         reject(error);
       }
@@ -168,13 +179,15 @@ module.exports = () => {
   const viewallEvents = ({payload}) => {
     return new Promise(async (resolve, reject) => {
       try {
-
+        const expirytimefromtoken = await decodetoken.decodejwt(payload.token);
+        if ((Date.now()) > expirytimefromtoken) {
+          resolve('tokenexpired');
+        }
+        else {
         const {skip, limit} = payload;
-
         const foundNews = await eventSchema.find({}).sort({date: -1}).skip(skip).limit(limit);
-
         resolve(foundNews);
-
+        }
       } catch (error) {
         reject(error);
       }
@@ -193,7 +206,7 @@ module.exports = () => {
           const ext = path.extname(fileName);
           const uploadFile = () => {
             const buf = Buffer.from((fileName).toString('base64'), 'base64');
-            let params = {
+            const params = {
               Bucket: config['aws_bucket_name2'],
               Key: `events/${payload.id}${ext}`,
               Body: buf,
@@ -213,9 +226,9 @@ module.exports = () => {
                 {
                   new: true,
                 });
-                                user.ok === 1
-                                    ? resolve(await eventSchema.findOne({_id}))
-                                    : resolve('Updation Failed, Please Check');
+                user.ok === 1
+                  ? resolve(await eventSchema.findOne({_id}))
+                  : resolve('Updation Failed, Please Check');
               }
             });
 
@@ -232,7 +245,7 @@ module.exports = () => {
           const ext = path.extname(fileName);
           const uploadFile = () => {
             const buf = Buffer.from((fileName).toString('base64'), 'base64');
-            let params = {
+            const params = {
               Bucket: config['aws_bucket_name2'],
               Key: `events/${response._id}${ext}`,
               Body: buf,
@@ -253,9 +266,9 @@ module.exports = () => {
                 {
                   new: true,
                 });
-                                user.ok === 1
-                                    ? resolve(await eventSchema.findOne({_id: response._id}))
-                                    : resolve('Updation Failed, Please Check');
+                user.ok === 1
+                  ? resolve(await eventSchema.findOne({_id: response._id}))
+                  : resolve('Updation Failed, Please Check');
               }
             });
 
@@ -281,14 +294,18 @@ module.exports = () => {
 
 
   const viewFaq = ({payload}) => {
-
     return new Promise(async (resolve, reject) => {
       try {
+        const expirytimefromtoken = await decodetoken.decodejwt(payload.token);
+        if ((Date.now()) > expirytimefromtoken) {
+          resolve('tokenexpired');
+        }
+        else {
         const {id, question, answer} = payload;
         const _id = payload.id;
         const foundFaq = await faqSchema.findOne({_id});
         resolve(foundFaq);
-
+        }
       } catch (error) {
         reject(error);
       }
@@ -297,13 +314,15 @@ module.exports = () => {
   const viewallFaq = ({payload}) => {
     return new Promise(async (resolve, reject) => {
       try {
-
+        const expirytimefromtoken = await decodetoken.decodejwt(payload.token);
+        if ((Date.now()) > expirytimefromtoken) {
+          resolve('tokenexpired');
+        }
+        else {
         const {skip, limit} = payload;
         const foundFaq = await faqSchema.find({}).skip(skip).limit(limit);
-
-
         resolve(foundFaq);
-
+        }
       } catch (error) {
         reject(error);
       }
@@ -358,10 +377,13 @@ module.exports = () => {
   const user = ({payload}) => {
     return new Promise(async (resolve, reject) => {
       try {
+        const expirytimefromtoken = await decodetoken.decodejwt(payload.token);
+        if ((Date.now()) > expirytimefromtoken) {
+          resolve('tokenexpired');
+        }
+        else {
         getDataFromMaster('masterdata', {user_id: parseInt(payload.userid)}, (err, response) => {
-
           if (response) {
-
             resolve(response);
           }
           else if (err) {
@@ -371,6 +393,7 @@ module.exports = () => {
             });
           }
         });
+      }
       } catch (error) {
         reject(error);
       }
@@ -500,7 +523,7 @@ module.exports = () => {
         const x = util[filetype];
         const uploadFile = () => {
           const buf = Buffer.from((stream).toString('base64'), 'base64');
-          let params = {
+          const params = {
             Bucket: config['aws_bucket_name'],
             Key: `crux/users/${payload.userid}/${x}.pdf`,
             Body: buf,
@@ -518,14 +541,11 @@ module.exports = () => {
 
             if (user) {
               user = await user.updateOne({$set: updatedJson}, {new: true});
-                            user.ok === 1
-                                ? resolve(buf)
-                                : resolve('failed');
+              user.ok === 1
+                ? resolve(buf)
+                : resolve('failed');
             }
-
-
           });
-
         };
 
         uploadFile();
@@ -539,14 +559,18 @@ module.exports = () => {
   const viewdocument = ({payload}) => {
     return new Promise(async (resolve, reject) => {
       try {
+        const expirytimefromtoken = await decodetoken.decodejwt(payload.token);
+        if ((Date.now()) > expirytimefromtoken) {
+          resolve('tokenexpired');
+        }
+        else {
         const filename = payload.filename;
         const x = util[filename];
-        const userId = parseInt(payload.userid);
-        const user_id = parseInt(payload.userid);
+        const user_id = (payload.userid);
         if (await masterdata.findOne({user_id})) {
           const url = s3.getSignedUrl('getObject', {
             Bucket: config['aws_bucket_name'],
-            Key: `crux/users/${userId}/${x}.pdf`,
+            Key: `crux/users/${user_id}/${x}.pdf`,
             Expires: 60 * 5,
           });
 
@@ -556,7 +580,7 @@ module.exports = () => {
         else {
           resolve('notfounduser');
         }
-
+      }
 
       }
       catch (error) {
@@ -612,7 +636,6 @@ module.exports = () => {
       }
     });
   };
-
 
 
   return {

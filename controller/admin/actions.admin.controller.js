@@ -27,180 +27,225 @@ module.exports = {
       privatekey,
     });
     await newCompany.save();
-    res.status(200).send({ Status: "Company Added Successfully" });
+    res.status(200).send({Status: 'Company Added Successfully'});
   },
-  // News Controller
+  // News Controllers
   viewNews: async (req, res) => {
     payload = req.body;
-    const response = await AdminActionSerivce.viewNews({ payload })
-    res.status(200).json({
-      status: 200,
-      result: response
-    });
-  },
-  viewallNews: async (req, res) => {
-    payload = req.body;
-    const response = await AdminActionSerivce.viewallNews({ payload })
-    res.status(200).send({
-      status: 200,
-      "result": response
-    });
-  },
-  updateNews: async (req, res) => {
-    payload = req.body;
-    const response = await AdminActionSerivce.updateNews({ payload })
-    res.status(200).send({
-      status: 200,
-      "result": response
-    });
-  },
-  deleteNews: async (req, res) => {
-    payload = req.body;
-    const response = await AdminActionSerivce.deleteNews({ payload })
-    if (response) {
+    const response = await AdminActionSerivce.viewNews({payload});
+    if (response == 'tokenexpired') {
       res.status(200).send({
-        status: 200,
-        result: "News Deleted"
-
-      });
-    }
-  },
-
-  //Event Controller
-  viewEvents: async (req, res) => {
-    payload = req.body;
-    const response = await AdminActionSerivce.viewEvents({ payload })
-    res.status(200).json({
-      status: 200,
-      result: response
-    });
-  },
-  viewallEvents: async (req, res) => {
-    payload = req.body;
-    const response = await AdminActionSerivce.viewallEvents({ payload })
-    res.status(200).json({
-      status: 200,
-      result: response
-    });
-  },
-  updateEvents: async (req, res) => {
-    payload = req.body;
-    const response = await AdminActionSerivce.updateEvents({ payload })
-    res.status(200).send({
-      "status:": 200,
-      "result": response
-    });
-  },
-  deleteEvents: async (req, res) => {
-    payload = req.body;
-    const response = await AdminActionSerivce.deleteEvents({ payload })
-    if (response) {
-      res.status(200).send({
-        status: 200,
-        result: "Event Deleted",
-
-      });
-    }
-  },
-
-
-  viewFaq: async (req, res) => {
-    payload = req.body;
-    const response = await AdminActionSerivce.viewFaq({ payload })
-    res.status(200).json({
-      status: 200,
-      result: response
-    }
-    );
-  },
-  viewallFaq: async (req, res) => {
-    payload = req.body;
-    const response = await AdminActionSerivce.viewallFaq({ payload })
-    res.status(200).json({
-      status: 200,
-      result: response
-    });
-  },
-  updatefaq: async (req, res) => {
-    payload = req.body;
-    const response = await AdminActionSerivce.updatefaq({ payload })
-    res.status(200).send({
-      "status": 200,
-      "result": response
-    });
-  },
-  deleteFaq: async (req, res) => {
-    payload = req.body;
-    const response = await AdminActionSerivce.deleteFaq({ payload })
-    if (response) {
-      res.status(200).send({
-        status: 200,
-        result: "FAQ Deleted"
-      });
-    }
-  },
-
-  //alumni Controller
-  createalumni: async (req, res) => {
-    payload = req.body;
-    const response = await AdminActionSerivce.createalumni({ payload })
-    if (response == 'founduser') {
-      res.status(200).json({
-        "status": 400,
-        "result": "User Id already exists"
+        status: '400',
+        result: 'Token expired, Please Login Again',
       });
     }
     else {
       res.status(200).json({
         status: 200,
-        "result": response
+        result: response,
+      });
+    }
+  },
+  viewallNews: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.viewallNews({payload});
+    if (response == 'tokenexpired') {
+      res.status(200).send({
+        status: '400',
+        result: 'Token expired, Please Login Again',
+      });
+    }
+    else {
+      res.status(200).send({
+        'status': 200,
+        'result': response,
+      });
+    }
+  },
+  updateNews: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.updateNews({payload});
+    res.status(200).send({
+      'status': 200,
+      'result': response,
+    });
+  },
+  deleteNews: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.deleteNews({payload});
+    if (response) {
+      res.status(200).send({
+        status: 200,
+        result: 'News Deleted',
+
+      });
+    }
+  },
+
+  // Event Controller
+  viewEvents: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.viewEvents({payload});
+    if (response == 'tokenexpired') {
+      res.status(200).send({
+        status: '400',
+        result: 'Token expired, Please Login Again',
+      });
+    }
+    else {
+      res.status(200).json({
+        status: 200,
+        result: response,
+      });
+    }
+  },
+  viewallEvents: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.viewallEvents({payload});
+    if (response == 'tokenexpired') {
+      res.status(200).send({
+        status: '400',
+        result: 'Token expired, Please Login Again',
+      });
+    }
+    else {
+      res.status(200).json({
+        status: 200,
+        result: response,
+      });
+    }
+  },
+  updateEvents: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.updateEvents({payload});
+    res.status(200).send({
+      'status:': 200,
+      'result': response,
+    });
+  },
+  deleteEvents: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.deleteEvents({payload});
+    if (response) {
+      res.status(200).send({
+        status: 200,
+        result: 'Event Deleted',
+
+      });
+    }
+  },
+  viewFaq: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.viewFaq({payload});
+    if (response == 'tokenexpired') {
+      res.status(200).send({
+        status: '400',
+        result: 'Token expired, Please Login Again',
+      });
+    }
+    else {
+      res.status(200).json({
+        status: 200,
+        result: response,
+      });
+    }
+  },
+  viewallFaq: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.viewallFaq({payload});
+    if (response == 'tokenexpired') {
+      res.status(200).send({
+        status: '400',
+        result: 'Token expired, Please Login Again',
+      });
+    }
+    else {
+      res.status(200).json({
+        status: 200,
+        result: response,
+      });
+    }
+  },
+  updatefaq: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.updatefaq({payload});
+    res.status(200).send({
+      'status': 200,
+      'result': response,
+    });
+  },
+  deleteFaq: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.deleteFaq({payload});
+    if (response) {
+      res.status(200).send({
+        status: 200,
+        result: 'FAQ Deleted',
+      });
+    }
+  },
+
+  // alumni Controller
+  createalumni: async (req, res) => {
+    payload = req.body;
+    const response = await AdminActionSerivce.createalumni({payload});
+    if (response == 'founduser') {
+      res.status(200).json({
+        'status': 400,
+        'result': 'User Id already exists',
+      });
+    }
+    else {
+      res.status(200).json({
+        'status': 200,
+        'result': response,
       });
     }
   },
   viewalumni: async (req, res) => {
     payload = req.body;
-    const response = await AdminActionSerivce.viewalumni({ payload })
+    const response = await AdminActionSerivce.viewalumni({payload});
     if (response == null) {
       res.status(200).send({
         status: 400,
-        result: "User doesn't exist"
+        result: 'User doesn\'t exist',
       });
     }
     else {
       res.status(200).json({
         status: 200,
-        result: response
+        result: response,
       });
     }
   },
   allalumni: async (req, res) => {
     payload = req.body;
-    const response = await AdminActionSerivce.allalumni({})
+    const response = await AdminActionSerivce.allalumni({});
     res.status(200).json({
       status: 200,
-      result: response
+      result: response,
     });
   },
 
   deletealumni: async (req, res) => {
     payload = req.body;
-    const response = await AdminActionSerivce.deletealumni({ payload })
+    const response = await AdminActionSerivce.deletealumni({payload});
     if (response) {
       res.status(200).send({
         status: 200,
-        result: "Alumni Information Deleted",
+        result: 'Alumni Information Deleted',
       });
     }
     else {
       res.status(200).send({
         status: 400,
-        result: "Error while deleting",
+        result: 'Error while deleting',
       });
     }
   },
   updatealumni: async (req, res) => {
     payload = req.body;
-    const response = await AdminActionSerivce.updatealumni({ payload });
+    const response = await AdminActionSerivce.updatealumni({payload});
     if (response == null) {
       res.status(200).send({
         status: 400,
@@ -215,8 +260,7 @@ module.exports = {
   },
 
 
-
-  //AWS Upload; Mass Upload of User Data
+  // AWS Upload; Mass Upload of User Data
   userupload: async (req, res, next) => {
     const response = await AdminActionSerivce.userupload();
     res.status(200).send({
@@ -225,10 +269,10 @@ module.exports = {
 
     });
   },
-  //AWS Document Upload
+  // AWS Document Upload
   documentupload: async (req, res, next) => {
     payload = req.body;
-    const response = await AdminActionSerivce.documentupload({ payload });
+    const response = await AdminActionSerivce.documentupload({payload});
     if (response) {
       res.status(200).send({
         status: '200',
@@ -244,26 +288,34 @@ module.exports = {
     }
   },
 
-  //Signed URL for AWS
+  // Signed URL for AWS
   viewdocument: async (req, res, next) => {
     payload = req.body;
-    const response = await AdminActionSerivce.viewdocument({ payload });
-    if (response == 'notfounduser') {
+    const response = await AdminActionSerivce.viewdocument({payload});
+    if (response == 'tokenexpired') {
       res.status(200).send({
         status: '400',
-        result: 'User Doesnot Exist',
-
+        result: 'Token expired, Please Login Again',
       });
-    } else {
-      res.status(200).send({
-        status: '200',
-        result: response,
+    }
+    else {
+      if (response == 'notfounduser') {
+        res.status(200).send({
+          status: '400',
+          result: 'User Doesnot Exist',
 
-      });
+        });
+      } else {
+        res.status(200).send({
+          status: '200',
+          result: response,
+
+        });
+      }
     }
   },
 
-  //ASK HR
+  // ASK HR
   askHr: async (req, res, next) => {
     try {
       const payload = req.body;
@@ -282,6 +334,6 @@ module.exports = {
     } catch (error) {
       next(error);
     }
-  }
+  },
 
 };

@@ -30,28 +30,18 @@ module.exports = {
     else {
       const newUser = new User({email, password, companyname, userid});
       await newUser.save();
-      const token = JWT.sign({
-        iss: 'steppingcloud',
-        sub: newUser._id,
-        jwtKey: 'mysecret',
-        algorithm: 'HS256',
-        iat: new Date().getTime(),
-        exp: new Date().setTime(new Date().getTime() + 900000),
-      },
-      JWT_SECRET);
       res.status(200).send({
         status: 200,
         result: {
-          'token': token,
           'firstName': response.first_name_personal_information,
           'lastName': response.last_name_personal_information,
         },
       });
     }
   },
-
   // SIGN IN
   signin: async (req, res, next) => {
+
     if (req.user.message == 'Incorrect username') {
       res.status(200).send({
         status: '401',
@@ -64,13 +54,22 @@ module.exports = {
       });
     } else {
       const response = await userServices.usersignin(req.user.userid);
+      const token = JWT.sign({
+        iss: 'steppingcloud',
+        sub: req.user.userid,
+        jwtKey: 'mysecret',
+        algorithm: 'HS256',
+        iat: new Date().getTime(),
+        exp: new Date().setTime(new Date().getTime() + 900000),
+      },
+      JWT_SECRET);
+
       res.status(200).send({
         status: 200,
         result: response,
+        token: token,
 
       });
     }
-    // console.log('req.user:',req.user);
-
   },
 };
