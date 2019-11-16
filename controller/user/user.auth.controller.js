@@ -55,9 +55,9 @@ module.exports = {
     } else {
       const response = await userServices.usersignin(req.user.userid);
       const token = JWT.sign({
-        iss: 'steppingcloud',
+        iss: 'steppingcloudforuser',
         sub: req.user.userid,
-        jwtKey: 'mysecret',
+        jwtKey: 'steppingcloudsecret',
         algorithm: 'HS256',
         iat: new Date().getTime(),
         exp: new Date().setTime(new Date().getTime() + 900000),
