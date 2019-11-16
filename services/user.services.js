@@ -3,10 +3,10 @@ const config = require('../config/index');
 module.exports = () => {
   const {getDataFromMaster, getDataFromPersonalStatus} = require('../models/user/action');
   const decodetoken = require('../utils/jwt.decode')();
-  const userinfo = (payload) => {
+  const userinfo = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const expirytimefromtoken = await decodetoken.decodejwt(payload.token);
+        const expirytimefromtoken = await decodetoken.decodejwt(token);
         if ((Date.now()) > expirytimefromtoken) {
           resolve('tokenexpired');
         }
@@ -28,10 +28,10 @@ module.exports = () => {
       }
     });
   };
-  const userstatus = ({payload}) => {
+  const userstatus = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const expirytimefromtoken = await decodetoken.decodejwt(payload.token);
+        const expirytimefromtoken = await decodetoken.decodejwt(token);
         if ((Date.now()) > expirytimefromtoken) {
           resolve('tokenexpired');
         }
