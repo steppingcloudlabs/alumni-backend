@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.541.0",
+    "aws-sdk": "^2.573.0",
     "axios": "^0.19.0",
     "bcryptjs": "^2.4.3",
     "bunyan": "^1.8.12",
@@ -27,6 +27,7 @@
     "mongoose": "^5.6.9",
     "mongoose-type-url": "^1.0.6",
     "morgan": "^1.9.1",
+    "node-ses": "^2.2.1",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0"

@@ -7,7 +7,7 @@ module.exports = () => {
   const personalinformation = require('../models/user/personal');
   const faqSchema = require('../models/admin/faq');
   const masterdata = require('../models/admin/masterdata');
-  const { getDataFromMaster } = require('../models/user/action');
+  const {getDataFromMaster} = require('../models/user/action');
   const fs = require('fs');
   const util = require('../utils/index');
   const AWS = require('aws-sdk');
@@ -20,7 +20,7 @@ module.exports = () => {
   // Create S3 service object
   s3 = new AWS.S3();
 
-  const viewNews = ({ payload, token }) => {
+  const viewNews = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
@@ -29,7 +29,7 @@ module.exports = () => {
         }
         else {
           const _id = payload.id;
-          const foundNews = await newsSchema.findOne({ _id });
+          const foundNews = await newsSchema.findOne({_id});
           resolve(foundNews);
         }
       } catch (error) {
@@ -37,7 +37,7 @@ module.exports = () => {
       }
     });
   };
-  const viewallNews = ({ payload, token }) => {
+  const viewallNews = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
@@ -45,8 +45,8 @@ module.exports = () => {
           resolve('tokenexpired');
         }
         else {
-          const { skip, limit } = payload;
-          const foundNews = await newsSchema.find().sort({ date: -1 }).skip(skip).limit(limit);
+          const {skip, limit} = payload;
+          const foundNews = await newsSchema.find().sort({date: -1}).skip(skip).limit(limit);
           // console.log(foundNews)
           resolve(foundNews);
         }
@@ -56,7 +56,7 @@ module.exports = () => {
     });
   };
   // update news and post if new id is given
-  const updateNews = ({ payload, token }) => {
+  const updateNews = ({payload, token}) => {
     return new Promise(async (resolve, reject, error) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
@@ -68,7 +68,7 @@ module.exports = () => {
           // if id present, update news section
           if (_id) {
 
-            await newsSchema.findOneAndUpdate({ _id }, { $set: payload }, { multi: true });
+            await newsSchema.findOneAndUpdate({_id}, {$set: payload}, {multi: true});
             const fileName = payload.photo;
             const ext = path.extname(fileName);
             const uploadFile = () => {
@@ -91,11 +91,11 @@ module.exports = () => {
                   user = await user.updateOne({
                     photo: data.Location,
                   },
-                    {
-                      new: true,
-                    });
+                  {
+                    new: true,
+                  });
                   user.ok === 1
-                    ? resolve(await newsSchema.findOne({ _id }))
+                    ? resolve(await newsSchema.findOne({_id}))
                     : resolve('Updation Failed, Please Check');
                 }
               });
@@ -107,8 +107,8 @@ module.exports = () => {
 
           // if id not present, save the data to news section
           else {
-            const { title, content, tags, date, author, photo } = payload;
-            const news = new newsSchema({ title, content, tags, date, author, photo });
+            const {title, content, tags, date, author, photo} = payload;
+            const news = new newsSchema({title, content, tags, date, author, photo});
             const response = await news.save();
             const fileName = payload.photo;
             const ext = path.extname(fileName);
@@ -132,11 +132,11 @@ module.exports = () => {
                   user = await user.updateOne({
                     photo: data.Location,
                   },
-                    {
-                      new: true,
-                    });
+                  {
+                    new: true,
+                  });
                   user.ok === 1
-                    ? resolve(await newsSchema.findOne({ _id: response._id }))
+                    ? resolve(await newsSchema.findOne({_id: response._id}))
                     : resolve('Updation Failed, Please Check');
                 }
               });
@@ -152,7 +152,7 @@ module.exports = () => {
       }
     });
   };
-  const deleteNews = ({ payload, token }) => {
+  const deleteNews = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
@@ -160,7 +160,7 @@ module.exports = () => {
           resolve('tokenexpired');
         }
         else {
-          const deletedNews = await newsSchema.deleteOne({ _id: payload.id });
+          const deletedNews = await newsSchema.deleteOne({_id: payload.id});
           resolve(deletedNews);
         }
       } catch (error) {
@@ -169,7 +169,7 @@ module.exports = () => {
     });
   };
 
-  const viewEvents = ({ payload, token }) => {
+  const viewEvents = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
@@ -177,9 +177,9 @@ module.exports = () => {
           resolve('tokenexpired');
         }
         else {
-          const { title, content, tags, date, author } = payload;
+          const {title, content, tags, date, author} = payload;
           const _id = payload.id;
-          const foundevent = await eventSchema.findOne({ _id });
+          const foundevent = await eventSchema.findOne({_id});
           resolve(foundevent);
         }
       } catch (error) {
@@ -187,7 +187,7 @@ module.exports = () => {
       }
     });
   };
-  const viewallEvents = ({ payload, token }) => {
+  const viewallEvents = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
@@ -195,8 +195,8 @@ module.exports = () => {
           resolve('tokenexpired');
         }
         else {
-          const { skip, limit } = payload;
-          const foundNews = await eventSchema.find({}).sort({ date: -1 }).skip(skip).limit(limit);
+          const {skip, limit} = payload;
+          const foundNews = await eventSchema.find({}).sort({date: -1}).skip(skip).limit(limit);
           resolve(foundNews);
         }
       } catch (error) {
@@ -205,7 +205,7 @@ module.exports = () => {
     });
   };
 
-  const updateEvents = ({ payload, token }) => {
+  const updateEvents = ({payload, token}) => {
     return new Promise(async (resolve, reject, error) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
@@ -217,7 +217,7 @@ module.exports = () => {
           // if id present, update events section
           if (_id) {
 
-            await eventSchema.findOneAndUpdate({ _id }, { $set: payload }, { multi: true });
+            await eventSchema.findOneAndUpdate({_id}, {$set: payload}, {multi: true});
             const fileName = payload.photo;
             const ext = path.extname(fileName);
             const uploadFile = () => {
@@ -239,11 +239,11 @@ module.exports = () => {
                   user = await user.updateOne({
                     photo: data.Location,
                   },
-                    {
-                      new: true,
-                    });
+                  {
+                    new: true,
+                  });
                   user.ok === 1
-                    ? resolve(await eventSchema.findOne({ _id }))
+                    ? resolve(await eventSchema.findOne({_id}))
                     : resolve('Updation Failed, Please Check');
                 }
               });
@@ -254,8 +254,8 @@ module.exports = () => {
 
           // if id not present, save the data to news section
           else {
-            const { title, content, tags, date, author, photo } = payload;
-            const events = new eventSchema({ title, content, tags, date, author, photo });
+            const {title, content, tags, date, author, photo} = payload;
+            const events = new eventSchema({title, content, tags, date, author, photo});
             const response = await events.save();
             const fileName = payload.photo;
             const ext = path.extname(fileName);
@@ -279,11 +279,11 @@ module.exports = () => {
                   user = await user.updateOne({
                     photo: data.Location,
                   },
-                    {
-                      new: true,
-                    });
+                  {
+                    new: true,
+                  });
                   user.ok === 1
-                    ? resolve(await eventSchema.findOne({ _id: response._id }))
+                    ? resolve(await eventSchema.findOne({_id: response._id}))
                     : resolve('Updation Failed, Please Check');
                 }
               });
@@ -297,7 +297,7 @@ module.exports = () => {
       }
     });
   };
-  const deleteEvents = ({ payload, token }) => {
+  const deleteEvents = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
@@ -305,7 +305,7 @@ module.exports = () => {
           resolve('tokenexpired');
         }
         else {
-          const deletedNews = await eventSchema.remove({ _id: payload.id });
+          const deletedNews = await eventSchema.remove({_id: payload.id});
           resolve(deletedNews);
         }
       } catch (error) {
@@ -315,7 +315,7 @@ module.exports = () => {
   };
 
 
-  const viewFaq = ({ payload, token }) => {
+  const viewFaq = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
@@ -323,9 +323,9 @@ module.exports = () => {
           resolve('tokenexpired');
         }
         else {
-          const { id, question, answer } = payload;
+          const {id, question, answer} = payload;
           const _id = payload.id;
-          const foundFaq = await faqSchema.findOne({ _id });
+          const foundFaq = await faqSchema.findOne({_id});
           resolve(foundFaq);
         }
       } catch (error) {
@@ -333,7 +333,7 @@ module.exports = () => {
       }
     });
   };
-  const viewallFaq = ({ payload, token }) => {
+  const viewallFaq = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
@@ -341,7 +341,7 @@ module.exports = () => {
           resolve('tokenexpired');
         }
         else {
-          const { skip, limit } = payload;
+          const {skip, limit} = payload;
           const foundFaq = await faqSchema.find({}).skip(skip).limit(limit);
           resolve(foundFaq);
         }
@@ -351,7 +351,7 @@ module.exports = () => {
     });
   };
 
-  const updatefaq = ({ payload, token }) => {
+  const updatefaq = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
@@ -363,14 +363,14 @@ module.exports = () => {
           // if id present, update news section
           if (_id) {
             // no such record with id present then save the new record
-            if (await faqSchema.findOne({ _id }) == null) {
-              const { question, answer } = payload;
-              const faqs = new faqSchema({ question, answer });
+            if (await faqSchema.findOne({_id}) == null) {
+              const {question, answer} = payload;
+              const faqs = new faqSchema({question, answer});
               await faqs.save();
               resolve(payload);
             }
             else {
-              await faqSchema.findOneAndUpdate({ _id }, { $set: payload }, { multi: true });
+              await faqSchema.findOneAndUpdate({_id}, {$set: payload}, {multi: true});
 
               resolve(payload);
 
@@ -378,8 +378,8 @@ module.exports = () => {
           }
           // if id not present, save the data to events section
           else {
-            const { question, answer } = payload;
-            const faqs = new faqSchema({ question, answer });
+            const {question, answer} = payload;
+            const faqs = new faqSchema({question, answer});
             const response = await faqs.save();
             resolve(response);
           }
@@ -389,7 +389,7 @@ module.exports = () => {
       }
     });
   };
-  const deleteFaq = ({ payload, token }) => {
+  const deleteFaq = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
@@ -397,7 +397,7 @@ module.exports = () => {
           resolve('tokenexpired');
         }
         else {
-          const deletedFaq = await faqSchema.remove({ _id: payload.id });
+          const deletedFaq = await faqSchema.remove({_id: payload.id});
 
           resolve(deletedFaq);
         }
@@ -407,7 +407,7 @@ module.exports = () => {
     });
   };
 
-  const user = ({ payload, token }) => {
+  const user = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
@@ -415,7 +415,7 @@ module.exports = () => {
           resolve('tokenexpired');
         }
         else {
-          getDataFromMaster('masterdata', { user_id: parseInt(payload.userid) }, (err, response) => {
+          getDataFromMaster('masterdata', {user_id: parseInt(payload.userid)}, (err, response) => {
             if (response) {
               resolve(response);
             }
@@ -432,7 +432,7 @@ module.exports = () => {
       }
     });
   };
-  const createalumni = ({ payload, token }) => {
+  const createalumni = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
@@ -440,12 +440,12 @@ module.exports = () => {
           resolve('tokenexpired');
         }
         else {
-          if (await masterdata.findOne({ user_id: payload.user_id })) {
+          if (await masterdata.findOne({user_id: payload.user_id})) {
             resolve('founduser');
           }
           else {
-            const { relieving_date, user_id, date_of_resignation, last_working_day_as_per_notice_period, personal_email_id, first_name_personal_information, last_name_personal_information, middle_name_personal_information, nationality_personal_information, salutation_personal_information, city_addresses, phone_number_phone_information, manager_job_information, designation_job_information, skill } = payload;
-            const master = new masterdata({ relieving_date, user_id, date_of_resignation, last_working_day_as_per_notice_period, personal_email_id, first_name_personal_information, last_name_personal_information, middle_name_personal_information, nationality_personal_information, salutation_personal_information, city_addresses, phone_number_phone_information, manager_job_information, designation_job_information, skill });
+            const {relieving_date, user_id, date_of_resignation, last_working_day_as_per_notice_period, personal_email_id, first_name_personal_information, last_name_personal_information, middle_name_personal_information, nationality_personal_information, salutation_personal_information, city_addresses, phone_number_phone_information, manager_job_information, designation_job_information, skill} = payload;
+            const master = new masterdata({relieving_date, user_id, date_of_resignation, last_working_day_as_per_notice_period, personal_email_id, first_name_personal_information, last_name_personal_information, middle_name_personal_information, nationality_personal_information, salutation_personal_information, city_addresses, phone_number_phone_information, manager_job_information, designation_job_information, skill});
             const response = await master.save();
             // console.log(response)
             await personalinformation.insertMany({
@@ -466,7 +466,7 @@ module.exports = () => {
       }
     });
   };
-  const viewalumni = ({ payload, token }) => {
+  const viewalumni = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
@@ -475,7 +475,7 @@ module.exports = () => {
         }
         else {
           const user_id = (payload.userid);
-          const foundalumni = await masterdata.findOne({ user_id });
+          const foundalumni = await masterdata.findOne({user_id});
 
           resolve(foundalumni);
         }
@@ -484,7 +484,7 @@ module.exports = () => {
       }
     });
   };
-  const allalumni = ({ payload, token }) => {
+  const allalumni = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
@@ -492,10 +492,10 @@ module.exports = () => {
           resolve('tokenexpired');
         }
         else {
-          const { skip, limit, keyword } = payload;
+          const {skip, limit, keyword} = payload;
 
           if (keyword) {
-            const foundalumni = await masterdata.find({ $text: { $search: keyword } }).skip(skip).limit(limit);
+            const foundalumni = await masterdata.find({$text: {$search: keyword}}).skip(skip).limit(limit);
             resolve(foundalumni);
 
           }
@@ -511,7 +511,7 @@ module.exports = () => {
     });
   };
 
-  const updatealumni = ({ payload, token }) => {
+  const updatealumni = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
@@ -520,7 +520,7 @@ module.exports = () => {
         }
         else {
           const user_id = (payload.user_id);
-          const updatealumni = await masterdata.findOneAndUpdate({ user_id }, { $set: payload }, { multi: true });
+          const updatealumni = await masterdata.findOneAndUpdate({user_id}, {$set: payload}, {multi: true});
 
           resolve(updatealumni);
         }
@@ -529,7 +529,7 @@ module.exports = () => {
       }
     });
   };
-  const deletealumni = ({ payload, token }) => {
+  const deletealumni = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
@@ -537,8 +537,8 @@ module.exports = () => {
           resolve('tokenexpired');
         }
         else {
-          const deleted = await masterdata.remove({ user_id: payload.userid });
-          await personalinformation.remove({ userId: payload.userid });
+          const deleted = await masterdata.remove({user_id: payload.userid});
+          await personalinformation.remove({userId: payload.userid});
           resolve(deleted);
         }
       } catch (error) {
@@ -547,7 +547,7 @@ module.exports = () => {
     });
   };
 
-  const documentupload = ({ payload, token }) => {
+  const documentupload = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
@@ -577,7 +577,7 @@ module.exports = () => {
               updatedJson[x] = 'Available';
 
               if (user) {
-                user = await user.updateOne({ $set: updatedJson }, { new: true });
+                user = await user.updateOne({$set: updatedJson}, {new: true});
                 user.ok === 1
                   ? resolve(buf)
                   : resolve('failed');
@@ -593,7 +593,7 @@ module.exports = () => {
       }
     });
   };
-  const viewdocument = ({ payload, token }) => {
+  const viewdocument = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
@@ -604,7 +604,7 @@ module.exports = () => {
           const filename = payload.filename;
           const x = util[filename];
           const user_id = (payload.userid);
-          if (await masterdata.findOne({ user_id })) {
+          if (await masterdata.findOne({user_id})) {
             const url = s3.getSignedUrl('getObject', {
               Bucket: config['aws_bucket_name'],
               Key: `crux/users/${user_id}/${x}.pdf`,
@@ -625,7 +625,7 @@ module.exports = () => {
       }
     });
   };
-  const askHr = ({ payload, token }) => {
+  const askHr = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
@@ -633,7 +633,7 @@ module.exports = () => {
           resolve('tokenexpired');
         }
         else {
-          const { subject, body } = payload;
+          const {subject, body} = payload;
           console.log(payload);
           const params = {
             Source: config['from_adderess'],
@@ -662,15 +662,15 @@ module.exports = () => {
 
 
           // Create the promise and SES service object
-          const sendPromise = new AWS.SES({ apiVersion: '2010-12-01' })
-            .sendEmail(params).promise();
+          const sendPromise = new AWS.SES({apiVersion: '2010-12-01'})
+              .sendEmail(params).promise();
 
           // Handle promise's fulfilled/rejected states
           sendPromise.then(
-            function (data) {
-              resolve(data);
-            }).catch(
-              function (err) {
+              function(data) {
+                resolve(data);
+              }).catch(
+              function(err) {
                 reject(err.stack);
               });
         }
