@@ -634,7 +634,6 @@ module.exports = () => {
         }
         else {
           const {subject, body} = payload;
-          console.log(payload);
           const params = {
             Source: config['from_adderess'],
             Destination: {
