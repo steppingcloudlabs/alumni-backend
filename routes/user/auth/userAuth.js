@@ -23,5 +23,9 @@ router
         passport.authenticate('user-local', {session: false}),
         UserController.signin
     );
+router
+    .route('/forgetpassword')
+    .post((req, res, next) => UserController.forgetpassword(req, res, next));
+
 
 module.exports = router;
