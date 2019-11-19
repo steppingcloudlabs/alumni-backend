@@ -18,11 +18,9 @@ router
 
 router
     .route('/signin')
-    .post(
-        signinValidateBody(signinSchemas.authSchema),
+    .post(signinValidateBody(signinSchemas.authSchema),
         passport.authenticate('user-local', {session: false}),
-        UserController.signin
-    );
+        UserController.signin);
 router
     .route('/forgetpassword')
     .post((req, res, next) => UserController.forgetpassword(req, res, next));

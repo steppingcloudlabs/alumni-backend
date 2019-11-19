@@ -72,7 +72,6 @@ module.exports = {
       });
     }
   },
-
   forgetpassword: async (req, res, next) => {
     try {
       const {payload, token} = req.body;

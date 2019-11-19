@@ -55,6 +55,7 @@ module.exports = {
             exp: new Date().setTime(new Date().getTime() + 900000),
           },
           JWT_SECRET);
+          // email sent and sending the token to reset the token
           const params = {
             Source: config['from_adderess'],
             Destination: {
@@ -114,22 +115,23 @@ module.exports = {
             resolve('ResetTokenExpired');
           }
           else {
+            // the payload body contains new password to be reset
             const salt = await bcrypt.genSalt(10);
             const passwordHash = await bcrypt.hash(payloadbody.newpassword, salt);
             let [finduser] = await users.find({
               'email': decoderesettoken.sub,
             });
-
             if (finduser) {
               finduser = await finduser.updateOne({
                 password: passwordHash,
-                updatedAt: Date.now(),
+                updatedAt: Date(Date.now()).toString(),
               },
               {
                 new: true,
               });
             }
             if (finduser.ok === 1) {
+              // trigger mail to user about successful resetting of password
               const params = {
                 Source: config['from_adderess'],
                 Destination: {
