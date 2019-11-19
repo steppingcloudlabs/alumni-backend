@@ -1,4 +1,5 @@
 const masterdata = require('../models/admin/masterdata');
+const bcrypt = require('bcryptjs');
 const JWT = require('jsonwebtoken');
 const users = require('../models/user/auth');
 const decodetoken = require('../utils/jwt.decode')();
@@ -44,6 +45,7 @@ module.exports = {
           resolve('tokenexpired');
         }
         else {
+          // creating a token for password reset based on its email
           const token = JWT.sign({
             iss: 'steppingcloudforpasswordreset',
             sub: payload.email,
@@ -70,8 +72,9 @@ module.exports = {
                   Charset: 'UTF-8',
                   Data: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
                     'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-                    'http://localhost:4000/reset/' + token + '\n\n' +
-                    'If you did not request this, please ignore this email and your password will remain unchanged.\n',
+                    'http://localhost:4000/user/reset/' + token + '\n\n' +
+                    'If you did not request this, please ignore this email and your password will remain unchanged.\n' +
+                    'Please note that the token will get expired in 24hrs',
                 },
               },
               Subject: {
@@ -86,11 +89,87 @@ module.exports = {
           // Handle promise's fulfilled/rejected states
           sendPromise.then(
               function(data) {
-                resolve(data);
+                resolve('tokensent');
               }).catch(
               function(err) {
                 reject(err.stack);
               });
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+  resetpassword: async ({payload, token, payloadbody}) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        // the payload contains the reset token; and the other token named token is the token for accessing the activities
+        const expirytimefromtoken = await decodetoken.decodejwt(token);
+        if ((Date.now()) > expirytimefromtoken) {
+          resolve('tokenexpired');
+        }
+        else {
+          const decoderesettoken = JWT.verify(payload.token, JWT_SECRET);
+          if ((Date.now()) > decoderesettoken.exp) {
+            resolve('ResetTokenExpired');
+          }
+          else {
+            const salt = await bcrypt.genSalt(10);
+            const passwordHash = await bcrypt.hash(payloadbody.newpassword, salt);
+            let [finduser] = await users.find({
+              'email': decoderesettoken.sub,
+            });
+
+            if (finduser) {
+              finduser = await finduser.updateOne({
+                password: passwordHash,
+                updatedAt: Date.now(),
+              },
+              {
+                new: true,
+              });
+            }
+            if (finduser.ok === 1) {
+              const params = {
+                Source: config['from_adderess'],
+                Destination: {
+                  ToAddresses: [
+                    decoderesettoken.sub,
+                  ],
+                },
+                ReplyToAddresses: [
+                  config['from_adderess'],
+                ],
+                Message: {
+                  Body: {
+
+                    Text: {
+                      Charset: 'UTF-8',
+                      Data: 'This is a confirmation that the password for your account ' + decoderesettoken.sub + ' has just been changed.\n',
+                    },
+                  },
+                  Subject: {
+                    Charset: 'UTF-8',
+                    Data: 'Password Changed Successfully',
+                  },
+                },
+              };
+              // Create the promise and SES service object
+              const sendPromise = new AWS.SES({apiVersion: '2010-12-01'})
+                  .sendEmail(params).promise();
+              // Handle promise's fulfilled/rejected states
+              sendPromise.then(
+                  function(data) {
+                    resolve('updated');
+                  }).catch(
+                  function(err) {
+                    reject(err.stack);
+                  });
+            }
+            else {
+              resolve('Updation Failed, Please Check');
+            }
+          }
         }
       } catch (error) {
         reject(error);
