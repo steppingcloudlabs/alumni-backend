@@ -74,28 +74,12 @@ module.exports = {
   },
   forgetpassword: async (req, res, next) => {
     try {
-      const {payload, token} = req.body;
-      if (token) {
-        const response = await userServices.forgetpassword({payload, token});
-        if (response == 'tokenexpired') {
-          res.status(200).send({
-            status: '400',
-            result: 'Token expired, Please Login Again',
-          });
-        }
-        else {
-          if (response == 'tokensent') {
-            res.status(200).send({
-              status: 200,
-              result: 'Reset Token sent to your email',
-            });
-          }
-        }
-      }
-      else {
-        res.status(200).json({
-          status: 400,
-          result: 'Rejected Request, Token Required',
+      const {payload} = req.body;
+      const response = await userServices.forgetpassword({payload});
+      if (response == 'tokensent') {
+        res.status(200).send({
+          status: 200,
+          result: 'Reset Token sent to your email',
         });
       }
     } catch (error) {
@@ -104,42 +88,25 @@ module.exports = {
   },
   resetpassword: async (req, res, next) => {
     try {
-      const {token, payloadbody} = req.body;
+      const {payloadbody} = req.body;
       const payload = req.params;
-
-      if (token) {
-        const response = await userServices.resetpassword({payload, token, payloadbody});
-        if (response == 'tokenexpired') {
-          res.status(200).send({
-            status: '400',
-            result: 'Token expired, Please Login Again',
-          });
-        }
-        else {
-          if (response == 'ResetTokenExpired') {
-            res.status(200).send({
-              status: 400,
-              result: 'Reset Token Expired',
-            });
-          }
-          else if ('updated') {
-            res.status(200).send({
-              status: 200,
-              result: 'New password updated successfully',
-            });
-          }
-          else {
-            res.status(200).send({
-              status: 200,
-              result: 'Error while updating',
-            });
-          }
-        }
+      const response = await userServices.resetpassword({payload, payloadbody});
+      if (response == 'ResetTokenExpired') {
+        res.status(200).send({
+          status: 400,
+          result: 'Reset Token Expired',
+        });
+      }
+      else if ('updated') {
+        res.status(200).send({
+          status: 200,
+          result: 'New password updated successfully',
+        });
       }
       else {
-        res.status(200).json({
-          status: 400,
-          result: 'Rejected Request, Token Required',
+        res.status(200).send({
+          status: 200,
+          result: 'Error while updating',
         });
       }
     } catch (error) {
