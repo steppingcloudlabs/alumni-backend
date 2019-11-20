@@ -115,6 +115,7 @@ module.exports = {
             finduser = await finduser.updateOne({
               password: passwordHash,
               updatedAt: Date(Date.now()).toString(),
+
             },
             {
               new: true,

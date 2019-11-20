@@ -106,7 +106,7 @@ module.exports = {
       else {
         res.status(200).send({
           status: 200,
-          result: 'Error while updating',
+          result: response,
         });
       }
     } catch (error) {
