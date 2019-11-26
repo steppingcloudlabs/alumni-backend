@@ -40,56 +40,63 @@ module.exports = {
   forgetpassword: async ({payload}) => {
     return new Promise(async (resolve, reject) => {
       try {
-        // creating a token for password reset based on its email
-        const token = JWT.sign({
-          iss: 'steppingcloudforpasswordreset',
-          sub: payload.email,
-          jwtKey: 'steppingcloudsecret',
-          algorithm: 'HS256',
-          iat: new Date().getTime(),
-          exp: new Date().setDate(new Date().getDate() + 1),
-        },
-        JWT_SECRET);
-        // email sent and sending the token to reset the token
-        const params = {
-          Source: config['from_adderess'],
-          Destination: {
-            ToAddresses: [
-              payload.email,
-            ],
+        const {url, email} = payload;
+        const finduser = await users.findOne({email});
+        if (finduser) {
+          // creating a token for password reset based on its email
+          const token = JWT.sign({
+            iss: 'steppingcloudforpasswordreset',
+            sub: payload.email,
+            jwtKey: 'steppingcloudsecret',
+            algorithm: 'HS256',
+            iat: new Date().getTime(),
+            exp: new Date().setDate(new Date().getDate() + 1),
           },
-          ReplyToAddresses: [
-            config['from_adderess'],
-          ],
-          Message: {
-            Body: {
+          JWT_SECRET);
+          // email sent and sending the token to reset the token
+          const params = {
+            Source: config['from_adderess'],
+            Destination: {
+              ToAddresses: [
+                email,
+              ],
+            },
+            ReplyToAddresses: [
+              config['from_adderess'],
+            ],
+            Message: {
+              Body: {
 
-              Text: {
+                Text: {
+                  Charset: 'UTF-8',
+                  Data: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+                    'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                    'http://' + url + ':4000/user/reset/' + token + '\n\n' +
+                    'If you did not request this, please ignore this email and your password will remain unchanged.\n' +
+                    'Please note that the token will get expired in 24hrs',
+                },
+              },
+              Subject: {
                 Charset: 'UTF-8',
-                Data: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-                  'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-                  'http://' + payload.url + ':4000/user/reset/' + token + '\n\n' +
-                  'If you did not request this, please ignore this email and your password will remain unchanged.\n' +
-                  'Please note that the token will get expired in 24hrs',
+                Data: 'Password Reset',
               },
             },
-            Subject: {
-              Charset: 'UTF-8',
-              Data: 'Password Reset',
-            },
-          },
-        };
-        // Create the promise and SES service object
-        const sendPromise = new AWS.SES({apiVersion: '2010-12-01'})
-            .sendEmail(params).promise();
-        // Handle promise's fulfilled/rejected states
-        sendPromise.then(
-            function(data) {
-              resolve('tokensent');
-            }).catch(
-            function(err) {
-              reject(err.stack);
-            });
+          };
+          // Create the promise and SES service object
+          const sendPromise = new AWS.SES({apiVersion: '2010-12-01'})
+              .sendEmail(params).promise();
+          // Handle promise's fulfilled/rejected states
+          sendPromise.then(
+              function(data) {
+                resolve('tokensent');
+              }).catch(
+              function(err) {
+                reject(err.stack);
+              });
+        }
+        else {
+          resolve('notfounduser');
+        }
       } catch (error) {
         reject(error);
       }
