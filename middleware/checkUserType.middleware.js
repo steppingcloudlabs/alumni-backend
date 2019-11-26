@@ -22,6 +22,9 @@ module.exports = function(req, res, next) {
       });
     }
   } catch (error) {
-    logger.error(`Error while checking if user is an admin ${error}`);
+    res.status(400).send({
+      status: 400,
+      result: error,
+    });
   }
 };
