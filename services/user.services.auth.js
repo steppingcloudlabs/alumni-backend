@@ -40,7 +40,6 @@ module.exports = {
   forgetpassword: async ({payload}) => {
     return new Promise(async (resolve, reject) => {
       try {
-
         // creating a token for password reset based on its email
         const token = JWT.sign({
           iss: 'steppingcloudforpasswordreset',
@@ -69,7 +68,7 @@ module.exports = {
                 Charset: 'UTF-8',
                 Data: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
                   'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-                  'http://localhost:4000/user/reset/' + token + '\n\n' +
+                  'http://' + payload.url + ':4000/user/reset/' + token + '\n\n' +
                   'If you did not request this, please ignore this email and your password will remain unchanged.\n' +
                   'Please note that the token will get expired in 24hrs',
               },
