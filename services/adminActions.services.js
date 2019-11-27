@@ -458,7 +458,7 @@ module.exports = () => {
               'salarylast': 'Not Available',
               'uanDetails': 'Not Available',
             });
-            resolve(payload);
+            resolve(response);
           }
         }
       } catch (error) {
