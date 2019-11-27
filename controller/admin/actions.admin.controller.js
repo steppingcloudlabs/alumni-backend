@@ -27,14 +27,14 @@ module.exports = {
       privatekey,
     });
     await newCompany.save();
-    res.status(200).send({Status: 'Company Added Successfully'});
+    res.status(200).send({ Status: 'Company Added Successfully' });
   },
   // News Controllers
   viewNews: async (req, res) => {
-    const {payload, token} = req.body;
+    const { payload, token } = req.body;
     // if token is present in req body, then execute the resolve
     if (token) {
-      const response = await AdminActionSerivce.viewNews({payload, token});
+      const response = await AdminActionSerivce.viewNews({ payload, token });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
@@ -56,9 +56,9 @@ module.exports = {
     }
   },
   viewallNews: async (req, res) => {
-    const {payload, token} = req.body;
+    const { payload, token } = req.body;
     if (token) {
-      const response = await AdminActionSerivce.viewallNews({payload, token});
+      const response = await AdminActionSerivce.viewallNews({ payload, token });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
@@ -80,9 +80,9 @@ module.exports = {
     }
   },
   updateNews: async (req, res) => {
-    const {payload, token} = req.body;
+    const { payload, token } = req.body;
     if (token) {
-      const response = await AdminActionSerivce.updateNews({payload, token});
+      const response = await AdminActionSerivce.updateNews({ payload, token });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
@@ -104,10 +104,10 @@ module.exports = {
     }
   },
   deleteNews: async (req, res) => {
-    const {payload, token} = req.body;
+    const { payload, token } = req.body;
     // if token present then only perform the API Actions
     if (token) {
-      const response = await AdminActionSerivce.deleteNews({payload, token});
+      const response = await AdminActionSerivce.deleteNews({ payload, token });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
@@ -134,9 +134,9 @@ module.exports = {
 
   // Event Controller
   viewEvents: async (req, res) => {
-    const {payload, token} = req.body;
+    const { payload, token } = req.body;
     if (token) {
-      const response = await AdminActionSerivce.viewEvents({payload, token});
+      const response = await AdminActionSerivce.viewEvents({ payload, token });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
@@ -158,9 +158,9 @@ module.exports = {
     }
   },
   viewallEvents: async (req, res) => {
-    const {payload, token} = req.body;
+    const { payload, token } = req.body;
     if (token) {
-      const response = await AdminActionSerivce.viewallEvents({payload, token});
+      const response = await AdminActionSerivce.viewallEvents({ payload, token });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
@@ -182,9 +182,9 @@ module.exports = {
     }
   },
   updateEvents: async (req, res) => {
-    const {payload, token} = req.body;
+    const { payload, token } = req.body;
     if (token) {
-      const response = await AdminActionSerivce.updateEvents({payload, token});
+      const response = await AdminActionSerivce.updateEvents({ payload, token });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
@@ -206,9 +206,9 @@ module.exports = {
     }
   },
   deleteEvents: async (req, res) => {
-    const {payload, token} = req.body;
+    const { payload, token } = req.body;
     if (token) {
-      const response = await AdminActionSerivce.deleteEvents({payload, token});
+      const response = await AdminActionSerivce.deleteEvents({ payload, token });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
@@ -233,9 +233,9 @@ module.exports = {
     }
   },
   viewFaq: async (req, res) => {
-    const {payload, token} = req.body;
+    const { payload, token } = req.body;
     if (token) {
-      const response = await AdminActionSerivce.viewFaq({payload, token});
+      const response = await AdminActionSerivce.viewFaq({ payload, token });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
@@ -257,9 +257,9 @@ module.exports = {
     }
   },
   viewallFaq: async (req, res) => {
-    const {payload, token} = req.body;
+    const { payload, token } = req.body;
     if (token) {
-      const response = await AdminActionSerivce.viewallFaq({payload, token});
+      const response = await AdminActionSerivce.viewallFaq({ payload, token });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
@@ -281,9 +281,9 @@ module.exports = {
     }
   },
   updatefaq: async (req, res) => {
-    const {payload, token} = req.body;
+    const { payload, token } = req.body;
     if (token) {
-      const response = await AdminActionSerivce.updatefaq({payload, token});
+      const response = await AdminActionSerivce.updatefaq({ payload, token });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
@@ -305,9 +305,9 @@ module.exports = {
     }
   },
   deleteFaq: async (req, res) => {
-    const {payload, token} = req.body;
+    const { payload, token } = req.body;
     if (token) {
-      const response = await AdminActionSerivce.deleteFaq({payload, token});
+      const response = await AdminActionSerivce.deleteFaq({ payload, token });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
@@ -333,9 +333,9 @@ module.exports = {
 
   // alumni Controller
   createalumni: async (req, res) => {
-    const {payload, token} = req.body;
+    const { payload, token } = req.body;
     if (token) {
-      const response = await AdminActionSerivce.createalumni({payload, token});
+      const response = await AdminActionSerivce.createalumni({ payload, token });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
@@ -365,9 +365,9 @@ module.exports = {
     }
   },
   viewalumni: async (req, res) => {
-    const {payload, token} = req.body;
+    const { payload, token } = req.body;
     if (token) {
-      const response = await AdminActionSerivce.viewalumni({payload, token});
+      const response = await AdminActionSerivce.viewalumni({ payload, token });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
@@ -397,9 +397,9 @@ module.exports = {
     }
   },
   allalumni: async (req, res) => {
-    const {payload, token} = req.body;
+    const { payload, token } = req.body;
     if (token) {
-      const response = await AdminActionSerivce.allalumni({payload, token});
+      const response = await AdminActionSerivce.allalumni({ payload, token });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
@@ -421,10 +421,10 @@ module.exports = {
     }
   },
 
-  deletealumni: async (req, res) => {
-    const {payload, token} = req.body;
+  deletealumni: async (req, res, next) => {
+    const { payload, token } = req.body;
     if (token) {
-      const response = await AdminActionSerivce.deletealumni({payload, token});
+      const response = await AdminActionSerivce.deletealumni({ payload, token });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
@@ -432,7 +432,7 @@ module.exports = {
         });
       }
       else {
-        if (response) {
+        if (response == 'deleted') {
           res.status(200).send({
             status: 200,
             result: 'Alumni Information Deleted',
@@ -454,9 +454,9 @@ module.exports = {
     }
   },
   updatealumni: async (req, res) => {
-    const {payload, token} = req.body;
+    const { payload, token } = req.body;
     if (token) {
-      const response = await AdminActionSerivce.updatealumni({payload, token});
+      const response = await AdminActionSerivce.updatealumni({ payload, token });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
@@ -497,9 +497,9 @@ module.exports = {
   },
   // AWS Document Upload
   documentupload: async (req, res, next) => {
-    const {payload, token} = req.body;
+    const { payload, token } = req.body;
     if (token) {
-      const response = await AdminActionSerivce.documentupload({payload, token});
+      const response = await AdminActionSerivce.documentupload({ payload, token });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
@@ -530,9 +530,9 @@ module.exports = {
 
   // Signed URL for AWS
   viewdocument: async (req, res, next) => {
-    const {payload, token} = req.body;
+    const { payload, token } = req.body;
     if (token) {
-      const response = await AdminActionSerivce.viewdocument({payload, token});
+      const response = await AdminActionSerivce.viewdocument({ payload, token });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
@@ -566,9 +566,9 @@ module.exports = {
   // ASK HR
   askHr: async (req, res, next) => {
     try {
-      const {payload, token} = req.body;
+      const { payload, token } = req.body;
       if (token) {
-        const response = await AdminActionSerivce.askHr({payload, token});
+        const response = await AdminActionSerivce.askHr({ payload, token });
         if (response == 'tokenexpired') {
           res.status(200).send({
             status: '400',

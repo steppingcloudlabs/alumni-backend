@@ -539,7 +539,7 @@ module.exports = () => {
         else {
           const deleted = await masterdata.remove({user_id: payload.userid});
           await personalinformation.remove({userId: payload.userid});
-          resolve(deleted);
+          resolve('deleted');
         }
       } catch (error) {
         reject(error);
