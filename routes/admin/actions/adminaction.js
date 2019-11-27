@@ -53,7 +53,7 @@ router
     .post((req, res, next) => AdminController.viewalumni(req, res, next));
 router
     .route('/updatealumni')
-    .post(checkuserType, (req, res, next) => AdminController.updatealumni(req, res, next));
+    .post((req, res, next) => AdminController.updatealumni(req, res, next));
 router
     .route('/allalumni')
     .post(checkuserType, (req, res, next) => AdminController.allalumni(req, res, next));
