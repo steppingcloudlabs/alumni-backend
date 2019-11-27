@@ -120,7 +120,7 @@ module.exports = {
           if (finduser) {
             finduser = await finduser.updateOne({
               password: passwordHash,
-              updatedAt: Date(Date.now()).toString(),
+              passwordupdatedAt: Date(Date.now()).toString(),
 
             },
             {
