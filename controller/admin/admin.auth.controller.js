@@ -1,5 +1,5 @@
 const JWT = require('jsonwebtoken');
-const Admin = require('../../models/admin/auth');
+const Users = require('../../models/user/auth');
 const {JWT_SECRET} = require('../../config');
 signToken = (user) => {
   return JWT.sign({
@@ -15,9 +15,9 @@ signToken = (user) => {
 };
 module.exports = {
   signup: async (req, res, next) => {
-    const {email, password} = req.value.body;
+    let {email, password, userType, userid, companyname} = req.value.body;
+    const foundUser = await Users.findOne({email});
     // check if there is a user with the same email
-    const foundUser = await Admin.findOne({email});
     if (foundUser) {
       res.status(200).send({
         status: 400,
@@ -25,7 +25,8 @@ module.exports = {
       });
     }
     else {
-      const newUser = new Admin({email, password});
+      userid = userid + Date.now();
+      const newUser = new Users({email, password, userType, userid, companyname});
       await newUser.save();
       res.status(200).json({
         status: '200',
@@ -34,7 +35,7 @@ module.exports = {
     }
   },
   signin: async (req, res, next) => {
-    if (req.user.message == 'Incorrect Admin') {
+    if (req.user.message == 'Incorrect username') {
       res.status(200).send({
         status: 401,
         result: 'Admin doesn\'t Exist',
@@ -49,11 +50,9 @@ module.exports = {
       res.status(200).send({
         status: '200',
         result: 'Login Successful',
+        usertype: req.user.userType,
         token: token,
       });
     }
-  },
-  secret: async (req, res, next) => {
-    res.json({Status: 'Managed to get here'});
   },
 };

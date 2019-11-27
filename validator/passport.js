@@ -31,6 +31,7 @@ passport.use('user-local',
     },
     async (email, password, done) => {
       try {
+
         const user = await User.findOne({email});
         if (!user) {
           return done(null, {message: 'Incorrect username'});

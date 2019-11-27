@@ -2,7 +2,7 @@ const router = require('express-promise-router')();
 const passport = require('passport');
 const AdminController = require('../../../controller/admin/actions.admin.controller');
 const checkuserType = require('../../../middleware/checkUserType.middleware');
-require('../../../validator/admin.passport');
+require('../../../validator/passport');
 // adminRouter Navigations
 
 router.route('/add/company').post(AdminController.add);

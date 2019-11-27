@@ -2,12 +2,12 @@ const JWT = require('jsonwebtoken');
 const User = require('../../models/user/auth');
 const userServices = require('../../services/user.services.auth');
 require('../../validator/passport');
-const { JWT_SECRET } = require('../../config');
+const {JWT_SECRET} = require('../../config');
 module.exports = {
   // SIGN UP
   signup: async (req, res, next) => {
-    const { email, password, companyname, userid } = req.value.body;
-    const foundUser = await User.findOne({ email });
+    const {email, password, companyname, userid} = req.value.body;
+    const foundUser = await User.findOne({email});
     if (foundUser) {
       res.status(200).send({
         status: '200 OK',
@@ -28,7 +28,7 @@ module.exports = {
       });
     }
     else {
-      const newUser = new User({ email, password, companyname, userid });
+      const newUser = new User({email, password, companyname, userid});
       await newUser.save();
       res.status(200).send({
         status: 200,
@@ -62,20 +62,19 @@ module.exports = {
         iat: new Date().getTime(),
         exp: new Date().setTime(new Date().getTime() + 900000),
       },
-        JWT_SECRET);
-
+      JWT_SECRET);
       res.status(200).send({
         status: 200,
         result: response,
+        usertype: req.user.userType,
         token: token,
-
       });
     }
   },
   forgetpassword: async (req, res, next) => {
     try {
-      const { payload } = req.body;
-      const response = await userServices.forgetpassword({ payload });
+      const {payload} = req.body;
+      const response = await userServices.forgetpassword({payload});
       if (response == 'tokensent') {
         res.status(200).send({
           status: 200,
@@ -85,7 +84,7 @@ module.exports = {
       else if (response == 'notfounduser') {
         res.status(200).send({
           status: 400,
-          result: "user not found",
+          result: 'user not found',
         });
 
       }
@@ -95,9 +94,9 @@ module.exports = {
   },
   resetpassword: async (req, res, next) => {
     try {
-      const { payloadbody } = req.body;
+      const {payloadbody} = req.body;
       const payload = req.params;
-      const response = await userServices.resetpassword({ payload, payloadbody });
+      const response = await userServices.resetpassword({payload, payloadbody});
       if (response == 'ResetTokenExpired') {
         res.status(200).send({
           status: 400,

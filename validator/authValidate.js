@@ -67,6 +67,9 @@ module.exports = {
           .email()
           .required(),
       password: joi.string().required(),
+      userType: joi.string().valid('admin', 'user').required(),
+      userid: joi.string().required(),
+      companyname: joi.string().required(),
 
     }),
   },
