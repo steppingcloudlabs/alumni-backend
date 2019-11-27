@@ -556,7 +556,7 @@ module.exports = () => {
         }
         else {
           const stream = payload.stream;
-          const filetype = payload.type;
+          const filetype = payload.filename;
           const x = util[filetype];
           const uploadFile = () => {
             const buf = Buffer.from((stream).toString('base64'), 'base64');
