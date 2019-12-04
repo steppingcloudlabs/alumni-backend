@@ -24,10 +24,9 @@ module.exports = () => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
-        if ((Date.now()) > expirytimefromtoken) {
+        if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
-        }
-        else {
+        } else {
           const _id = payload.id;
           const foundNews = await newsSchema.findOne({_id});
           resolve(foundNews);
@@ -41,12 +40,15 @@ module.exports = () => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
-        if ((Date.now()) > expirytimefromtoken) {
+        if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
-        }
-        else {
+        } else {
           const {skip, limit} = payload;
-          const foundNews = await newsSchema.find().sort({date: -1}).skip(skip).limit(limit);
+          const foundNews = await newsSchema
+              .find()
+              .sort({date: -1})
+              .skip(skip)
+              .limit(limit);
           // console.log(foundNews)
           resolve(foundNews);
         }
@@ -60,19 +62,21 @@ module.exports = () => {
     return new Promise(async (resolve, reject, error) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
-        if ((Date.now()) > expirytimefromtoken) {
+        if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
-        }
-        else {
+        } else {
           const _id = payload.id;
           // if id present, update news section
           if (_id) {
-
-            await newsSchema.findOneAndUpdate({_id}, {$set: payload}, {multi: true});
+            await newsSchema.findOneAndUpdate(
+                {_id},
+                {$set: payload},
+                {multi: true}
+            );
             const fileName = payload.photo;
             const ext = path.extname(fileName);
             const uploadFile = () => {
-              const buf = Buffer.from((fileName).toString('base64'), 'base64');
+              const buf = Buffer.from(fileName.toString('base64'), 'base64');
               const params = {
                 Bucket: config['aws_bucket_name2'],
                 Key: `news/${payload.id}${ext}`,
@@ -84,36 +88,43 @@ module.exports = () => {
                 if (s3Err) throw s3Err;
                 // console.log(data.Location)
                 let [user] = await newsSchema.find({
-                  '_id': payload.id,
+                  _id: payload.id,
                 });
 
                 if (user) {
-                  user = await user.updateOne({
-                    photo: data.Location,
-                  },
-                  {
-                    new: true,
-                  });
+                  user = await user.updateOne(
+                      {
+                        photo: data.Location,
+                      },
+                      {
+                        new: true,
+                      }
+                  );
                   user.ok === 1
                     ? resolve(await newsSchema.findOne({_id}))
                     : resolve('Updation Failed, Please Check');
                 }
               });
-
             };
             uploadFile();
-
           }
 
           // if id not present, save the data to news section
           else {
             const {title, content, tags, date, author, photo} = payload;
-            const news = new newsSchema({title, content, tags, date, author, photo});
+            const news = new newsSchema({
+              title,
+              content,
+              tags,
+              date,
+              author,
+              photo,
+            });
             const response = await news.save();
             const fileName = payload.photo;
             const ext = path.extname(fileName);
             const uploadFile = () => {
-              const buf = Buffer.from((fileName).toString('base64'), 'base64');
+              const buf = Buffer.from(fileName.toString('base64'), 'base64');
               const params = {
                 Bucket: config['aws_bucket_name2'],
                 Key: `news/${response._id}${ext}`,
@@ -125,26 +136,25 @@ module.exports = () => {
                 if (s3Err) throw s3Err;
                 //  console.log(data.Location)
                 let [user] = await newsSchema.find({
-                  '_id': response._id,
+                  _id: response._id,
                 });
 
                 if (user) {
-                  user = await user.updateOne({
-                    photo: data.Location,
-                  },
-                  {
-                    new: true,
-                  });
+                  user = await user.updateOne(
+                      {
+                        photo: data.Location,
+                      },
+                      {
+                        new: true,
+                      }
+                  );
                   user.ok === 1
                     ? resolve(await newsSchema.findOne({_id: response._id}))
                     : resolve('Updation Failed, Please Check');
                 }
               });
-
-
             };
             uploadFile();
-
           }
         }
       } catch (error) {
@@ -156,10 +166,9 @@ module.exports = () => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
-        if ((Date.now()) > expirytimefromtoken) {
+        if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
-        }
-        else {
+        } else {
           const deletedNews = await newsSchema.deleteOne({_id: payload.id});
           resolve(deletedNews);
         }
@@ -173,10 +182,9 @@ module.exports = () => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
-        if ((Date.now()) > expirytimefromtoken) {
+        if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
-        }
-        else {
+        } else {
           const {title, content, tags, date, author} = payload;
           const _id = payload.id;
           const foundevent = await eventSchema.findOne({_id});
@@ -191,12 +199,15 @@ module.exports = () => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
-        if ((Date.now()) > expirytimefromtoken) {
+        if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
-        }
-        else {
+        } else {
           const {skip, limit} = payload;
-          const foundNews = await eventSchema.find({}).sort({date: -1}).skip(skip).limit(limit);
+          const foundNews = await eventSchema
+              .find({})
+              .sort({date: -1})
+              .skip(skip)
+              .limit(limit);
           resolve(foundNews);
         }
       } catch (error) {
@@ -209,19 +220,21 @@ module.exports = () => {
     return new Promise(async (resolve, reject, error) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
-        if ((Date.now()) > expirytimefromtoken) {
+        if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
-        }
-        else {
+        } else {
           const _id = payload.id;
           // if id present, update events section
           if (_id) {
-
-            await eventSchema.findOneAndUpdate({_id}, {$set: payload}, {multi: true});
+            await eventSchema.findOneAndUpdate(
+                {_id},
+                {$set: payload},
+                {multi: true}
+            );
             const fileName = payload.photo;
             const ext = path.extname(fileName);
             const uploadFile = () => {
-              const buf = Buffer.from((fileName).toString('base64'), 'base64');
+              const buf = Buffer.from(fileName.toString('base64'), 'base64');
               const params = {
                 Bucket: config['aws_bucket_name2'],
                 Key: `events/${payload.id}${ext}`,
@@ -232,22 +245,23 @@ module.exports = () => {
               s3.upload(params, async (s3Err, data) => {
                 if (s3Err) throw s3Err;
                 let [user] = await eventSchema.find({
-                  '_id': payload.id,
+                  _id: payload.id,
                 });
 
                 if (user) {
-                  user = await user.updateOne({
-                    photo: data.Location,
-                  },
-                  {
-                    new: true,
-                  });
+                  user = await user.updateOne(
+                      {
+                        photo: data.Location,
+                      },
+                      {
+                        new: true,
+                      }
+                  );
                   user.ok === 1
                     ? resolve(await eventSchema.findOne({_id}))
                     : resolve('Updation Failed, Please Check');
                 }
               });
-
             };
             uploadFile();
           }
@@ -255,12 +269,19 @@ module.exports = () => {
           // if id not present, save the data to news section
           else {
             const {title, content, tags, date, author, photo} = payload;
-            const events = new eventSchema({title, content, tags, date, author, photo});
+            const events = new eventSchema({
+              title,
+              content,
+              tags,
+              date,
+              author,
+              photo,
+            });
             const response = await events.save();
             const fileName = payload.photo;
             const ext = path.extname(fileName);
             const uploadFile = () => {
-              const buf = Buffer.from((fileName).toString('base64'), 'base64');
+              const buf = Buffer.from(fileName.toString('base64'), 'base64');
               const params = {
                 Bucket: config['aws_bucket_name2'],
                 Key: `events/${response._id}${ext}`,
@@ -272,22 +293,23 @@ module.exports = () => {
                 if (s3Err) throw s3Err;
                 //  console.log(data.Location)
                 let [user] = await eventSchema.find({
-                  '_id': response._id,
+                  _id: response._id,
                 });
 
                 if (user) {
-                  user = await user.updateOne({
-                    photo: data.Location,
-                  },
-                  {
-                    new: true,
-                  });
+                  user = await user.updateOne(
+                      {
+                        photo: data.Location,
+                      },
+                      {
+                        new: true,
+                      }
+                  );
                   user.ok === 1
                     ? resolve(await eventSchema.findOne({_id: response._id}))
                     : resolve('Updation Failed, Please Check');
                 }
               });
-
             };
             uploadFile();
           }
@@ -301,10 +323,9 @@ module.exports = () => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
-        if ((Date.now()) > expirytimefromtoken) {
+        if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
-        }
-        else {
+        } else {
           const deletedNews = await eventSchema.remove({_id: payload.id});
           resolve(deletedNews);
         }
@@ -314,15 +335,13 @@ module.exports = () => {
     });
   };
 
-
   const viewFaq = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
-        if ((Date.now()) > expirytimefromtoken) {
+        if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
-        }
-        else {
+        } else {
           const {id, question, answer} = payload;
           const _id = payload.id;
           const foundFaq = await faqSchema.findOne({_id});
@@ -337,12 +356,14 @@ module.exports = () => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
-        if ((Date.now()) > expirytimefromtoken) {
+        if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
-        }
-        else {
+        } else {
           const {skip, limit} = payload;
-          const foundFaq = await faqSchema.find({}).skip(skip).limit(limit);
+          const foundFaq = await faqSchema
+              .find({})
+              .skip(skip)
+              .limit(limit);
           resolve(foundFaq);
         }
       } catch (error) {
@@ -355,25 +376,26 @@ module.exports = () => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
-        if ((Date.now()) > expirytimefromtoken) {
+        if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
-        }
-        else {
+        } else {
           const _id = payload.id;
           // if id present, update news section
           if (_id) {
             // no such record with id present then save the new record
-            if (await faqSchema.findOne({_id}) == null) {
+            if ((await faqSchema.findOne({_id})) == null) {
               const {question, answer} = payload;
               const faqs = new faqSchema({question, answer});
               await faqs.save();
               resolve(payload);
-            }
-            else {
-              await faqSchema.findOneAndUpdate({_id}, {$set: payload}, {multi: true});
+            } else {
+              await faqSchema.findOneAndUpdate(
+                  {_id},
+                  {$set: payload},
+                  {multi: true}
+              );
 
               resolve(payload);
-
             }
           }
           // if id not present, save the data to events section
@@ -393,10 +415,9 @@ module.exports = () => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
-        if ((Date.now()) > expirytimefromtoken) {
+        if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
-        }
-        else {
+        } else {
           const deletedFaq = await faqSchema.remove({_id: payload.id});
 
           resolve(deletedFaq);
@@ -411,21 +432,23 @@ module.exports = () => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
-        if ((Date.now()) > expirytimefromtoken) {
+        if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
-        }
-        else {
-          getDataFromMaster('masterdata', {user_id: parseInt(payload.userid)}, (err, response) => {
-            if (response) {
-              resolve(response);
-            }
-            else if (err) {
-              reject({
-                message: 'User doesn\'t exist',
-                status: 400,
-              });
-            }
-          });
+        } else {
+          getDataFromMaster(
+              'masterdata',
+              {user_id: parseInt(payload.userid)},
+              (err, response) => {
+                if (response) {
+                  resolve(response);
+                } else if (err) {
+                  reject({
+                    message: 'User doesn\'t exist',
+                    status: 400,
+                  });
+                }
+              }
+          );
         }
       } catch (error) {
         reject(error);
@@ -436,27 +459,57 @@ module.exports = () => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
-        if ((Date.now()) > expirytimefromtoken) {
+        if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
-        }
-        else {
+        } else {
           if (await masterdata.findOne({user_id: payload.user_id})) {
             resolve('founduser');
-          }
-          else {
-            const {relieving_date, user_id, date_of_resignation, last_working_day_as_per_notice_period, personal_email_id, first_name_personal_information, last_name_personal_information, middle_name_personal_information, nationality_personal_information, salutation_personal_information, city_addresses, phone_number_phone_information, manager_job_information, designation_job_information, skill} = payload;
-            const master = new masterdata({relieving_date, user_id, date_of_resignation, last_working_day_as_per_notice_period, personal_email_id, first_name_personal_information, last_name_personal_information, middle_name_personal_information, nationality_personal_information, salutation_personal_information, city_addresses, phone_number_phone_information, manager_job_information, designation_job_information, skill});
+          } else {
+            const {
+              relieving_date,
+              user_id,
+              date_of_resignation,
+              last_working_day_as_per_notice_period,
+              personal_email_id,
+              first_name_personal_information,
+              last_name_personal_information,
+              middle_name_personal_information,
+              nationality_personal_information,
+              salutation_personal_information,
+              city_addresses,
+              phone_number_phone_information,
+              manager_job_information,
+              designation_job_information,
+              skill,
+            } = payload;
+            const master = new masterdata({
+              relieving_date,
+              user_id,
+              date_of_resignation,
+              last_working_day_as_per_notice_period,
+              personal_email_id,
+              first_name_personal_information,
+              last_name_personal_information,
+              middle_name_personal_information,
+              nationality_personal_information,
+              salutation_personal_information,
+              city_addresses,
+              phone_number_phone_information,
+              manager_job_information,
+              designation_job_information,
+              skill,
+            });
             const response = await master.save();
-            // console.log(response)
+            // as soon as a user is created in masterdata then at the same momemt his document portal is created with document as not available
             await personalinformation.insertMany({
-              'userId': response.user_id,
-              'fnfStatus': 'Not Available',
-              'pfTransferStatus': 'Not Available',
-              'form16': 'Not Available',
-              'salarycurrent': 'Not Available',
-              'salaryprevious': 'Not Available',
-              'salarylast': 'Not Available',
-              'uanDetails': 'Not Available',
+              userId: response.user_id,
+              fnfStatus: 'Not Available',
+              pfTransferStatus: 'Not Available',
+              form16: 'Not Available',
+              salarycurrent: 'Not Available',
+              salaryprevious: 'Not Available',
+              salarylast: 'Not Available',
+              uanDetails: 'Not Available',
             });
             resolve(response);
           }
@@ -466,15 +519,15 @@ module.exports = () => {
       }
     });
   };
+  // getting a alumni based on userid
   const viewalumni = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
-        if ((Date.now()) > expirytimefromtoken) {
+        if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
-        }
-        else {
-          const user_id = (payload.userid);
+        } else {
+          const user_id = payload.userid;
           const foundalumni = await masterdata.findOne({user_id});
 
           resolve(foundalumni);
@@ -484,27 +537,30 @@ module.exports = () => {
       }
     });
   };
+  // all alumni list && keyword based search && limit and skip option in this service api
   const allalumni = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
-        if ((Date.now()) > expirytimefromtoken) {
+        if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
-        }
-        else {
+        } else {
           const {skip, limit, keyword} = payload;
 
           if (keyword) {
-            const foundalumni = await masterdata.find({$text: {$search: keyword}}).skip(skip).limit(limit);
+            const foundalumni = await masterdata
+                .fuzzySearch(keyword)
+                .skip(skip)
+                .limit(limit);
             resolve(foundalumni);
-
-          }
-          else {
-            const foundalumni = await masterdata.find({}).skip(skip).limit(limit);
+          } else {
+            const foundalumni = await masterdata
+                .find({})
+                .skip(skip)
+                .limit(limit);
             resolve(foundalumni);
           }
         }
-
       } catch (error) {
         reject(error);
       }
@@ -515,12 +571,15 @@ module.exports = () => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
-        if ((Date.now()) > expirytimefromtoken) {
+        if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
-        }
-        else {
-          const user_id = (payload.user_id);
-          const updatealumni = await masterdata.findOneAndUpdate({user_id}, {$set: payload}, {multi: true});
+        } else {
+          const user_id = payload.user_id;
+          const updatealumni = await masterdata.findOneAndUpdate(
+              {user_id},
+              {$set: payload},
+              {multi: true}
+          );
 
           resolve(updatealumni);
         }
@@ -533,10 +592,9 @@ module.exports = () => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
-        if ((Date.now()) > expirytimefromtoken) {
+        if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
-        }
-        else {
+        } else {
           const deleted = await masterdata.remove({user_id: payload.userid});
           await personalinformation.remove({userId: payload.userid});
           resolve('deleted');
@@ -551,15 +609,14 @@ module.exports = () => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
-        if ((Date.now()) > expirytimefromtoken) {
+        if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
-        }
-        else {
+        } else {
           const stream = payload.stream;
           const filetype = payload.filename;
           const x = util[filetype];
           const uploadFile = () => {
-            const buf = Buffer.from((stream).toString('base64'), 'base64');
+            const buf = Buffer.from(stream.toString('base64'), 'base64');
             const params = {
               Bucket: config['aws_bucket_name'],
               Key: `crux/users/${payload.userid}/${x}.pdf`,
@@ -571,24 +628,24 @@ module.exports = () => {
               if (s3Err) throw s3Err;
               // resolve(buf)
               let [user] = await personalinformation.find({
-                'userId': payload.userid,
+                userId: payload.userid,
               });
               updatedJson = {};
               updatedJson[x] = 'Available';
 
               if (user) {
-                user = await user.updateOne({$set: updatedJson}, {new: true});
-                user.ok === 1
-                  ? resolve(buf)
-                  : resolve('failed');
+                user = await user.updateOne(
+                    {$set: updatedJson},
+                    {new: true}
+                );
+                user.ok === 1 ? resolve(buf) : resolve('failed');
               }
             });
           };
 
           uploadFile();
         }
-      }
-      catch (error) {
+      } catch (error) {
         reject(error);
       }
     });
@@ -597,13 +654,12 @@ module.exports = () => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
-        if ((Date.now()) > expirytimefromtoken) {
+        if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
-        }
-        else {
+        } else {
           const filename = payload.filename;
           const x = util[filename];
-          const user_id = (payload.userid);
+          const user_id = payload.userid;
           if (await masterdata.findOne({user_id})) {
             const url = s3.getSignedUrl('getObject', {
               Bucket: config['aws_bucket_name'],
@@ -612,15 +668,11 @@ module.exports = () => {
             });
 
             resolve(url);
-
-          }
-          else {
+          } else {
             resolve('notfounduser');
           }
         }
-
-      }
-      catch (error) {
+      } catch (error) {
         reject(error);
       }
     });
@@ -629,24 +681,18 @@ module.exports = () => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
-        if ((Date.now()) > expirytimefromtoken) {
+        if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
-        }
-        else {
+        } else {
           const {subject, body} = payload;
           const params = {
             Source: config['from_adderess'],
             Destination: {
-              ToAddresses: [
-                config['from_adderess'],
-              ],
+              ToAddresses: [config['from_adderess']],
             },
-            ReplyToAddresses: [
-              config['from_adderess'],
-            ],
+            ReplyToAddresses: [config['from_adderess']],
             Message: {
               Body: {
-
                 Text: {
                   Charset: 'UTF-8',
                   Data: body,
@@ -659,17 +705,17 @@ module.exports = () => {
             },
           };
 
-
           // Create the promise and SES service object
           const sendPromise = new AWS.SES({apiVersion: '2010-12-01'})
-              .sendEmail(params).promise();
+              .sendEmail(params)
+              .promise();
 
           // Handle promise's fulfilled/rejected states
-          sendPromise.then(
-              function(data) {
+          sendPromise
+              .then(function(data) {
                 resolve(data);
-              }).catch(
-              function(err) {
+              })
+              .catch(function(err) {
                 reject(err.stack);
               });
         }
@@ -678,7 +724,6 @@ module.exports = () => {
       }
     });
   };
-
 
   return {
     viewNews,
