@@ -16,6 +16,9 @@ const masterschema = new Schema({
   last_working_day_as_per_notice_period: {
     type: String,
   },
+  personal_email_id: {
+    type: String,
+  },
   first_name_personal_information: {
     type: String,
   },
@@ -43,14 +46,15 @@ const masterschema = new Schema({
   designation_job_information: {
     type: String,
   },
-  skill: [{
-    type: String
-  }]
-
+  skill: [
+    {
+      type: String,
+    },
+  ],
 });
 
-//finding keywords based search on masterdata
-masterschema.index({ '$**': 'text' })
+// finding keywords based search on masterdata
+masterschema.index({'$**': 'text'});
 
 const masterdata = mongoose.model('masterdata', masterschema);
 module.exports = masterdata;
