@@ -3,7 +3,8 @@ module.exports = () => {
   // personal user function
   const getJobs = async (req, res, next) => {
     try {
-      const {payload, token} = req.body;
+      const payload = req.query;
+      const {token} = req.body;
       if (token) {
         const response = await userServices.getJobs({payload, token});
         if (response == 'tokenexpired') {
@@ -15,7 +16,7 @@ module.exports = () => {
           if (response.length == 0) {
             res.status(200).send({
               status: '400',
-              result: 'Error while getting user',
+              result: 'Error while getting jobs',
             });
           } else {
             res.status(200).send({
@@ -38,7 +39,10 @@ module.exports = () => {
     try {
       const {payload, token} = req.body;
       if (token) {
-        const response = await userServices.getRecommendedJobs({payload, token});
+        const response = await userServices.getRecommendedJobs({
+          payload,
+          token,
+        });
         if (response == 'tokenexpired') {
           res.status(200).send({
             status: '400',
@@ -71,6 +75,5 @@ module.exports = () => {
   return {
     getJobs,
     getRecommendedJobs,
-
   };
 };
