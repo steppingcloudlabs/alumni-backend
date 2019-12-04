@@ -27,27 +27,27 @@ module.exports = {
       privatekey,
     });
     await newCompany.save();
-    res.status(200).send({ Status: 'Company Added Successfully' });
+    res.status(200).send({Status: 'Company Added Successfully'});
   },
   // News Controllers
   viewNews: async (req, res) => {
-    const { payload, token } = req.body;
+    const {payload, token} = req.body;
     // if token is present in req body, then execute the resolve
     if (token) {
-      const response = await AdminActionSerivce.viewNews({ payload, token });
+      const response = await AdminActionSerivce.viewNews({payload, token});
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
           result: 'Token expired, Please Login Again',
         });
-      }
-      else {
+      } else {
         res.status(200).json({
           status: 200,
           result: response,
         });
       }
     }
+    // reject request if token is expired
     else {
       res.status(200).json({
         status: 400,
@@ -56,23 +56,21 @@ module.exports = {
     }
   },
   viewallNews: async (req, res) => {
-    const { payload, token } = req.body;
+    const {payload, token} = req.body;
     if (token) {
-      const response = await AdminActionSerivce.viewallNews({ payload, token });
+      const response = await AdminActionSerivce.viewallNews({payload, token});
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
           result: 'Token expired, Please Login Again',
         });
-      }
-      else {
+      } else {
         res.status(200).send({
-          'status': 200,
-          'result': response,
+          status: 200,
+          result: response,
         });
       }
-    }
-    else {
+    } else {
       res.status(200).json({
         status: 400,
         result: 'Rejected Request, Token Required',
@@ -80,23 +78,21 @@ module.exports = {
     }
   },
   updateNews: async (req, res) => {
-    const { payload, token } = req.body;
+    const {payload, token} = req.body;
     if (token) {
-      const response = await AdminActionSerivce.updateNews({ payload, token });
+      const response = await AdminActionSerivce.updateNews({payload, token});
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
           result: 'Token expired, Please Login Again',
         });
-      }
-      else {
+      } else {
         res.status(200).send({
-          'status': 200,
-          'result': response,
+          status: 200,
+          result: response,
         });
       }
-    }
-    else {
+    } else {
       res.status(200).json({
         status: 400,
         result: 'Rejected Request, Token Required',
@@ -104,27 +100,24 @@ module.exports = {
     }
   },
   deleteNews: async (req, res) => {
-    const { payload, token } = req.body;
+    const {payload, token} = req.body;
     // if token present then only perform the API Actions
     if (token) {
-      const response = await AdminActionSerivce.deleteNews({ payload, token });
+      const response = await AdminActionSerivce.deleteNews({payload, token});
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
           result: 'Token expired, Please Login Again',
         });
-      }
-      else {
+      } else {
         if (response) {
           res.status(200).send({
             status: 200,
             result: 'News Deleted',
-
           });
         }
       }
-    }
-    else {
+    } else {
       res.status(200).json({
         status: 400,
         result: 'Rejected Request, Token Required',
@@ -134,23 +127,21 @@ module.exports = {
 
   // Event Controller
   viewEvents: async (req, res) => {
-    const { payload, token } = req.body;
+    const {payload, token} = req.body;
     if (token) {
-      const response = await AdminActionSerivce.viewEvents({ payload, token });
+      const response = await AdminActionSerivce.viewEvents({payload, token});
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
           result: 'Token expired, Please Login Again',
         });
-      }
-      else {
+      } else {
         res.status(200).json({
           status: 200,
           result: response,
         });
       }
-    }
-    else {
+    } else {
       res.status(200).json({
         status: 400,
         result: 'Rejected Request, Token Required',
@@ -158,23 +149,24 @@ module.exports = {
     }
   },
   viewallEvents: async (req, res) => {
-    const { payload, token } = req.body;
+    const {payload, token} = req.body;
     if (token) {
-      const response = await AdminActionSerivce.viewallEvents({ payload, token });
+      const response = await AdminActionSerivce.viewallEvents({
+        payload,
+        token,
+      });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
           result: 'Token expired, Please Login Again',
         });
-      }
-      else {
+      } else {
         res.status(200).json({
           status: 200,
           result: response,
         });
       }
-    }
-    else {
+    } else {
       res.status(200).json({
         status: 400,
         result: 'Rejected Request, Token Required',
@@ -182,23 +174,24 @@ module.exports = {
     }
   },
   updateEvents: async (req, res) => {
-    const { payload, token } = req.body;
+    const {payload, token} = req.body;
     if (token) {
-      const response = await AdminActionSerivce.updateEvents({ payload, token });
+      const response = await AdminActionSerivce.updateEvents({
+        payload,
+        token,
+      });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
           result: 'Token expired, Please Login Again',
         });
-      }
-      else {
+      } else {
         res.status(200).send({
           'status:': 200,
-          'result': response,
+          "result": response,
         });
       }
-    }
-    else {
+    } else {
       res.status(200).json({
         status: 400,
         result: 'Rejected Request, Token Required',
@@ -206,26 +199,26 @@ module.exports = {
     }
   },
   deleteEvents: async (req, res) => {
-    const { payload, token } = req.body;
+    const {payload, token} = req.body;
     if (token) {
-      const response = await AdminActionSerivce.deleteEvents({ payload, token });
+      const response = await AdminActionSerivce.deleteEvents({
+        payload,
+        token,
+      });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
           result: 'Token expired, Please Login Again',
         });
-      }
-      else {
+      } else {
         if (response) {
           res.status(200).send({
             status: 200,
             result: 'Event Deleted',
-
           });
         }
       }
-    }
-    else {
+    } else {
       res.status(200).json({
         status: 400,
         result: 'Rejected Request, Token Required',
@@ -233,23 +226,21 @@ module.exports = {
     }
   },
   viewFaq: async (req, res) => {
-    const { payload, token } = req.body;
+    const {payload, token} = req.body;
     if (token) {
-      const response = await AdminActionSerivce.viewFaq({ payload, token });
+      const response = await AdminActionSerivce.viewFaq({payload, token});
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
           result: 'Token expired, Please Login Again',
         });
-      }
-      else {
+      } else {
         res.status(200).json({
           status: 200,
           result: response,
         });
       }
-    }
-    else {
+    } else {
       res.status(200).json({
         status: 400,
         result: 'Rejected Request, Token Required',
@@ -257,23 +248,21 @@ module.exports = {
     }
   },
   viewallFaq: async (req, res) => {
-    const { payload, token } = req.body;
+    const {payload, token} = req.body;
     if (token) {
-      const response = await AdminActionSerivce.viewallFaq({ payload, token });
+      const response = await AdminActionSerivce.viewallFaq({payload, token});
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
           result: 'Token expired, Please Login Again',
         });
-      }
-      else {
+      } else {
         res.status(200).json({
           status: 200,
           result: response,
         });
       }
-    }
-    else {
+    } else {
       res.status(200).json({
         status: 400,
         result: 'Rejected Request, Token Required',
@@ -281,23 +270,21 @@ module.exports = {
     }
   },
   updatefaq: async (req, res) => {
-    const { payload, token } = req.body;
+    const {payload, token} = req.body;
     if (token) {
-      const response = await AdminActionSerivce.updatefaq({ payload, token });
+      const response = await AdminActionSerivce.updatefaq({payload, token});
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
           result: 'Token expired, Please Login Again',
         });
-      }
-      else {
+      } else {
         res.status(200).send({
-          'status': 200,
-          'result': response,
+          status: 200,
+          result: response,
         });
       }
-    }
-    else {
+    } else {
       res.status(200).json({
         status: 400,
         result: 'Rejected Request, Token Required',
@@ -305,16 +292,15 @@ module.exports = {
     }
   },
   deleteFaq: async (req, res) => {
-    const { payload, token } = req.body;
+    const {payload, token} = req.body;
     if (token) {
-      const response = await AdminActionSerivce.deleteFaq({ payload, token });
+      const response = await AdminActionSerivce.deleteFaq({payload, token});
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
           result: 'Token expired, Please Login Again',
         });
-      }
-      else {
+      } else {
         if (response) {
           res.status(200).send({
             status: 200,
@@ -322,8 +308,7 @@ module.exports = {
           });
         }
       }
-    }
-    else {
+    } else {
       res.status(200).json({
         status: 400,
         result: 'Rejected Request, Token Required',
@@ -333,31 +318,31 @@ module.exports = {
 
   // alumni Controller
   createalumni: async (req, res) => {
-    const { payload, token } = req.body;
+    const {payload, token} = req.body;
     if (token) {
-      const response = await AdminActionSerivce.createalumni({ payload, token });
+      const response = await AdminActionSerivce.createalumni({
+        payload,
+        token,
+      });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
           result: 'Token expired, Please Login Again',
         });
-      }
-      else {
+      } else {
         if (response == 'founduser') {
           res.status(200).json({
-            'status': 400,
-            'result': 'User Id already exists',
+            status: 400,
+            result: 'User Id already exists',
           });
-        }
-        else {
+        } else {
           res.status(200).json({
-            'status': 200,
-            'result': response,
+            status: 200,
+            result: response,
           });
         }
       }
-    }
-    else {
+    } else {
       res.status(200).json({
         status: 400,
         result: 'Rejected Request, Token Required',
@@ -365,31 +350,28 @@ module.exports = {
     }
   },
   viewalumni: async (req, res) => {
-    const { payload, token } = req.body;
+    const {payload, token} = req.body;
     if (token) {
-      const response = await AdminActionSerivce.viewalumni({ payload, token });
+      const response = await AdminActionSerivce.viewalumni({payload, token});
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
           result: 'Token expired, Please Login Again',
         });
-      }
-      else {
+      } else {
         if (response == null) {
           res.status(200).send({
             status: 400,
             result: 'User doesn\'t exist',
           });
-        }
-        else {
+        } else {
           res.status(200).json({
             status: 200,
             result: response,
           });
         }
       }
-    }
-    else {
+    } else {
       res.status(200).json({
         status: 400,
         result: 'Rejected Request, Token Required',
@@ -397,23 +379,21 @@ module.exports = {
     }
   },
   allalumni: async (req, res) => {
-    const { payload, token } = req.body;
+    const {payload, token} = req.body;
     if (token) {
-      const response = await AdminActionSerivce.allalumni({ payload, token });
+      const response = await AdminActionSerivce.allalumni({payload, token});
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
           result: 'Token expired, Please Login Again',
         });
-      }
-      else {
+      } else {
         res.status(200).json({
           status: 200,
           result: response,
         });
       }
-    }
-    else {
+    } else {
       res.status(200).json({
         status: 400,
         result: 'Rejected Request, Token Required',
@@ -422,31 +402,31 @@ module.exports = {
   },
 
   deletealumni: async (req, res, next) => {
-    const { payload, token } = req.body;
+    const {payload, token} = req.body;
     if (token) {
-      const response = await AdminActionSerivce.deletealumni({ payload, token });
+      const response = await AdminActionSerivce.deletealumni({
+        payload,
+        token,
+      });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
           result: 'Token expired, Please Login Again',
         });
-      }
-      else {
+      } else {
         if (response == 'deleted') {
           res.status(200).send({
             status: 200,
             result: 'Alumni Information Deleted',
           });
-        }
-        else {
+        } else {
           res.status(200).send({
             status: 400,
             result: 'Error while deleting',
           });
         }
       }
-    }
-    else {
+    } else {
       res.status(200).json({
         status: 400,
         result: 'Rejected Request, Token Required',
@@ -454,16 +434,18 @@ module.exports = {
     }
   },
   updatealumni: async (req, res) => {
-    const { payload, token } = req.body;
+    const {payload, token} = req.body;
     if (token) {
-      const response = await AdminActionSerivce.updatealumni({ payload, token });
+      const response = await AdminActionSerivce.updatealumni({
+        payload,
+        token,
+      });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
           result: 'Token expired, Please Login Again',
         });
-      }
-      else {
+      } else {
         if (response == null) {
           res.status(200).send({
             status: 400,
@@ -476,8 +458,7 @@ module.exports = {
           });
         }
       }
-    }
-    else {
+    } else {
       res.status(200).json({
         status: 400,
         result: 'Rejected Request, Token Required',
@@ -485,28 +466,28 @@ module.exports = {
     }
   },
 
-
   // AWS Upload; Mass Upload of User Data
   userupload: async (req, res, next) => {
     const response = await AdminActionSerivce.userupload();
     res.status(200).send({
       status: '200',
       result: 'User Data uploaded',
-
     });
   },
   // AWS Document Upload
   documentupload: async (req, res, next) => {
-    const { payload, token } = req.body;
+    const {payload, token} = req.body;
     if (token) {
-      const response = await AdminActionSerivce.documentupload({ payload, token });
+      const response = await AdminActionSerivce.documentupload({
+        payload,
+        token,
+      });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
           result: 'Token expired, Please Login Again',
         });
-      }
-      else {
+      } else {
         if (response) {
           res.status(200).send({
             status: '200',
@@ -519,8 +500,7 @@ module.exports = {
           });
         }
       }
-    }
-    else {
+    } else {
       res.status(200).json({
         status: 400,
         result: 'Rejected Request, Token Required',
@@ -530,32 +510,31 @@ module.exports = {
 
   // Signed URL for AWS
   viewdocument: async (req, res, next) => {
-    const { payload, token } = req.body;
+    const {payload, token} = req.body;
     if (token) {
-      const response = await AdminActionSerivce.viewdocument({ payload, token });
+      const response = await AdminActionSerivce.viewdocument({
+        payload,
+        token,
+      });
       if (response == 'tokenexpired') {
         res.status(200).send({
           status: '400',
           result: 'Token expired, Please Login Again',
         });
-      }
-      else {
+      } else {
         if (response == 'notfounduser') {
           res.status(200).send({
             status: '400',
             result: 'User Doesnot Exist',
-
           });
         } else {
           res.status(200).send({
             status: '200',
             result: response,
-
           });
         }
       }
-    }
-    else {
+    } else {
       res.status(200).json({
         status: 400,
         result: 'Rejected Request, Token Required',
@@ -566,16 +545,15 @@ module.exports = {
   // ASK HR
   askHr: async (req, res, next) => {
     try {
-      const { payload, token } = req.body;
+      const {payload, token} = req.body;
       if (token) {
-        const response = await AdminActionSerivce.askHr({ payload, token });
+        const response = await AdminActionSerivce.askHr({payload, token});
         if (response == 'tokenexpired') {
           res.status(200).send({
             status: '400',
             result: 'Token expired, Please Login Again',
           });
-        }
-        else {
+        } else {
           if (response && response.length == 0) {
             res.status(200).send({
               status: 400,
@@ -588,8 +566,7 @@ module.exports = {
             });
           }
         }
-      }
-      else {
+      } else {
         res.status(200).json({
           status: 400,
           result: 'Rejected Request, Token Required',
@@ -599,6 +576,4 @@ module.exports = {
       next(error);
     }
   },
-
-
 };

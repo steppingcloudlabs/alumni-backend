@@ -44,7 +44,7 @@ router
     .post((req, res, next) => AdminController.updatefaq(req, res, next));
 router
     .route('/deletefaq')
-    .delete(checkuserType, (req, res, next) => AdminController.deleteFaq(req, res, next));
+    .delete((req, res, next) => AdminController.deleteFaq(req, res, next));
 router
     .route('/alumni')
     .post((req, res, next) => AdminController.createalumni(req, res, next));
