@@ -480,6 +480,8 @@ module.exports = () => {
               phone_number_phone_information,
               manager_job_information,
               designation_job_information,
+              gender,
+              date_of_birth,
               skill,
             } = payload;
             const master = new masterdata({
@@ -497,6 +499,8 @@ module.exports = () => {
               phone_number_phone_information,
               manager_job_information,
               designation_job_information,
+              gender,
+              date_of_birth,
               skill,
             });
             const response = await master.save();

@@ -48,6 +48,12 @@ const masterschema = new Schema({
   designation_job_information: {
     type: String,
   },
+  gender: {
+    type: String,
+  },
+  date_of_birth: {
+    type: String,
+  },
   skill: [
     {
       type: String,

@@ -25,13 +25,20 @@ const personalschema = new Schema({
   salarylast: {
     type: String,
   },
-
   uanDetails: {
     type: String,
   },
-
-
+  recommendedjobs: [
+    {
+      type: Schema.Types.ObjectId,
+      $ref: 'jobs',
+    },
+  ],
 });
 
-const personalinformation = mongoose.model('personalinformation', personalschema, 'personalinformation');
+const personalinformation = mongoose.model(
+    'personalinformation',
+    personalschema,
+    'personalinformation'
+);
 module.exports = personalinformation;
