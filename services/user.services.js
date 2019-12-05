@@ -72,7 +72,19 @@ module.exports = () => {
           resolve('tokenexpired');
         } else {
           const {country, skill} = payload;
-          const result = await jobs.find({country: country});
+
+          let result;
+          if (skill == 'null' || !skill) {
+            result = await jobs.find({
+              country: country,
+            });
+          } else {
+            result = await jobs.find({
+              country: country,
+              $text: {$search: skill},
+            });
+          }
+
           resolve(result);
         }
         // const response = await Masterdata.findOne({ user_id: payload.userid});
