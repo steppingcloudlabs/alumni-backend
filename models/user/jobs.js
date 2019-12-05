@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
 const {Schema} = mongoose;
 
-const Jobs = mongoose.model('Jobs', new Schema({}), 'jobs');
+const jobschema = new Schema({});
+
+jobschema.index({'$**': 'text'});
+const Jobs = mongoose.model('Jobs', jobschema, 'jobs');
+
 module.exports = Jobs;
