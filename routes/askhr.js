@@ -1,9 +1,14 @@
 const router = require('express-promise-router')();
 
-const HrController = require('../controller/askhr/askhr')();
+const {
+  postTicketValidateBody,
+  postTicketSchemas,
+} = require('../validator/ticketValidate');
+
+const postTicketController = require('../controller/askhr/postTicket')();
 
 router
-    .route('/askhr')
-    .post((req, res, next) => HrController.askhr(req, res, next));
+    .route('/postTicket')
+    .post(postTicketValidateBody(postTicketSchemas.authSchema), (req, res, next) => postTicketController.postTicket(req, res, next));
 
 module.exports = router;
