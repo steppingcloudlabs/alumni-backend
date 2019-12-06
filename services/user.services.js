@@ -74,8 +74,8 @@ module.exports = () => {
           const {skip, limit} = bodypayload;
           const {country, skill} = payload;
           let result;
-          console.log(payload);
-          if (payload == '{}') {
+          
+          if (JSON.stringify(payload) == '{}') {
             result = await jobs
                 .find({})
                 .skip(skip)
