@@ -20,14 +20,12 @@ module.exports = {
         status: 400,
         result: 'User is not an Alumni',
       });
-    }
-    else if (response == 'founduser') {
+    } else if (response == 'founduser') {
       res.status(200).send({
         status: 400,
         result: 'UserId already Exists',
       });
-    }
-    else {
+    } else {
       const newUser = new User({email, password, companyname, userid});
       await newUser.save();
       res.status(200).send({
@@ -41,7 +39,6 @@ module.exports = {
   },
   // SIGN IN
   signin: async (req, res, next) => {
-
     if (req.user.message == 'Incorrect username') {
       res.status(200).send({
         status: '401',
@@ -80,13 +77,11 @@ module.exports = {
           status: 200,
           result: 'Reset Token sent to your email',
         });
-      }
-      else if (response == 'notfounduser') {
+      } else if (response == 'notfounduser') {
         res.status(200).send({
           status: 400,
           result: 'user not found',
         });
-
       }
     } catch (error) {
       next(error);
@@ -94,22 +89,19 @@ module.exports = {
   },
   resetpassword: async (req, res, next) => {
     try {
-      const {payloadbody} = req.body;
-      const payload = req.params;
-      const response = await userServices.resetpassword({payload, payloadbody});
+      const {payload} = req.body;
+      const response = await userServices.resetpassword({payload});
       if (response == 'ResetTokenExpired') {
         res.status(200).send({
           status: 400,
           result: 'Reset Token Expired',
         });
-      }
-      else if ('updated') {
+      } else if ('updated') {
         res.status(200).send({
           status: 200,
           result: 'New password updated successfully',
         });
-      }
-      else {
+      } else {
         res.status(200).send({
           status: 200,
           result: response,

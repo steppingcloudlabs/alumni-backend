@@ -64,15 +64,14 @@ module.exports = () => {
       }
     });
   };
-  const getJobs = ({payload, token, bodypayload}) => {
+  const getJobs = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
         if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
         } else {
-          const {skip, limit} = bodypayload;
-          const {country, skill} = payload;
+          const {skip, limit, country, skill} = payload;
           let result;
           // if paylaod from query is empty then perfom full search on jobs
           if (JSON.stringify(payload) == '{}') {
