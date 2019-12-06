@@ -64,27 +64,45 @@ module.exports = () => {
       }
     });
   };
-  const getJobs = ({payload, token}) => {
+  const getJobs = ({payload, token, bodypayload}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
         if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
         } else {
+          const {skip, limit} = bodypayload;
           const {country, skill} = payload;
-
           let result;
-          if (skill == 'null' || !skill) {
-            result = await jobs.find({
-              country: country,
-            });
+          console.log(payload);
+          if (payload == '{}') {
+            result = await jobs
+                .find({})
+                .skip(skip)
+                .limit(limit);
           } else {
-            result = await jobs.find({
-              country: country,
-              $text: {$search: skill},
-            });
+            if (skill == 'null' || !skill) {
+              result = await jobs
+                  .find({
+                    country: country,
+                  })
+                  .skip(skip)
+                  .limit(limit);
+            } else if (country == 'null' || !country) {
+              result = await jobs
+                  .find({$text: {$search: skill}})
+                  .skip(skip)
+                  .limit(limit);
+            } else {
+              result = await jobs
+                  .find({
+                    country: country,
+                    $text: {$search: skill},
+                  })
+                  .skip(skip)
+                  .limit(limit);
+            }
           }
-
           resolve(result);
         }
         // const response = await Masterdata.findOne({ user_id: payload.userid});
