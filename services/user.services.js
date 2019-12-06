@@ -74,13 +74,14 @@ module.exports = () => {
           const {skip, limit} = bodypayload;
           const {country, skill} = payload;
           let result;
-          
+          // if paylaod from query is empty then perfom full search on jobs
           if (JSON.stringify(payload) == '{}') {
             result = await jobs
                 .find({})
                 .skip(skip)
                 .limit(limit);
           } else {
+            // if skill is not present then perfomr search based on country only
             if (skill == 'null' || !skill) {
               result = await jobs
                   .find({
@@ -88,12 +89,14 @@ module.exports = () => {
                   })
                   .skip(skip)
                   .limit(limit);
+              // if country is not present perform search based on skill
             } else if (country == 'null' || !country) {
               result = await jobs
                   .find({$text: {$search: skill}})
                   .skip(skip)
                   .limit(limit);
             } else {
+              // if both country and skill present, then perform full search based on country and skill
               result = await jobs
                   .find({
                     country: country,
@@ -105,7 +108,6 @@ module.exports = () => {
           }
           resolve(result);
         }
-        // const response = await Masterdata.findOne({ user_id: payload.userid});
       } catch (error) {
         reject(error);
       }

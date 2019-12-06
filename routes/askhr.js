@@ -1,6 +1,6 @@
 const router = require('express-promise-router')();
 
-const HrController = require('../controller/askhr')();
+const HrController = require('../controller/askhr/askhr')();
 
 router
     .route('/askhr')

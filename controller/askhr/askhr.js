@@ -1,5 +1,5 @@
 module.exports = () => {
-  const askhrservice = require('../services/askhr.service')();
+  const askhrservice = require('../../services/askhr.service')();
   // personal user function
   const askhr = async (req, res, next) => {
     try {
