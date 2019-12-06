@@ -3,13 +3,11 @@ module.exports = () => {
   // personal user function
   const getJobs = async (req, res, next) => {
     try {
-      const payload = req.query;
-      const {bodypayload, token} = req.body;
+      const {payload, token} = req.body;
       if (token) {
         const response = await userServices.getJobs({
           payload,
           token,
-          bodypayload,
         });
         if (response == 'tokenexpired') {
           res.status(200).send({

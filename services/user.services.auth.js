@@ -7,6 +7,7 @@ const {JWT_SECRET} = require('../config');
 const config = require('../config');
 const AWS = require('aws-sdk');
 module.exports = {
+
   username: async (userid) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -35,7 +36,7 @@ module.exports = {
   forgetpassword: async ({payload}) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const {url, email} = payload;
+        const {email} = payload;
         const finduser = await users.findOne({email});
         if (finduser) {
           // creating a token for password reset based on its email
@@ -97,17 +98,19 @@ module.exports = {
       }
     });
   },
-  resetpassword: async ({payload, payloadbody}) => {
+  resetpassword: async ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
+        const {newpassword, resettoken} = payload;
         // the payload contains the reset token; and the other payloadbody contains the new password
-        const decoderesettoken = JWT.verify(payload.token, JWT_SECRET);
+        const decoderesettoken = JWT.verify(resettoken, JWT_SECRET);
+        console.log(decoderesettoken);
         if (Date.now() > decoderesettoken.exp) {
           resolve('ResetTokenExpired');
         } else {
           // the payload body contains new password to be reset
           const salt = await bcrypt.genSalt(10);
-          const passwordHash = await bcrypt.hash(payloadbody.newpassword, salt);
+          const passwordHash = await bcrypt.hash(newpassword, salt);
           let [finduser] = await users.find({
             email: decoderesettoken.sub,
           });

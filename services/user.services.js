@@ -64,18 +64,17 @@ module.exports = () => {
       }
     });
   };
-  const getJobs = ({payload, token, bodypayload}) => {
+  const getJobs = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const expirytimefromtoken = await decodetoken.decodejwt(token);
         if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
         } else {
-          const {skip, limit} = bodypayload;
-          const {country, skill} = payload;
+          const {skip, limit, country, skill} = payload;
           let result;
-          
-          if (JSON.stringify(payload) == '{}') {
+
+          if ((skill == 'null' || !skill) && (country == 'null' || !country)) {
             result = await jobs
                 .find({})
                 .skip(skip)
