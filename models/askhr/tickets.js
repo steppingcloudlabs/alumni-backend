@@ -9,7 +9,7 @@ const ticketSchema = new Schema({
   },
   created_at: {
     type: Date,
-
+    value: Date.now(),
     required: true,
   },
   created_by: {
@@ -52,7 +52,6 @@ const ticketSchema = new Schema({
     response: Boolean,
   },
 });
-
 
 const Ticket = mongoose.model('tickets', ticketSchema);
 module.exports = Ticket;

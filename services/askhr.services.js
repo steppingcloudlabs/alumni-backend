@@ -25,7 +25,7 @@ module.exports = () => {
         } else {
           const responseTicket = new Ticket({
             participants,
-            created_at,
+            created_at: Date.now(),
             created_by,
             updated_by,
             title,
@@ -37,8 +37,8 @@ module.exports = () => {
             resolved_status,
           });
 
-          await responseTicket.save();
-          resolve('New Ticket Posted');
+          const result = await responseTicket.save();
+          resolve(result);
         }
       } catch (error) {
         reject(error);
