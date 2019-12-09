@@ -5,16 +5,16 @@ const {
   postTicketSchemas,
 } = require('../validator/ticketValidate');
 
-const postTicketController = require('../controller/askhr/askhr.controller')();
+const askhrController = require('../controller/askhr/askhr.controller')();
 
 router
     .route('/postticket')
-    .post(postTicketValidateBody(postTicketSchemas.authSchema), (req, res, next) => postTicketController.postTicket(req, res, next));
+    .post(postTicketValidateBody(postTicketSchemas.authSchema), (req, res, next) => askhrController.postTicket(req, res, next));
 
 
 router
     .route('/getticket')
-    .post(postTicketValidateBody(postTicketSchemas.authSchema), (req, res, next) => postTicketController.postTicket(req, res, next));
+    .post(postTicketValidateBody(postTicketSchemas.authSchema), (req, res, next) => askhrController.postTicket(req, res, next));
 
 
 module.exports = router;

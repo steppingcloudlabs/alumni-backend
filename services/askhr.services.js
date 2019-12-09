@@ -34,10 +34,8 @@ module.exports = () => {
     });
   };
 
-  const getTicket = 
   return {
-
     postTicket,
-    getTicket
+    // getTicket,
   };
 };
