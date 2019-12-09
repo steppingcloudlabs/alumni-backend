@@ -7,8 +7,6 @@ const {JWT_SECRET} = require('../config');
 const config = require('../config');
 const AWS = require('aws-sdk');
 module.exports = {
-
-
   username: async (userid) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -99,13 +97,14 @@ module.exports = {
       }
     });
   },
-  resetpassword: async ({payload, token}) => {
+  resetpassword: async ({payload, resettoken}) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const {newpassword, resettoken} = payload;
+        const {newpassword} = payload;
+        // console.log(resettoken);
         // the payload contains the reset token; and the other payloadbody contains the new password
         const decoderesettoken = JWT.verify(resettoken, JWT_SECRET);
-        console.log(decoderesettoken);
+        // console.log(decoderesettoken);
         if (Date.now() > decoderesettoken.exp) {
           resolve('ResetTokenExpired');
         } else {

@@ -37,7 +37,7 @@ router
         (req, res, next) => UserController.forgetpassword(req, res, next)
     );
 router
-    .route('/reset/')
+    .route('/reset/:token')
     .post((req, res, next) => UserController.resetpassword(req, res, next));
 
 module.exports = router;
