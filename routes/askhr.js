@@ -9,12 +9,19 @@ const askhrController = require('../controller/askhr/askhr.controller')();
 
 router
     .route('/postticket')
-    .post(postTicketValidateBody(postTicketSchemas.authSchema), (req, res, next) => askhrController.postTicket(req, res, next));
-
+    .post(
+        postTicketValidateBody(postTicketSchemas.authSchema),
+        (req, res, next) => askhrController.postTicket(req, res, next)
+    );
 
 router
     .route('/getticket')
-    .post(postTicketValidateBody(postTicketSchemas.authSchema), (req, res, next) => askhrController.postTicket(req, res, next));
-
+    .post(
+        postTicketValidateBody(postTicketSchemas.authSchema),
+        (req, res, next) => askhrController.postTicket(req, res, next)
+    );
+router
+    .route('/postmessage')
+    .post((req, res, next) => askhrController.postmessage(req, res, next));
 
 module.exports = router;
