@@ -1,5 +1,5 @@
 module.exports = () => {
-  const postTicketService = require('../../services/postTicket.service')();
+  const postTicketService = require('../../services/postTicket.services')();
   // personal user function
   const postTicket = async (req, res, next) => {
     try {
@@ -33,3 +33,4 @@ module.exports = () => {
     postTicket,
   };
 };
+

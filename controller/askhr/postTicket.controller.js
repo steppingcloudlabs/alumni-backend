@@ -1,11 +1,12 @@
 module.exports = () => {
-  const askhrservice = require('../../services/askhr.service')();
+  const postTicketService = require('../../services/postTicket.services')();
   // personal user function
-  const askhr = async (req, res, next) => {
+  const postTicket = async (req, res, next) => {
     try {
       const {payload, token} = req.body;
+
       if (token) {
-        const response = await askhrservice.askhr({payload, token});
+        const response = await postTicketService.postTicket({payload, token});
         if (response == 'tokenexpired') {
           res.status(200).send({
             status: '400',
@@ -29,6 +30,6 @@ module.exports = () => {
   };
 
   return {
-    askhr,
+    postTicket,
   };
 };
