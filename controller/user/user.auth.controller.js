@@ -31,8 +31,8 @@ module.exports = {
       res.status(200).send({
         status: 200,
         result: {
-          'firstName': response.first_name_personal_information,
-          'lastName': response.last_name_personal_information,
+          firstName: response.first_name_personal_information,
+          lastName: response.last_name_personal_information,
         },
       });
     }
@@ -51,15 +51,17 @@ module.exports = {
       });
     } else {
       const response = await userServices.usersignin(req.user.userid);
-      const token = JWT.sign({
-        iss: 'steppingcloudforuser',
-        sub: req.user.userid,
-        jwtKey: 'steppingcloudsecret',
-        algorithm: 'HS256',
-        iat: new Date().getTime(),
-        exp: new Date().setTime(new Date().getTime() + 900000),
-      },
-      JWT_SECRET);
+      const token = JWT.sign(
+          {
+            iss: 'steppingcloudforuser',
+            sub: req.user.userid,
+            jwtKey: 'steppingcloudsecret',
+            algorithm: 'HS256',
+            iat: new Date().getTime(),
+            exp: new Date().setTime(new Date().getTime() + 900000),
+          },
+          JWT_SECRET
+      );
       res.status(200).send({
         status: 200,
         result: response,
@@ -89,8 +91,11 @@ module.exports = {
   },
   resetpassword: async (req, res, next) => {
     try {
-      const {payload} = req.body;
-      const response = await userServices.resetpassword({payload});
+      const {payload, resettoken} = req.body;
+      const response = await userServices.resetpassword({
+        payload,
+        resettoken,
+      });
       if (response == 'ResetTokenExpired') {
         res.status(200).send({
           status: 400,
