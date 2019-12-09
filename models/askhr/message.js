@@ -12,7 +12,6 @@ const messageSchema = new Schema({
   message: {
     type: String,
     required: true,
-    lowercase: true,
   },
   created_at: {
     type: Date,

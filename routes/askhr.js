@@ -12,10 +12,7 @@ router
     );
 router
     .route('/getticket')
-    .post(
-        postTicketValidateBody(postTicketSchemas.authSchema),
-        (req, res, next) => askhrController.postTicket(req, res, next)
-    );
+    .post((req, res, next) => askhrController.getTicket(req, res, next));
 router
     .route('/postmessage')
     .post((req, res, next) => askhrController.postmessage(req, res, next));

@@ -2,50 +2,70 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ticketSchema = new Schema({
-  participants: {
-    type: [Schema.Types.ObjectId],
-    required: true,
-    unique: true,
-  },
+  participants: [
+    {
+      type: [Schema.Types.ObjectId],
+      required: true,
+      ref: 'user',
+    },
+  ],
   created_at: {
     type: Date,
     value: Date.now(),
     required: true,
   },
-  created_by: {
-    type: Schema.Types.ObjectId,
-  },
-  updated_by: {
-    type: Schema.Types.ObjectId,
-  },
+  created_by: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+    },
+  ],
+  updated_by: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+    },
+  ],
   title: {
     type: String,
     required: true,
     unique: true,
   },
-  message: {
-    type: [Schema.Types.ObjectId],
-    required: true,
-  },
+  message: [
+    {
+      type: [Schema.Types.ObjectId],
+      required: true,
+      ref: 'messages',
+    },
+  ],
   esclation: {
     type: Boolean,
     required: true,
   },
-  esclation_manager_1: {
-    type: [Schema.Types.ObjectId],
-    required: true,
-    response: Boolean,
-  },
-  esclation_manager_2: {
-    type: [Schema.Types.ObjectId],
-    required: true,
-    response: Boolean,
-  },
-  esclation_manager_3: {
-    type: [Schema.Types.ObjectId],
-    required: true,
-    response: Boolean,
-  },
+  esclation_manager_1: [
+    {
+      type: [Schema.Types.ObjectId],
+      required: true,
+      response: Boolean,
+      ref: 'user',
+    },
+  ],
+  esclation_manager_2: [
+    {
+      type: [Schema.Types.ObjectId],
+      required: true,
+      response: Boolean,
+      ref: 'user',
+    },
+  ],
+  esclation_manager_3: [
+    {
+      type: [Schema.Types.ObjectId],
+      required: true,
+      response: Boolean,
+      ref: 'user',
+    },
+  ],
   resolved_status: {
     type: Boolean,
     required: true,
