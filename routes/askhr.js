@@ -5,7 +5,7 @@ const {
   postTicketSchemas,
 } = require('../validator/ticketValidate');
 
-const postTicketController = require('../controller/askhr/postTicket.controller')();
+const postTicketController = require('../controller/askhr/askhr.controller')();
 
 router
     .route('/postticket')
