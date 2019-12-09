@@ -23,5 +23,8 @@ router
 router
     .route('/postmessage')
     .post((req, res, next) => askhrController.postmessage(req, res, next));
+router
+    .route('/getmessage')
+    .post((req, res, next) => askhrController.getmessage(req, res, next));
 
 module.exports = router;

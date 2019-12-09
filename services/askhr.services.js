@@ -49,7 +49,7 @@ module.exports = () => {
   const postmessage = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const {senders, message, created_at} = payload;
+        const {senders, message} = payload;
         const expirytimefromtoken = await decodetoken.decodejwt(token);
         if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
@@ -57,10 +57,29 @@ module.exports = () => {
           const result = new Message({
             senders,
             message,
-            created_at,
+            created_at: Date.now(),
           });
           const response = await result.save();
           resolve(response);
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+
+  const getmessage = ({payload, token}) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const {_id} = payload;
+        const expirytimefromtoken = await decodetoken.decodejwt(token);
+        if (Date.now() > expirytimefromtoken) {
+          resolve('tokenexpired');
+        } else {
+          const result = await Message.findOne({_id}).populate('senders', [
+            'userType',
+          ]);
+          resolve(result);
         }
       } catch (error) {
         reject(error);
@@ -71,5 +90,6 @@ module.exports = () => {
     postTicket,
     // getTicket,
     postmessage,
+    getmessage,
   };
 };
