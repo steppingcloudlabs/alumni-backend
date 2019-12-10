@@ -78,21 +78,21 @@ module.exports = () => {
         if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
         } else {
-          const result = new Message({
+          // Creating a new message and saving it in message schema
+          const newMessage = new Message({
             senders,
             message,
             created_at: Date.now(),
           });
-          const response = await result.save();
+          const response = await newMessage.save();
 
-          // We shall add the Object_Id of the message we just created into  corresponding ticket.
-          // Step_01: Store the Objec_Id of the message created
+          // Getting the Objec_Id of the message created
           const message_id = response._id;
 
-          // Step_02: Get the ticket corresponding to our message
+          // Getting the ticket corresponding to our message using the ticket_id comming from payload
           const responseTicket = await Ticket.findOne({_id: ticket_id});
 
-          // Step_03: Concat the Object_Id of the message to the ticket
+          // Concat the newly created Object_Id of the message into the ticket message field
           responseTicket.message = responseTicket.message.concat(message_id);
 
           // Save the ticket
