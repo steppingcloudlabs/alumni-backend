@@ -1,9 +1,9 @@
 /* eslint-disable max-len */
-const decodetoken = require("../utils/jwt.decode")();
-const Ticket = require("../models/askhr/tickets");
-const Message = require("../models/askhr/message");
+const decodetoken = require('../utils/jwt.decode')();
+const Ticket = require('../models/askhr/tickets');
+const Message = require('../models/askhr/message');
 module.exports = () => {
-  const postTicket = ({ payload, token }) => {
+  const postTicket = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
         const {
@@ -17,16 +17,16 @@ module.exports = () => {
           esclation_manager_1,
           esclation_manager_2,
           esclation_manager_3,
-          resolved_status
+          resolved_status,
         } = payload;
         const expirytimefromtoken = await decodetoken.decodejwt(token);
         if (Date.now() > expirytimefromtoken) {
-          resolve("tokenexpired");
+          resolve('tokenexpired');
         } else {
           const firstmessage = new Message({
             senders: created_by,
-            message: "This Is the first message",
-            created_at: Date.now()
+            message: 'This Is the first message',
+            created_at: Date.now(),
           });
           const savedmsg = await firstmessage.save();
           const responseTicket = new Ticket({
@@ -40,7 +40,7 @@ module.exports = () => {
             esclation_manager_1,
             esclation_manager_2,
             esclation_manager_3,
-            resolved_status
+            resolved_status,
           });
           const result = await responseTicket.save();
           resolve(result);
@@ -50,21 +50,23 @@ module.exports = () => {
       }
     });
   };
-  const getTicket = ({ payload, token }) => {
+  const getTicket = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const { _id } = payload;
+        const {_id, skip, limit} = payload;
         const expirytimefromtoken = await decodetoken.decodejwt(token);
         if (Date.now() > expirytimefromtoken) {
-          resolve("tokenexpired");
+          resolve('tokenexpired');
         } else {
-          const result = await Ticket.findOne({ _id }).populate({
-            path: "message",
-            select: { _id: 0, senders: 1, message: 1, created_at: 1 },
-            populate: { path: "senders", select: { _id: 0, userType: 1 } }
+          const result = await Ticket.findOne({_id}).populate({
+            path: 'message',
+            select: {_id: 0, senders: 1, message: 1, created_at: 1}, options: {
+              limit: (limit),
+              skip: (skip),
+            },
+            populate: {path: 'senders', select: {_id: 0, userType: 1}},
           });
-          const response = result.populate("senders");
-          resolve(response);
+          resolve(result);
         }
       } catch (error) {
         reject(error);
@@ -72,19 +74,19 @@ module.exports = () => {
     });
   };
 
-  const postmessage = ({ payload, token }) => {
+  const postmessage = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const { senders, message, ticket_id } = payload;
+        const {senders, message, ticket_id} = payload;
         const expirytimefromtoken = await decodetoken.decodejwt(token);
         if (Date.now() > expirytimefromtoken) {
-          resolve("tokenexpired");
+          resolve('tokenexpired');
         } else {
           // Creating a new message and saving it in message schema
           const newMessage = new Message({
             senders,
             message,
-            created_at: Date.now()
+            created_at: Date.now(),
           });
           const response = await newMessage.save();
 
@@ -92,7 +94,7 @@ module.exports = () => {
           const message_id = response._id;
 
           // Getting the ticket corresponding to our message using the ticket_id comming from payload
-          const responseTicket = await Ticket.findOne({ _id: ticket_id });
+          const responseTicket = await Ticket.findOne({_id: ticket_id});
 
           // Concat the newly created Object_Id of the message into the ticket message field
           responseTicket.message = responseTicket.message.concat(message_id);
@@ -108,16 +110,16 @@ module.exports = () => {
     });
   };
 
-  const getmessage = ({ payload, token }) => {
+  const getmessage = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const { _id } = payload;
+        const {_id} = payload;
         const expirytimefromtoken = await decodetoken.decodejwt(token);
         if (Date.now() > expirytimefromtoken) {
-          resolve("tokenexpired");
+          resolve('tokenexpired');
         } else {
-          const result = await Message.findOne({ _id }).populate("senders", [
-            "userType"
+          const result = await Message.findOne({_id}).populate('senders', [
+            'userType',
           ]);
           resolve(result);
         }
@@ -130,6 +132,6 @@ module.exports = () => {
     postTicket,
     getTicket,
     postmessage,
-    getmessage
+    getmessage,
   };
 };
