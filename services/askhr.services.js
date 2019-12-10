@@ -58,11 +58,9 @@ module.exports = () => {
         if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
         } else {
-          const result = await Ticket.findOne({_id}).populate('message', {
-            message: 1,
-            _id: 0,
-          });
-          resolve(result);
+          const result = await Ticket.findOne({_id}).populate({path: 'message', select: {_id: 0, senders: 1, message: 1, created_at: 1}, populate: {path: 'senders', select: {_id: 0, userType: 1}}});
+          const response = result.populate('senders');
+          resolve(response);
         }
       } catch (error) {
         reject(error);
@@ -116,7 +114,7 @@ module.exports = () => {
         } else {
           const result = await Message.findOne({_id}).populate('senders', [
             'userType',
-          ]);
+          ] );
           resolve(result);
         }
       } catch (error) {
