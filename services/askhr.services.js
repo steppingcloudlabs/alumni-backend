@@ -53,17 +53,30 @@ module.exports = () => {
   const getTicket = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
+<<<<<<< HEAD
         const {_id} = payload;
+=======
+        const {_id, skip, limit} = payload;
+>>>>>>> 1c7e57141a615f2c820a271e1ae7b29a7f7ccd70
         const expirytimefromtoken = await decodetoken.decodejwt(token);
         if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
         } else {
           const result = await Ticket.findOne({_id}).populate({
             path: 'message',
+<<<<<<< HEAD
             select: {_id: 0, senders: 1, message: 1, created_at: 1},
             populate: {path: 'senders', select: {_id: 0, userType: 1}},
           });
           // const response = result.populate("senders");
+=======
+            select: {_id: 0, senders: 1, message: 1, created_at: 1}, options: {
+              limit: (limit),
+              skip: (skip),
+            },
+            populate: {path: 'senders', select: {_id: 0, userType: 1}},
+          });
+>>>>>>> 1c7e57141a615f2c820a271e1ae7b29a7f7ccd70
           resolve(result);
         }
       } catch (error) {
