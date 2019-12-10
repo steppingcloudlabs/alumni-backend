@@ -2,11 +2,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 // using ref :"user" Schema; both admin and user are present in "user" Schema
 const ticketSchema = new Schema({
-  participants: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: 'user',
-  },
+  participants: [
+    {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: 'user',
+    },
+  ],
 
   created_at: {
     type: Date,
@@ -28,11 +30,13 @@ const ticketSchema = new Schema({
     required: true,
     unique: true,
   },
-  message: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: 'messages',
-  },
+  message: [
+    {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: 'messages',
+    },
+  ],
 
   esclation: {
     type: Boolean,
