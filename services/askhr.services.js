@@ -133,10 +133,28 @@ module.exports = () => {
       }
     });
   };
+
+  const escalate = ({payload, token}) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        // const {skip, limit} = payload;
+        const expirytimefromtoken = await decodetoken.decodejwt(token);
+        if (Date.now() > expirytimefromtoken) {
+          resolve('tokenexpired');
+        } else {
+          resolve('Working');
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+
   return {
     postTicket,
     getTicket,
     postmessage,
     getmessage,
+    escalate,
   };
 };

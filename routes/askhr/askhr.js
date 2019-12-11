@@ -19,4 +19,8 @@ router
 router
     .route('/getmessage')
     .post((req, res, next) => askhrController.getmessage(req, res, next));
+
+router
+    .route('/escalate')
+    .post((req, res, next) => askhrController.escalate(req, res, next));
 module.exports = router;
