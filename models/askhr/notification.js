@@ -20,7 +20,7 @@ const notificationSystem = new Schema({
   },
   created_at: {
     type: Date,
-    default: Date.now,
+    default: Date.now(),
   },
   seen_status: {
     type: Boolean,

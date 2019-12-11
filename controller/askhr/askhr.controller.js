@@ -209,10 +209,10 @@ module.exports = () => {
             status: '400',
             result: 'Token expired, Please Login Again',
           });
-        } else if (response == 'success') {
+        } else {
           res.status(200).send({
             status: '200',
-            result: 'Notification send',
+            result: response,
           });
         }
       } else {
@@ -235,10 +235,10 @@ module.exports = () => {
             status: '400',
             result: 'Token expired, Please Login Again',
           });
-        } else if (response == 'success') {
+        } else {
           res.status(200).send({
             status: '200',
-            result: 'Fetched Notification',
+            result: response,
           });
         }
       } else {

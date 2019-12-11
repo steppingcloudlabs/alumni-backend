@@ -241,12 +241,17 @@ module.exports = () => {
   const postnotification = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const {_id, resolved_status} = payload;
+        const {user, content} = payload;
         const expirytimefromtoken = await decodetoken.decodejwt(token);
         if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
         } else {
-          resolve('success');
+          const savenotification = new Notification({
+            user,
+            content,
+          });
+          const result = await savenotification.save();
+          resolve(result);
         }
       } catch (error) {
         reject(error);
@@ -256,12 +261,24 @@ module.exports = () => {
   const getnotification = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const {_id, resolved_status} = payload;
+        const {user} = payload;
         const expirytimefromtoken = await decodetoken.decodejwt(token);
         if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
         } else {
-          resolve('success');
+          let [result] = await Notification.find({user});
+          if (result) {
+            result = await result.updateOne(
+                {
+                  seen_status: true,
+                },
+                {
+                  new: true,
+                }
+            );
+
+            result.ok == 1 ? resolve(result) : reject(error);
+          }
         }
       } catch (error) {
         reject(error);
