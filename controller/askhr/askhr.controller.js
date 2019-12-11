@@ -122,10 +122,17 @@ module.exports = () => {
             result: 'Token expired, Please Login Again',
           });
         } else {
-          res.status(200).send({
-            status: '200',
-            result: response,
-          });
+          if (response == 'E') {
+            res.status(200).send({
+              status: '200',
+              result: 'Escalate',
+            });
+          } else {
+            res.status(200).send({
+              status: '200',
+              result: 'Dont Escalate',
+            });
+          }
         }
       } else {
         res.status(200).json({
