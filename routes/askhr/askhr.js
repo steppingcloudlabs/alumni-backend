@@ -26,4 +26,7 @@ router
 router
     .route('/ticketstatus')
     .post((req, res, next) => askhrController.ticketstatus(req, res, next));
+router
+    .route('/updatemanager')
+    .post((req, res, next) => askhrController.updatemanager(req, res, next));
 module.exports = router;

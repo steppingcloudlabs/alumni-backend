@@ -175,6 +175,57 @@ module.exports = () => {
       }
     });
   };
+  const updatemanager = ({payload, token}) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const {_id, new_manager_obejctid, manager} = payload;
+        // console.log(payload);
+        const expirytimefromtoken = await decodetoken.decodejwt(token);
+        if (Date.now() > expirytimefromtoken) {
+          resolve('tokenexpired');
+        } else {
+          let [result] = await Ticket.find({_id: _id});
+
+          if (manager == 'esclation_manager_1') {
+            result = await result.updateOne(
+                {
+                  esclation_manager_1: new_manager_obejctid,
+                },
+                {
+                  new: true,
+                }
+            );
+
+            result.ok == 1 ? resolve('success') : reject(error);
+          } else if (manager == 'esclation_manager_2') {
+            result = await result.updateOne(
+                {
+                  esclation_manager_2: new_manager_obejctid,
+                },
+                {
+                  new: true,
+                }
+            );
+
+            result.ok == 1 ? resolve('success') : reject(error);
+          } else if (manager == 'esclation_manager_3') {
+            result = await result.updateOne(
+                {
+                  esclation_manager_3: new_manager_obejctid,
+                },
+                {
+                  new: true,
+                }
+            );
+
+            result.ok == 1 ? resolve('success') : reject(error);
+          }
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
 
   return {
     postTicket,
@@ -183,5 +234,6 @@ module.exports = () => {
     getmessage,
     escalate,
     ticketstatus,
+    updatemanager,
   };
 };
