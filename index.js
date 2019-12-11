@@ -51,7 +51,7 @@ app.use('/personaluser', personalRoutes);
 const awsadminRoutes = require('./routes/admin/actions/adminaction');
 app.use('/awsadmin', awsadminRoutes);
 
-const askhrroutes = require('./routes/askhr');
+const askhrroutes = require('./routes/askhr/askhr');
 app.use('/hrroutes', askhrroutes);
 
 app.listen(config['port'], () => {
