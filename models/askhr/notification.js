@@ -6,29 +6,26 @@ const notificationSystem = new Schema({
     type: Schema.Types.ObjectId,
     required: true,
     ref: 'user',
-    notification: [{
-      expireAt: {
-        type: Date,
-        default: Date.now,
-        index: {
-          expires: '43800m',
-        },
-      },
-      content: {
-        type: String,
-        required: true,
-      },
-      created_at: {
-        type: Date,
-        default: Date.now,
-      },
-      seen_status: {
-        type: Boolean,
-        default: false,
-      },
-    }],
   },
-
+  expireAt: {
+    type: Date,
+    default: Date.now,
+    index: {
+      expires: '43800m',
+    },
+  },
+  content: {
+    type: String,
+    required: true,
+  },
+  created_at: {
+    type: Date,
+    default: Date.now,
+  },
+  seen_status: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const notification = mongoose.model('notification', notificationSystem);
