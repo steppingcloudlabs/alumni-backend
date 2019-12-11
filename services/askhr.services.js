@@ -2,7 +2,7 @@
 const decodetoken = require('../utils/jwt.decode')();
 const Ticket = require('../models/askhr/tickets');
 const Message = require('../models/askhr/message');
-
+const Notification = require('../models/askhr/notification');
 const Utils = require('../utils/getFirstMessageDateFromTicket')();
 module.exports = () => {
   const postTicket = ({payload, token}) => {
@@ -186,6 +186,7 @@ module.exports = () => {
       }
     });
   };
+  // Update the manager i.e escalation_1; escalation_2; escaltion_3
   const updatemanager = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
