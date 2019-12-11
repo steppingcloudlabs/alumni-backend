@@ -18,7 +18,7 @@ module.exports = () => {
           if (response.length == 0) {
             res.status(200).send({
               status: '400',
-              result: 'No Jobs',
+              result: {},
             });
           } else {
             res.status(200).send({

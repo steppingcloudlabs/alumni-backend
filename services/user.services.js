@@ -72,9 +72,10 @@ module.exports = () => {
           resolve('tokenexpired');
         } else {
           const {skip, limit, country, skill} = payload;
+          console.log(payload.country);
           let result;
           // if paylaod from query is empty then perfom full search on jobs
-          if (JSON.stringify(payload) == '{}') {
+          if ((skill == 'null' || !skill) && (country == 'null' || !country)) {
             result = await jobs
                 .find({})
                 .skip(skip)
