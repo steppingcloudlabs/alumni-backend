@@ -2,6 +2,8 @@
 const decodetoken = require('../utils/jwt.decode')();
 const Ticket = require('../models/askhr/tickets');
 const Message = require('../models/askhr/message');
+
+const Utils = require('../utils/getFirstMessageDateFromTicket')();
 module.exports = () => {
   const postTicket = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
@@ -64,6 +66,7 @@ module.exports = () => {
             options: {
               limit: limit,
               skip: skip,
+              sort: {created_at: 1},
             },
             populate: {path: 'senders', select: {_id: 0, userType: 1}},
           });
@@ -137,12 +140,20 @@ module.exports = () => {
   const escalate = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
-        // const {skip, limit} = payload;
+        const {_id} = payload;
         const expirytimefromtoken = await decodetoken.decodejwt(token);
         if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
         } else {
-          resolve('Working');
+          const escalationDate = await Utils.getFirstMessageDateFromTicket(_id);
+          const currentDate = Date.now();
+          console.log(escalationDate);
+          console.log(currentDate);
+          if (escalationDate <= currentDate) {
+            resolve('E');
+          } else {
+            resolve('DE');
+          }
         }
       } catch (error) {
         reject(error);
@@ -226,6 +237,7 @@ module.exports = () => {
       }
     });
   };
+
 
   return {
     postTicket,
