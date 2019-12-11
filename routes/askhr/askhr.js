@@ -23,4 +23,7 @@ router
 router
     .route('/escalate')
     .post((req, res, next) => askhrController.escalate(req, res, next));
+router
+    .route('/ticketstatus')
+    .post((req, res, next) => askhrController.ticketstatus(req, res, next));
 module.exports = router;
