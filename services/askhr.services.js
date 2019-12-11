@@ -160,6 +160,32 @@ module.exports = () => {
       }
     });
   };
+  const ticketstatus = ({payload, token}) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const {_id, resolved_status} = payload;
+        const expirytimefromtoken = await decodetoken.decodejwt(token);
+        if (Date.now() > expirytimefromtoken) {
+          resolve('tokenexpired');
+        } else {
+          let [result] = await Ticket.find({_id: _id});
+          if (result) {
+            result = await result.updateOne(
+                {
+                  resolved_status: resolved_status,
+                },
+                {
+                  new: true,
+                }
+            );
+          }
+          result.ok == 1 ? resolve('success') : reject(error);
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
 
 
   return {
@@ -168,5 +194,6 @@ module.exports = () => {
     postmessage,
     getmessage,
     escalate,
+    ticketstatus,
   };
 };
