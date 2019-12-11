@@ -237,7 +237,36 @@ module.exports = () => {
       }
     });
   };
-
+  const postnotification = ({payload, token}) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const {_id, resolved_status} = payload;
+        const expirytimefromtoken = await decodetoken.decodejwt(token);
+        if (Date.now() > expirytimefromtoken) {
+          resolve('tokenexpired');
+        } else {
+          resolve('success');
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+  const getnotification = ({payload, token}) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const {_id, resolved_status} = payload;
+        const expirytimefromtoken = await decodetoken.decodejwt(token);
+        if (Date.now() > expirytimefromtoken) {
+          resolve('tokenexpired');
+        } else {
+          resolve('success');
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
 
   return {
     postTicket,
@@ -247,5 +276,7 @@ module.exports = () => {
     escalate,
     ticketstatus,
     updatemanager,
+    postnotification,
+    getnotification,
   };
 };
