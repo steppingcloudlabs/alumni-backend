@@ -2,8 +2,8 @@ const router = require('express-promise-router')();
 const {
   postTicketValidateBody,
   postTicketSchemas,
-} = require('../validator/ticketValidate');
-const askhrController = require('../controller/askhr/askhr.controller')();
+} = require('../../validator/ticketValidate');
+const askhrController = require('../../controller/askhr/askhr.controller')();
 router
     .route('/postticket')
     .post(
