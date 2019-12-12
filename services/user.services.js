@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 const config = require('../config/index');
 const jobs = require('../models/user/jobs');
+const skills = require('../models/user/skills');
 module.exports = () => {
   const {
     getDataFromMaster,
@@ -112,9 +113,33 @@ module.exports = () => {
       }
     });
   };
+  const addskills = ({payload, token}) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const expirytimefromtoken = await decodetoken.decodejwt(token);
+        if (Date.now() > expirytimefromtoken) {
+          resolve('tokenexpired');
+        } else {
+          const {skillsList} = payload;
+          const newSkill = new skills({skills: skillsList});
+          const result = await newSkill.save();
+          if (result) {
+            resolve(result.skills);
+          } else {
+            resolve('Fail');
+          }
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+
+
   return {
     userinfo,
     userstatus,
     getJobs,
+    addskills,
   };
 };
