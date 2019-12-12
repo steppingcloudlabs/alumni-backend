@@ -2,7 +2,7 @@
 const decodetoken = require('../utils/jwt.decode')();
 const Ticket = require('../models/askhr/tickets');
 const Message = require('../models/askhr/message');
-
+const Notification = require('../models/askhr/notification');
 const Utils = require('../utils/getFirstMessageDateFromTicket')();
 module.exports = () => {
   const postTicket = ({payload, token}) => {
@@ -186,7 +186,105 @@ module.exports = () => {
       }
     });
   };
+  // Update the manager i.e escalation_1; escalation_2; escaltion_3
+  const updatemanager = ({payload, token}) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const {_id, new_manager_obejctid, manager} = payload;
+        // console.log(payload);
+        const expirytimefromtoken = await decodetoken.decodejwt(token);
+        if (Date.now() > expirytimefromtoken) {
+          resolve('tokenexpired');
+        } else {
+          let [result] = await Ticket.find({_id: _id});
 
+          if (manager == 'esclation_manager_1') {
+            result = await result.updateOne(
+                {
+                  esclation_manager_1: new_manager_obejctid,
+                },
+                {
+                  new: true,
+                }
+            );
+
+            result.ok == 1 ? resolve('success') : reject(error);
+          } else if (manager == 'esclation_manager_2') {
+            result = await result.updateOne(
+                {
+                  esclation_manager_2: new_manager_obejctid,
+                },
+                {
+                  new: true,
+                }
+            );
+
+            result.ok == 1 ? resolve('success') : reject(error);
+          } else if (manager == 'esclation_manager_3') {
+            result = await result.updateOne(
+                {
+                  esclation_manager_3: new_manager_obejctid,
+                },
+                {
+                  new: true,
+                }
+            );
+
+            result.ok == 1 ? resolve('success') : reject(error);
+          }
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+  const postnotification = ({payload, token}) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const {user, content} = payload;
+        const expirytimefromtoken = await decodetoken.decodejwt(token);
+        if (Date.now() > expirytimefromtoken) {
+          resolve('tokenexpired');
+        } else {
+          const savenotification = new Notification({
+            user,
+            content,
+          });
+          const result = await savenotification.save();
+          resolve(result);
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+  const getnotification = ({payload, token}) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const {user} = payload;
+        const expirytimefromtoken = await decodetoken.decodejwt(token);
+        if (Date.now() > expirytimefromtoken) {
+          resolve('tokenexpired');
+        } else {
+          let [result] = await Notification.find({user});
+          if (result) {
+            result = await result.updateOne(
+                {
+                  seen_status: true,
+                },
+                {
+                  new: true,
+                }
+            );
+
+            result.ok == 1 ? resolve(result) : reject(error);
+          }
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
 
   return {
     postTicket,
@@ -195,5 +293,8 @@ module.exports = () => {
     getmessage,
     escalate,
     ticketstatus,
+    updatemanager,
+    postnotification,
+    getnotification,
   };
 };

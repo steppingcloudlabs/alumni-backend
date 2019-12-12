@@ -26,4 +26,14 @@ router
 router
     .route('/ticketstatus')
     .post((req, res, next) => askhrController.ticketstatus(req, res, next));
+router
+    .route('/updatemanager')
+    .post((req, res, next) => askhrController.updatemanager(req, res, next));
+router
+    .route('/postnotification')
+    .post((req, res, next) => askhrController.postnotification(req, res, next));
+router
+    .route('/getnotification')
+    .post((req, res, next) => askhrController.getnotification(req, res, next));
+
 module.exports = router;
