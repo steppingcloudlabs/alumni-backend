@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
 const notificationSystem = new Schema({
   user: {
     type: Schema.Types.ObjectId,
@@ -27,6 +26,5 @@ const notificationSystem = new Schema({
     default: false,
   },
 });
-
 const notification = mongoose.model('notification', notificationSystem);
 module.exports = notification;

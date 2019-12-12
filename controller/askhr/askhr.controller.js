@@ -116,6 +116,7 @@ module.exports = () => {
 
       if (token) {
         const response = await askhrService.escalate({payload, token});
+
         if (response == 'tokenexpired') {
           res.status(200).send({
             status: '400',

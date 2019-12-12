@@ -37,10 +37,10 @@ const ticketSchema = new Schema({
       ref: 'messages',
     },
   ],
-
   esclation: {
-    type: Boolean,
-    required: true,
+    type: String,
+    enum: ['true', 'false'],
+    default: 'false',
   },
   esclation_manager_1: {
     type: Schema.Types.ObjectId,
@@ -48,6 +48,7 @@ const ticketSchema = new Schema({
     response: Boolean,
     ref: 'user',
   },
+
   esclation_manager_2: {
     type: Schema.Types.ObjectId,
     required: true,
@@ -59,6 +60,11 @@ const ticketSchema = new Schema({
     required: true,
     response: Boolean,
     ref: 'user',
+  },
+  esclation_manager: {
+    type: String,
+    enum: ['esclation_manager_1', 'esclation_manager_2', 'esclation_manager_3'],
+    default: 'esclation_manager_1',
   },
   resolved_status: {
     type: Boolean,
