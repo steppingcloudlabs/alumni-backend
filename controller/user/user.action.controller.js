@@ -11,23 +11,20 @@ module.exports = () => {
             status: '400',
             result: 'Token expired, Please Login Again',
           });
-        }
-        else {
+        } else {
           if (response.length == 0) {
             res.status(200).send({
               status: '400',
               result: 'Error while getting user',
             });
-          }
-          else {
+          } else {
             res.status(200).send({
               status: '200',
               result: response,
             });
           }
         }
-      }
-      else {
+      } else {
         res.status(200).json({
           status: 400,
           result: 'Rejected Request, Token Required',
@@ -47,8 +44,7 @@ module.exports = () => {
             status: '400',
             result: 'Token expired, Please Login Again',
           });
-        }
-        else {
+        } else {
           if (response && response.length == 0) {
             res.status(200).send({
               status: 400,
@@ -61,22 +57,56 @@ module.exports = () => {
             });
           }
         }
-      }
-      else {
+      } else {
         res.status(200).json({
           status: 400,
           result: 'Rejected Request, Token Required',
         });
       }
-
     } catch (error) {
       next(error);
     }
   };
 
+  const addskills = async (req, res, next) => {
+    try {
+      const {payload, token} = req.body;
+      const response = await userServices.addskills({payload, token});
+      if (token) {
+        if (response == 'tokenexpired') {
+          res.status(200).send({
+            status: '400',
+            result: 'Token expired, Please Login Again',
+          });
+        } else {
+          if (response == 'Fail') {
+            res.status(200).send({
+              status: '400',
+              result: Failed,
+            });
+          } else {
+            res.status(200).send({
+              status: '200 OK',
+              result: response,
+            });
+          }
+        }
+      } else {
+        res.status(200).json({
+          status: 400,
+          result: 'Rejected Request, Token Required',
+        });
+      }
+    } catch (error) {
+      next(error);
+    }
+  };
+
+
   return {
     userinfo,
     userStatus,
+    addskills,
 
   };
 };
