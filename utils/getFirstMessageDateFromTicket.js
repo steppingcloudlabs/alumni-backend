@@ -14,15 +14,18 @@ module.exports = () => {
         });
 
         let firstUserMessage;
-        for ( let i= 0; i < result.message.length; i++ ) {
+        for (let i = 0; i < result.message.length; i++) {
           if (result.message[i].senders.userType == 'admin') {
-            firstUserMessage = result.message[i -1];
+            firstUserMessage = result.message[i - 1];
             break;
           }
         }
         // const newtime=firstUserMessage.created_at+new Date().getTime(new Date().setTime() + 900000 );
         // const okay= newtime.toString();
-        const escalationDate = firstUserMessage.created_at.setDate(new Date().getDate() + 15);
+        const escalationDate =
+          firstUserMessage.created_at +
+          new Date().getTime(new Date().setTime() - 100);
+
         resolve(escalationDate);
       } catch (error) {
         reject(error);

@@ -2,8 +2,10 @@
 const decodetoken = require('../utils/jwt.decode')();
 const Ticket = require('../models/askhr/tickets');
 const Message = require('../models/askhr/message');
+const User = require('../models/user/auth');
 const Notification = require('../models/askhr/notification');
 const Utils = require('../utils/getFirstMessageDateFromTicket')();
+const emailUtil = require('../utils/emailservices')();
 module.exports = () => {
   const postTicket = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
@@ -60,16 +62,21 @@ module.exports = () => {
         if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
         } else {
-          const result = await Ticket.findOne({_id}).populate({
-            path: 'message',
-            select: {_id: 0, senders: 1, message: 1, created_at: 1},
-            options: {
-              limit: limit,
-              skip: skip,
-              sort: {created_at: 1},
-            },
-            populate: {path: 'senders', select: {_id: 0, userType: 1}},
-          });
+          const result = await Ticket.findOne({_id})
+              .populate({
+                path: 'esclation_manager_1',
+                select: {_id: 1, userType: 1},
+              })
+              .populate({
+                path: 'message',
+                select: {_id: 0, senders: 1, message: 1, created_at: 1},
+                options: {
+                  limit: limit,
+                  skip: skip,
+                  sort: {created_at: 1},
+                },
+                populate: {path: 'senders', select: {_id: 0, userType: 1}},
+              });
           resolve(result);
         }
       } catch (error) {
@@ -140,16 +147,54 @@ module.exports = () => {
   const escalate = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const {_id} = payload;
+        const {_id, esclation_manager} = payload;
         const expirytimefromtoken = await decodetoken.decodejwt(token);
         if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
         } else {
           const escalationDate = await Utils.getFirstMessageDateFromTicket(_id);
-          const currentDate = Date.now();
-          console.log(escalationDate);
-          console.log(currentDate);
-          if (escalationDate <= currentDate) {
+          const currentDate = new Date(Date.now());
+          // console.log(escalationDate);
+          // console.log(currentDate.toString());
+          if (escalationDate < currentDate.toString()) {
+            let [findticket] = await Ticket.find({_id});
+            if (findticket) {
+              if (findticket.esclation_manager == 'esclation_manager_2') {
+                const id = findticket.esclation_manager_2;
+                const finduser = await User.findOne({_id: id});
+                const sendmailfornotification = await emailUtil.emailserivesfornotification(
+                    finduser.email
+                );
+                const savenotification = new Notification({
+                  user: id,
+                  content: 'Please notification aa gya',
+                });
+                await savenotification.save();
+              } else if (
+                findticket.esclation_manager == 'esclation_manager_3'
+              ) {
+                const id = findticket.esclation_manager_3;
+                const finduser = await User.findOne({_id: id});
+                const sendmailfornotification = await emailUtil.emailserivesfornotification(
+                    finduser.email
+                );
+                const savenotification = new Notification({
+                  user: id,
+                  content: 'Please notification aa gya',
+                });
+                await savenotification.save();
+              }
+              findticket = await findticket.updateOne(
+                  {
+                    esclation: 'true',
+                    esclation_manager: esclation_manager,
+                  },
+                  {
+                    new: true,
+                  }
+              );
+            }
+
             resolve('E');
           } else {
             resolve('DE');
@@ -230,7 +275,7 @@ module.exports = () => {
                 }
             );
 
-            result.ok == 1 ? resolve('success') : reject(error);
+            result.ok == 1 ? resolve('success') : resolve('error');
           }
         }
       } catch (error) {
@@ -261,14 +306,23 @@ module.exports = () => {
   const getnotification = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const {user} = payload;
+        // payload containing user objectid and _id of getting notification
+        const {user, _id} = payload;
         const expirytimefromtoken = await decodetoken.decodejwt(token);
         if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
         } else {
-          let [result] = await Notification.find({user});
-          if (result) {
-            result = await result.updateOne(
+          let found;
+          const result = await Notification.find({user: user});
+          // finding out particular notification out of many notifications of the user.
+          if (_id) {
+            for (let i = 0; i < result.length; i++) {
+              if (result[i]._id == _id) {
+                found = result[i];
+              }
+            }
+
+            found = await found.updateOne(
                 {
                   seen_status: true,
                 },
@@ -276,8 +330,11 @@ module.exports = () => {
                   new: true,
                 }
             );
-
-            result.ok == 1 ? resolve(result) : reject(error);
+            found.ok == 1
+              ? resolve(await Notification.find({user}))
+              : resolve('error');
+          } else {
+            resolve(result);
           }
         }
       } catch (error) {
@@ -285,7 +342,6 @@ module.exports = () => {
       }
     });
   };
-
   return {
     postTicket,
     getTicket,
