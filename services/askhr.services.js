@@ -324,18 +324,21 @@ module.exports = () => {
                 found = result[i];
               }
             }
-
-            found = await found.updateOne(
-                {
-                  seen_status: true,
-                },
-                {
-                  new: true,
-                }
-            );
-            found.ok == 1
-              ? resolve(await Notification.find({user}))
-              : resolve('error');
+            if (found) {
+              found = await found.updateOne(
+                  {
+                    seen_status: true,
+                  },
+                  {
+                    new: true,
+                  }
+              );
+              found.ok == 1
+                ? resolve(await Notification.find({user}))
+                : resolve('error');
+            } else {
+              resolve('Error');
+            }
           } else {
             resolve(result);
           }
