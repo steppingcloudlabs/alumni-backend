@@ -156,9 +156,9 @@ module.exports = () => {
 
           // Saveing current date in a variable and converitng into epoch
           const date = new Date(Date.now());
-          const currentDate = date.setDate(date.getDate() + 0 );
-          console.log(escalationDate);
-          console.log(currentDate);
+          const currentDate = date.setDate(date.getDate() + 0);
+          // console.log(escalationDate);
+          // console.log(currentDate);
           if (escalationDate > currentDate) {
             let [findticket] = await Ticket.find({_id});
             if (findticket) {
@@ -333,12 +333,37 @@ module.exports = () => {
                   new: true,
                 }
             );
-            found.ok == 1 ?
-              resolve(await Notification.find({user})) :
-              resolve('error');
+            found.ok == 1
+              ? resolve(await Notification.find({user}))
+              : resolve('error');
           } else {
             resolve(result);
           }
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+  const getuserticket = ({payload, token}) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        // payload containing user objectid and _id of getting notification
+        const {creater_id} = payload;
+        const expirytimefromtoken = await decodetoken.decodejwt(token);
+        if (Date.now() > expirytimefromtoken) {
+          resolve('tokenexpired');
+        } else {
+          const result = await Ticket.find({created_by: creater_id}).populate(
+              'message',
+              {
+                _id: 0,
+                created_at: 1,
+                message: 1,
+                senders: 1,
+              }
+          );
+          resolve(result);
         }
       } catch (error) {
         reject(error);
@@ -355,5 +380,6 @@ module.exports = () => {
     updatemanager,
     postnotification,
     getnotification,
+    getuserticket,
   };
 };

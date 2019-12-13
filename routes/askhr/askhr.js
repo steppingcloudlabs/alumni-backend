@@ -31,5 +31,8 @@ router
 router
     .route('/getnotification')
     .post((req, res, next) => askhrController.getnotification(req, res, next));
+router
+    .route('/getuserticket')
+    .post((req, res, next) => askhrController.getuserticket(req, res, next));
 
 module.exports = router;
