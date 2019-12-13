@@ -23,8 +23,7 @@ module.exports = () => {
         // const newtime=firstUserMessage.created_at+new Date().getTime(new Date().setTime() + 900000 );
         // const okay= newtime.toString();
         const escalationDate =
-          firstUserMessage.created_at +
-          new Date().getTime(new Date().setTime() - 100);
+        firstUserMessage.created_at.setDate(firstUserMessage.created_at.getDate() - 5);
 
         resolve(escalationDate);
       } catch (error) {

@@ -153,10 +153,13 @@ module.exports = () => {
           resolve('tokenexpired');
         } else {
           const escalationDate = await Utils.getFirstMessageDateFromTicket(_id);
-          const currentDate = new Date(Date.now());
-          // console.log(escalationDate);
-          // console.log(currentDate.toString());
-          if (escalationDate < currentDate.toString()) {
+
+          // Saveing current date in a variable and converitng into epoch
+          const date = new Date(Date.now());
+          const currentDate = date.setDate(date.getDate() + 0 );
+          console.log(escalationDate);
+          console.log(currentDate);
+          if (escalationDate > currentDate) {
             let [findticket] = await Ticket.find({_id});
             if (findticket) {
               if (findticket.esclation_manager == 'esclation_manager_2') {
@@ -330,9 +333,9 @@ module.exports = () => {
                   new: true,
                 }
             );
-            found.ok == 1
-              ? resolve(await Notification.find({user}))
-              : resolve('error');
+            found.ok == 1 ?
+              resolve(await Notification.find({user})) :
+              resolve('error');
           } else {
             resolve(result);
           }
