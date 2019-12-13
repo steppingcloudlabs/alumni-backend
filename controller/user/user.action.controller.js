@@ -82,7 +82,7 @@ module.exports = () => {
           if (response == 'Fail') {
             res.status(200).send({
               status: '400',
-              result: Failed,
+              result: 'Failed',
             });
           } else {
             res.status(200).send({
@@ -103,10 +103,46 @@ module.exports = () => {
   };
 
 
+  const getskills = async (req, res, next) => {
+    try {
+      const {payload, token} = req.body;
+      const response = await userServices.getskills({payload, token});
+      if (token) {
+        if (response == 'tokenexpired') {
+          res.status(200).send({
+            status: '400',
+            result: 'Token expired, Please Login Again',
+          });
+        } else {
+          if (!response) {
+            res.status(200).send({
+              status: '400',
+              result: 'No skil Found',
+            });
+          } else {
+            res.status(200).send({
+              status: '200',
+              result: 'Chalta to hai kam se kam',
+            });
+          }
+        }
+      } else {
+        res.status(200).json({
+          status: 400,
+          result: 'Rejected Request, Token Required',
+        });
+      }
+    } catch (error) {
+      next(error);
+    }
+  };
+
+
   return {
     userinfo,
     userStatus,
     addskills,
+    getskills,
 
   };
 };

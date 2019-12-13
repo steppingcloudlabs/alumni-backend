@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 const config = require('../config/index');
 const jobs = require('../models/user/jobs');
-const skills = require('../models/user/skills');
+const expertises = require('../models/user/skills');
 module.exports = () => {
   const {
     getDataFromMaster,
@@ -121,10 +121,10 @@ module.exports = () => {
           resolve('tokenexpired');
         } else {
           const {skillsList} = payload;
-          const newSkill = new skills({skills: skillsList});
+          const newSkill = new expertises({expertise: skillsList});
           const result = await newSkill.save();
           if (result) {
-            resolve(result.skills);
+            resolve(result.expertise);
           } else {
             resolve('Fail');
           }
@@ -135,11 +135,41 @@ module.exports = () => {
     });
   };
 
+  const getskills = ({payload, token}) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const expirytimefromtoken = await decodetoken.decodejwt(token);
+        if (Date.now() > expirytimefromtoken) {
+          resolve('tokenexpired');
+        } else {
+          const {skip, limit, keyword} = payload;
+
+          if (keyword) {
+            const foundSkill = await skills
+                .fuzzySearch(keyword)
+                .skip(skip)
+                .limit(limit);
+            console.log(foundSkill);
+            resolve(foundSkill);
+          } else {
+            const foundSkill = await skills
+                .find({})
+                .skip(skip)
+                .limit(limit);
+            resolve(foundSkill);
+          }
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
 
   return {
     userinfo,
     userstatus,
     getJobs,
     addskills,
+    getskills,
   };
 };

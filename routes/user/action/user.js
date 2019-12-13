@@ -22,7 +22,9 @@ router
 router
     .route('/addskills')
     .post((req, res, next) => PersonalController.addskills(req, res, next));
-
+router
+    .route('/getskills')
+    .post((req, res, next) => PersonalController.getskills(req, res, next));
 
 
 module.exports = router;
