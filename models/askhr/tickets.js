@@ -28,7 +28,6 @@ const ticketSchema = new Schema({
   title: {
     type: String,
     required: true,
-    unique: true,
   },
   message: [
     {
@@ -37,6 +36,10 @@ const ticketSchema = new Schema({
       ref: 'messages',
     },
   ],
+  messagebody: {
+    type: String,
+  },
+
   esclation: {
     type: String,
     enum: ['true', 'false'],
