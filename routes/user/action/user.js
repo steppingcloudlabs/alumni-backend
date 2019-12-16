@@ -14,7 +14,7 @@ router
     .route('/user/getjobs')
     .post((req, res, next) => JobController.getJobs(req, res, next));
 router
-    .route('/user/job-recommendations')
+    .route('/user/jobrecommendations')
     .post((req, res, next) => JobController.getRecommendedJobs(req, res, next));
 router
     .route('/add/news')
@@ -25,6 +25,5 @@ router
 router
     .route('/getskills')
     .post((req, res, next) => PersonalController.getskills(req, res, next));
-
 
 module.exports = router;
