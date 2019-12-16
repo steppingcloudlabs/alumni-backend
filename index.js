@@ -10,22 +10,22 @@ mongoose.set('useUnifiedTopology', true);
 const config = require('./config/index');
 
 db = mongoose.connect('mongodb://18.190.14.5:1000/titan', {
-  useNewUrlParser: true,
+    useNewUrlParser: true,
 });
 
 // middleware
 app.use(morgan('dev'));
-app.use(bodyParser.json({limit: '200mb'}));
+app.use(bodyParser.json({ limit: '200mb' }));
 
 // CORS Headers
 app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE,');
-  res.header(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content-Type, Accept'
-  );
-  next();
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE,');
+    res.header(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept'
+    );
+    next();
 });
 
 // User Routes
@@ -55,5 +55,5 @@ const askhrroutes = require('./routes/askhr/askhr');
 app.use('/hrroutes', askhrroutes);
 
 app.listen(config['port'], () => {
-  console.log(`Server listening on port: ${config['port']}`);
+    console.log(`Server listening on port: ${config['port']}`);
 });
