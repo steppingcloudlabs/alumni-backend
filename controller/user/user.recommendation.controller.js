@@ -59,7 +59,7 @@ module.exports = () => {
           } else {
             res.status(200).send({
               status: 200,
-              result: response,
+              result: JSON.parse(JSON.stringify({...response})),
             });
           }
         }
