@@ -2,6 +2,7 @@
 const config = require('../config/index');
 const jobs = require('../models/user/jobs');
 const expertises = require('../models/user/skills');
+const Personal = require('../models/user/personal');
 module.exports = () => {
   const {
     getDataFromMaster,
@@ -44,7 +45,7 @@ module.exports = () => {
           resolve('tokenexpired');
         } else {
           getDataFromPersonalStatus(
-              'personalinformation',
+              'personalinformations',
               {userId: payload.userid},
               (err, response) => {
                 if (response) {
@@ -164,6 +165,30 @@ module.exports = () => {
       }
     });
   };
+  const getRecommendedJobs = ({payload, token}) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const expirytimefromtoken = await decodetoken.decodejwt(token);
+        if (Date.now() > expirytimefromtoken) {
+          resolve('tokenexpired');
+        } else {
+          const {skip, limit, userId} = payload;
+          const foundjobs = await Personal.find({userId})
+              .skip(skip)
+              .limit(limit)
+              .populate({
+                path: 'recommendedjobs',
+                options: {limit: limit, skip: skip},
+              });
+
+          // console.log(foundjobs);
+          resolve(foundjobs);
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
 
   return {
     userinfo,
@@ -171,5 +196,6 @@ module.exports = () => {
     getJobs,
     addskills,
     getskills,
+    getRecommendedJobs,
   };
 };

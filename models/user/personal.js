@@ -30,9 +30,12 @@ const personalschema = new Schema({
     },
     recommendedjobs: [{
         type: Schema.Types.ObjectId,
-        $ref: 'jobs',
-    }]
+        ref: 'Jobs',
+    }, ],
 });
 
-const personalinformation = mongoose.model('personalinformation', personalschema);
+const personalinformation = mongoose.model(
+    'personalinformation',
+    personalschema
+);
 module.exports = personalinformation;

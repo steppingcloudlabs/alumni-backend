@@ -102,7 +102,6 @@ module.exports = () => {
     }
   };
 
-
   const getskills = async (req, res, next) => {
     try {
       const {payload, token} = req.body;
@@ -137,12 +136,10 @@ module.exports = () => {
     }
   };
 
-
   return {
     userinfo,
     userStatus,
     addskills,
     getskills,
-
   };
 };
