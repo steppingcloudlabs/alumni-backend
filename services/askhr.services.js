@@ -36,8 +36,9 @@ module.exports = () => {
           });
           const savedmsg = await firstmessage.save();
           let getmanager = await Manager.find({});
-          getmanager = JSON.stringify(getmanager);
-          console.log(getmanager['esclation_manager_1']);
+          // console.log(getmanager);
+          getmanager = JSON.parse(JSON.stringify({...getmanager}));
+          // console.log(getmanager[0]);
           const responseTicket = new Ticket({
             participants,
             created_at: Date.now(),
@@ -46,9 +47,9 @@ module.exports = () => {
             title,
             message: savedmsg._id,
             esclation,
-            esclation_manager_1: getmanager.esclation_manager_1,
-            esclation_manager_2: getmanager.esclation_manager_2,
-            esclation_manager_3: getmanager.esclation_manager_3,
+            esclation_manager_1: getmanager[0].esclation_manager_1,
+            esclation_manager_2: getmanager[1].esclation_manager_2,
+            esclation_manager_3: getmanager[2].esclation_manager_3,
             resolved_status,
           });
           const result = await responseTicket.save();
