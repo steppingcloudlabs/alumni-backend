@@ -173,7 +173,21 @@ module.exports = () => {
           resolve('tokenexpired');
         } else {
           const {skip, limit, userId} = payload;
-          const foundjobs = await Personal.find({userId})
+          const foundjobs = await Personal.find(
+              {userId},
+              {
+                _id: 0,
+                fnfStatus: 0,
+                pfTransferStatus: 0,
+                form16: 0,
+                salarycurrent: 0,
+                salaryprevious: 0,
+                salarylast: 0,
+                uanDetails: 0,
+                __v: 0,
+                userId: 0,
+              }
+          )
               .skip(skip)
               .limit(limit)
               .populate({
