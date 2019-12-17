@@ -45,7 +45,7 @@ module.exports = () => {
           resolve('tokenexpired');
         } else {
           getDataFromPersonalStatus(
-              'personalinformation',
+              'personalinformations',
               {userId: payload.userid},
               (err, response) => {
                 if (response) {
