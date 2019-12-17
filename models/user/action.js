@@ -20,7 +20,6 @@ const getDataFromPersonalStatus = function(collectionName, query, callback) {
   mongoose.connect('mongodb://18.190.14.5:1000/titan', {
     useNewUrlParser: true,
   });
-  console.log(collectionName);
   const connection = mongoose.connection;
   connection.on('open', function() {
     mongoose.connection.db.collection(collectionName, function(
