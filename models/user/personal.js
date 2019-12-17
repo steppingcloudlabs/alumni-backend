@@ -31,7 +31,7 @@ const personalschema = new Schema({
     recommendedjobs: [{
         type: Schema.Types.ObjectId,
         $ref: 'jobs',
-    }],
+    }]
 });
 
 const personalinformation = mongoose.model('personalinformation', personalschema);
