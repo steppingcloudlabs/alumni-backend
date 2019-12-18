@@ -13,7 +13,6 @@ const ticketSchema = new Schema({
   created_at: {
     type: Date,
     value: Date.now(),
-    required: true,
   },
   created_by: {
     type: Schema.Types.ObjectId,
@@ -47,20 +46,19 @@ const ticketSchema = new Schema({
   },
   esclation_manager_1: {
     type: Schema.Types.ObjectId,
-    required: true,
+
     response: Boolean,
     ref: 'user',
   },
 
   esclation_manager_2: {
     type: Schema.Types.ObjectId,
-    required: true,
+
     response: Boolean,
     ref: 'user',
   },
   esclation_manager_3: {
     type: Schema.Types.ObjectId,
-    required: true,
     response: Boolean,
     ref: 'user',
   },
