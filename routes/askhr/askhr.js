@@ -42,7 +42,7 @@ router
     .post((req, res, next) => askhrController.postManager(req, res, next));
 router
     .route('/deleteManager')
-    .post((req, res, next) => askhrController.postManager(req, res, next));
+    .post((req, res, next) => askhrController.deleteManager(req, res, next));
 router
     .route('/getescalationmanager')
     .post((req, res, next) =>
