@@ -36,7 +36,7 @@ module.exports = () => {
           });
           const savedmsg = await firstmessage.save();
           let getmanager = await Manager.find({});
-          // console.log(getmanager);
+          console.log(getmanager);
           getmanager = JSON.parse(JSON.stringify({...getmanager}));
           console.log(getmanager[0]);
           const responseTicket = new Ticket({
@@ -246,47 +246,25 @@ module.exports = () => {
   const updatemanager = ({payload, token}) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const {_id, new_manager_obejctid, manager} = payload;
+        const {new_manager_obejctid, level} = payload;
         // console.log(payload);
         const expirytimefromtoken = await decodetoken.decodejwt(token);
         if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
         } else {
-          let [result] = await Ticket.find({_id: _id});
-
-          if (manager == 'esclation_manager_1') {
+          let [result] = await Manager.find({level: level});
+          console.log(result);
+          if (result) {
             result = await result.updateOne(
                 {
-                  esclation_manager_1: new_manager_obejctid,
+                  esclation_manager_id: new_manager_obejctid,
                 },
                 {
                   new: true,
                 }
             );
-
+            console.log(result);
             result.ok == 1 ? resolve('success') : reject(error);
-          } else if (manager == 'esclation_manager_2') {
-            result = await result.updateOne(
-                {
-                  esclation_manager_2: new_manager_obejctid,
-                },
-                {
-                  new: true,
-                }
-            );
-
-            result.ok == 1 ? resolve('success') : reject(error);
-          } else if (manager == 'esclation_manager_3') {
-            result = await result.updateOne(
-                {
-                  esclation_manager_3: new_manager_obejctid,
-                },
-                {
-                  new: true,
-                }
-            );
-
-            result.ok == 1 ? resolve('success') : resolve('error');
           }
         }
       } catch (error) {
@@ -412,19 +390,24 @@ module.exports = () => {
         if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
         } else {
-          let result;
-          if (esclation_manager == 'esclation_manager_1') {
-            const manager = new Manager({esclation_manager_1: manager_id});
-            result = await manager.save();
-          }
-          if (esclation_manager == 'esclation_manager_2') {
-            const manager = new Manager({esclation_manager_2: manager_id});
-            result = await manager.save();
-          }
-          if (esclation_manager == 'esclation_manager_3') {
-            const manager = new Manager({esclation_manager_3: manager_id});
-            result = await manager.save();
-          }
+          const savemanager = new Manager({
+            esclation_manager_id: manager_id,
+            level: esclation_manager,
+          });
+          result = await savemanager.save();
+          // let result;
+          // if (esclation_manager == 'esclation_manager_1') {
+          //   const manager = new Manager({esclation_manager_1: manager_id});
+          //   result = await manager.save();
+          // }
+          // if (esclation_manager == 'esclation_manager_2') {
+          //   const manager = new Manager({esclation_manager_2: manager_id});
+          //   result = await manager.save();
+          // }
+          // if (esclation_manager == 'esclation_manager_3') {
+          //   const manager = new Manager({esclation_manager_3: manager_id});
+          //   result = await manager.save();
+          // }
 
           resolve(result);
         }
@@ -441,25 +424,27 @@ module.exports = () => {
         if (Date.now() > expirytimefromtoken) {
           resolve('tokenexpired');
         } else {
-          const result = await Manager.find({}, {_id: 0, __v: 0})
-              .populate('esclation_manager_1', {
+          const result = await Manager.find({}, {_id: 0, __v: 0}).populate(
+              'esclation_manager_id',
+              {
                 email: 1,
                 userType: 1,
                 userid: 1,
                 companyname: 1,
-              })
-              .populate('esclation_manager_2', {
-                email: 1,
-                userType: 1,
-                userid: 1,
-                companyname: 1,
-              })
-              .populate('esclation_manager_3', {
-                email: 1,
-                userType: 1,
-                userid: 1,
-                companyname: 1,
-              });
+              }
+          );
+          // .populate('esclation_manager_2', {
+          //   email: 1,
+          //   userType: 1,
+          //   userid: 1,
+          //   companyname: 1,
+          // })
+          // .populate('esclation_manager_3', {
+          //   email: 1,
+          //   userType: 1,
+          //   userid: 1,
+          //   companyname: 1,
+          // });
           resolve(result);
         }
       } catch (error) {
