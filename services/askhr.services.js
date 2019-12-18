@@ -452,7 +452,9 @@ module.exports = () => {
         } else {
           const result = await Manager.deleteOne({ level });
           // console.log(result);
-          resolve(result);
+          if (result.deletedCount == 1) {
+            resolve(result);
+          } else resolve("failed");
         }
       } catch (error) {
         reject(error);
