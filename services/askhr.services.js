@@ -82,6 +82,14 @@ module.exports = () => {
                 select: {_id: 1, userType: 1},
               })
               .populate({
+                path: 'esclation_manager_2',
+                select: {_id: 1, userType: 1},
+              })
+              .populate({
+                path: 'esclation_manager_3',
+                select: {_id: 1, userType: 1},
+              })
+              .populate({
                 path: 'message',
                 select: {_id: 0, senders: 1, message: 1, created_at: 1},
                 options: {
