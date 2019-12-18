@@ -187,13 +187,10 @@ module.exports = () => {
                 __v: 0,
                 userId: 0,
               }
-          )
-              .skip(skip)
-              .limit(limit)
-              .populate({
-                path: 'recommendedjobs',
-                options: {limit: limit, skip: skip},
-              });
+          ).populate({
+            path: 'recommendedjobs',
+            options: {limit: limit, skip: skip},
+          });
 
           // console.log(foundjobs);
           resolve(foundjobs);

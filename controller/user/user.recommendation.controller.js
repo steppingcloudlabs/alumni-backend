@@ -54,7 +54,7 @@ module.exports = () => {
           if (response && response.length == 0) {
             res.status(200).send({
               status: 400,
-              result: 'User doesn\'t exist',
+              result: 'User doesn\'t Exist',
             });
           } else {
             res.status(200).send({
