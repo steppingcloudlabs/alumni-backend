@@ -100,7 +100,7 @@ module.exports = {
       } else {
         res.status(200).send({
           status: 200,
-          result: req.user._id,
+          result: { _id: req.user._id },
           usertype: req.user.userType,
           token: token
         });
