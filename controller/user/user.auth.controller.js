@@ -51,6 +51,7 @@ module.exports = {
       });
     } else {
       const response = await userServices.usersignin(req.user.userid);
+
       const token = JWT.sign(
         {
           iss: "steppingcloudforuser",
@@ -99,7 +100,7 @@ module.exports = {
       } else {
         res.status(200).send({
           status: 200,
-          result: [],
+          result: req.user._id,
           usertype: req.user.userType,
           token: token
         });
