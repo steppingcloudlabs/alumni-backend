@@ -142,6 +142,11 @@ module.exports = () => {
         if (Date.now() > expirytimefromtoken) {
           resolve("tokenexpired");
         } else {
+          const findticket = await Ticket.findOne({ _id: ticket_id });
+          if (!findticket.participants.includes(senders)) {
+            findticket.participants.push(senders);
+            await findticket.save();
+          }
           // Creating a new message and saving it in message schema
           const newMessage = new Message({
             senders,
