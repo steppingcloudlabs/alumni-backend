@@ -62,37 +62,48 @@ module.exports = {
         },
         JWT_SECRET
       );
-      const updatedResponse = {
-        skill: response.skill,
-        _id: req.user._id,
-        relieving_date: response.relieving_date,
-        user_id: response.user_id,
-        date_of_resignation: response.date_of_resignation,
-        last_working_day_as_per_notice_period:
-          response.last_working_day_as_per_notice_period,
-        personal_email_id: response.personal_email_id,
-        first_name_personal_information:
-          response.first_name_personal_information,
-        last_name_personal_information: response.last_name_personal_information,
-        middle_name_personal_information:
-          response.middle_name_personal_information,
-        nationality_personal_information:
-          response.nationality_personal_information,
-        salutation_personal_information:
-          response.salutation_personal_information,
-        city_addresses: response.city_addresses,
-        phone_number_phone_information: response.phone_number_phone_information,
-        manager_job_information: response.manager_job_information,
-        designation_job_information: response.designation_job_information,
-        linkedInlink: response.linkedInlink
-      };
 
-      res.status(200).send({
-        status: 200,
-        result: updatedResponse,
-        usertype: req.user.userType,
-        token: token
-      });
+      if (req.user.userType == "user") {
+        const updatedResponse = {
+          skill: response.skill,
+          _id: req.user._id,
+          relieving_date: response.relieving_date,
+          user_id: response.user_id,
+          date_of_resignation: response.date_of_resignation,
+          last_working_day_as_per_notice_period:
+            response.last_working_day_as_per_notice_period,
+          personal_email_id: response.personal_email_id,
+          first_name_personal_information:
+            response.first_name_personal_information,
+          last_name_personal_information:
+            response.last_name_personal_information,
+          middle_name_personal_information:
+            response.middle_name_personal_information,
+          nationality_personal_information:
+            response.nationality_personal_information,
+          salutation_personal_information:
+            response.salutation_personal_information,
+          city_addresses: response.city_addresses,
+          phone_number_phone_information:
+            response.phone_number_phone_information,
+          manager_job_information: response.manager_job_information,
+          designation_job_information: response.designation_job_information,
+          linkedInlink: response.linkedInlink
+        };
+        res.status(200).send({
+          status: 200,
+          result: updatedResponse,
+          usertype: req.user.userType,
+          token: token
+        });
+      } else {
+        res.status(200).send({
+          status: 200,
+          result: [],
+          usertype: req.user.userType,
+          token: token
+        });
+      }
     }
   },
   forgetpassword: async (req, res, next) => {
