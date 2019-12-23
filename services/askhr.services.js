@@ -76,30 +76,57 @@ module.exports = () => {
         if (Date.now() > expirytimefromtoken) {
           resolve("tokenexpired");
         } else {
-          const result = await Ticket.findOne({ _id })
-            .populate({
-              path: "esclation_manager_1",
-              select: { _id: 1, userType: 1 }
-            })
-            .populate({
-              path: "esclation_manager_2",
-              select: { _id: 1, userType: 1 }
-            })
-            .populate({
-              path: "esclation_manager_3",
-              select: { _id: 1, userType: 1 }
-            })
-            .populate({
-              path: "message",
-              select: { _id: 0, senders: 1, message: 1, created_at: 1 },
-              options: {
-                limit: limit,
-                skip: skip,
-                sort: { created_at: 1 }
-              },
-              populate: { path: "senders", select: { _id: 0, userType: 1 } }
-            });
-          resolve(result);
+          if (_id) {
+            const result = await Ticket.findOne({ _id })
+              .populate({
+                path: "esclation_manager_1",
+                select: { _id: 1, userType: 1 }
+              })
+              .populate({
+                path: "esclation_manager_2",
+                select: { _id: 1, userType: 1 }
+              })
+              .populate({
+                path: "esclation_manager_3",
+                select: { _id: 1, userType: 1 }
+              })
+              .populate({
+                path: "message",
+                select: { _id: 0, senders: 1, message: 1, created_at: 1 },
+                options: {
+                  limit: limit,
+                  skip: skip,
+                  sort: { created_at: 1 }
+                },
+                populate: { path: "senders", select: { _id: 0, userType: 1 } }
+              });
+            resolve(result);
+          } else {
+            const result = await Ticket.find({})
+              .populate({
+                path: "esclation_manager_1",
+                select: { _id: 1, userType: 1 }
+              })
+              .populate({
+                path: "esclation_manager_2",
+                select: { _id: 1, userType: 1 }
+              })
+              .populate({
+                path: "esclation_manager_3",
+                select: { _id: 1, userType: 1 }
+              })
+              .populate({
+                path: "message",
+                select: { _id: 0, senders: 1, message: 1, created_at: 1 },
+                options: {
+                  limit: limit,
+                  skip: skip,
+                  sort: { created_at: 1 }
+                },
+                populate: { path: "senders", select: { _id: 0, userType: 1 } }
+              });
+            resolve(result);
+          }
         }
       } catch (error) {
         reject(error);
