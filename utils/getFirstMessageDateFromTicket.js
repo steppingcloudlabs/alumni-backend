@@ -23,7 +23,7 @@ module.exports = () => {
             break;
           }
         }
-        console.log(firstUserMessage);
+        // console.log(firstUserMessage);
         // const newtime=firstUserMessage.created_at+new Date().getTime(new Date().setTime() + 900000 );
         // const okay= newtime.toString();
         const escalationDate = firstUserMessage.created_at.setDate(
