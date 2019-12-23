@@ -100,8 +100,8 @@ module.exports = () => {
                   limit: limit,
                   skip: skip,
                   sort: { created_at: 1 }
-                },
-                populate: { path: "senders", select: { _id: 0, userType: 1 } }
+                }
+                // populate: { path: "senders", select: { _id: 0, userType: 1 } }
               });
             resolve(result);
           } else {
