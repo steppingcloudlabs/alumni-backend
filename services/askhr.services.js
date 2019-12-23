@@ -410,9 +410,11 @@ module.exports = () => {
         if (Date.now() > expirytimefromtoken) {
           resolve("tokenexpired");
         } else {
-          const managerexist = await Manager.findOne({ esclation_manager });
-          if (managerexist == "null") {
-            console.log(managerexist);
+          const managerexist = await Manager.findOne({
+            level: esclation_manager
+          });
+
+          if (managerexist == null) {
             const savemanager = new Manager({
               esclation_manager_id: manager_id,
               level: esclation_manager
