@@ -47,8 +47,9 @@ module.exports = () => {
               manager3id = getmanager[i].esclation_manager_id;
             }
           }
+          const updatedparticipatent = [participants, manager1id];
           const responseTicket = new Ticket({
-            participants,
+            participants: updatedparticipatent,
             created_at: Date.now(),
             created_by,
             updated_by,
@@ -61,6 +62,8 @@ module.exports = () => {
             resolved_status
           });
           const result = await responseTicket.save();
+          // result = result.participants.push(manager1id);
+          // result = await result.save();
           resolve(result);
         }
       } catch (error) {
@@ -71,13 +74,13 @@ module.exports = () => {
   const getTicket = ({ payload, token }) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const { _id, skip, limit } = payload;
+        const { manager_id, skip, limit } = payload;
         const expirytimefromtoken = await decodetoken.decodejwt(token);
         if (Date.now() > expirytimefromtoken) {
           resolve("tokenexpired");
         } else {
-          if (_id) {
-            const result = await Ticket.findOne({ _id })
+          if (manager_id) {
+            const result = await Ticket.find({ participants: manager_id })
               .populate({
                 path: "esclation_manager_1",
                 select: { _id: 1, userType: 1 }
