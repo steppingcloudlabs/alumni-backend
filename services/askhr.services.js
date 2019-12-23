@@ -196,7 +196,8 @@ module.exports = () => {
   const escalate = ({ payload, token }) => {
     return new Promise(async (resolve, reject) => {
       try {
-        const { _id, esclation_manager } = payload;
+        const _id = payload.ticket_id;
+        const esclation_manager = payload.esclation_to_manager;
         const expirytimefromtoken = await decodetoken.decodejwt(token);
         if (Date.now() > expirytimefromtoken) {
           resolve("tokenexpired");

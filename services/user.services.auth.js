@@ -25,7 +25,8 @@ module.exports = {
     return new Promise(async (resolve, reject) => {
       try {
         const response = await masterdata.findOne({ user_id: userid });
-        console.log(response);
+
+        // console.log(response);
         resolve(response);
       } catch (error) {
         reject(error);

@@ -86,6 +86,7 @@ module.exports = {
         designation_job_information: response.designation_job_information,
         linkedInlink: response.linkedInlink
       };
+
       res.status(200).send({
         status: 200,
         result: updatedResponse,

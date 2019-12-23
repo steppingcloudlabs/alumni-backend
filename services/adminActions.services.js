@@ -1,5 +1,6 @@
 module.exports = () => {
     const decodetoken = require('../utils/jwt.decode')();
+    const User=require("../models/user/auth")
     const path = require('path');
     const eventSchema = require('../models/admin/event');
     const newsSchema = require('../models/admin/news');
@@ -508,8 +509,31 @@ module.exports = () => {
                 } else {
                     const user_id = payload.userid;
                     const foundalumni = await masterdata.findOne({ user_id });
-
-                    resolve(foundalumni);
+                    const founduser = await User.findOne({ userid:user_id });
+                    const response={  skill: foundalumni.skill,
+                        _id: founduser._id,
+                        relieving_date: foundalumni.relieving_date,
+                        user_id: foundalumni.user_id,
+                        date_of_resignation: foundalumni.date_of_resignation,
+                        last_working_day_as_per_notice_period:
+                          foundalumni.last_working_day_as_per_notice_period,
+                        personal_email_id: foundalumni.personal_email_id,
+                        first_name_personal_information:
+                          foundalumni.first_name_personal_information,
+                        last_name_personal_information: foundalumni.last_name_personal_information,
+                        middle_name_personal_information:
+                          foundalumni.middle_name_personal_information,
+                        nationality_personal_information:
+                          foundalumni.nationality_personal_information,
+                        salutation_personal_information:
+                          foundalumni.salutation_personal_information,
+                        city_addresses: foundalumni.city_addresses,
+                        phone_number_phone_information: foundalumni.phone_number_phone_information,
+                        manager_job_information: foundalumni.manager_job_information,
+                        designation_job_information: foundalumni.designation_job_information,
+                        linkedInlink: foundalumni.linkedInlink
+                    }
+                    resolve(response);
                 }
             } catch (error) {
                 reject(error);
