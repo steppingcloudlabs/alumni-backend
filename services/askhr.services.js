@@ -99,7 +99,7 @@ module.exports = () => {
                 options: {
                   limit: limit,
                   skip: skip,
-                  sort: { created_at: 1 }
+                  sort: { created_at: -1 }
                 }
                 // populate: { path: "senders", select: { _id: 0, userType: 1 } }
               });
@@ -124,7 +124,7 @@ module.exports = () => {
                 options: {
                   limit: limit,
                   skip: skip,
-                  sort: { created_at: 1 }
+                  sort: { created_at: -1 }
                 },
                 populate: { path: "senders", select: { _id: 0, userType: 1 } }
               });
@@ -186,13 +186,16 @@ module.exports = () => {
         if (Date.now() > expirytimefromtoken) {
           resolve("tokenexpired");
         } else {
-          const result = await Message.find({})
-            .populate("senders", {
-              userType: 1,
-              _id: 0
-            })
-            .skip(skip)
-            .limit(limit);
+          const result = await Message.find({}).populate({
+            path: "senders",
+            select: { userType: 1, _id: 0 },
+            options: {
+              limit: limit,
+              skip: skip,
+              sort: { created_at: -1 }
+            }
+          });
+
           resolve(result);
         }
       } catch (error) {
