@@ -15,10 +15,12 @@ db = mongoose.connect('mongodb://18.190.14.5:1000/titan', {
 
 // middleware
 app.use(morgan('dev'));
-app.use(bodyParser.json({ limit: '200mb' }));
+app.use(bodyParser.json({
+    limit: '200mb'
+}));
 
 // CORS Headers
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE,');
     res.header(
@@ -53,6 +55,9 @@ app.use('/awsadmin', awsadminRoutes);
 
 const askhrroutes = require('./routes/askhr/askhr');
 app.use('/hrroutes', askhrroutes);
+
+const askhrroutes = require('./routes/orgchart/orgchart');
+app.use('/orgchart', askhrroutes);
 
 app.listen(config['port'], () => {
     console.log(`Server listening on port: ${config['port']}`);
