@@ -1,5 +1,5 @@
-import { SCClientDetails } from '../../utils/orgchart.utils'
-import { authenticateAndGetData } from "../../services/orgchart.service";
+const orgchartService = require("../../services/orgchart.service")();
+const { SCClientDetails } = require('../../utils/orgchart.utils')
 
 module.exports = () => {
   // personal user function
@@ -7,12 +7,11 @@ module.exports = () => {
     try {
       let companyId = req.body.companyId;
       if (companyId && SCClientDetails[companyId]) {
-        const response = await authenticateAndGetData(SCClientDetails[companyId])
+        const response = await orgchartService.authenticateAndGetData(SCClientDetails[companyId])
         if (response) {
-
+          res.status(200).send(response);
         }
       }
-
     } catch (error) {
       next(error);
     }

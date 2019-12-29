@@ -6,20 +6,21 @@
 // const company_id = "TATACommTest"
 // const grant_type = "urn:ietf:params:oauth:grant-type:saml2-bearer"
 
-import axios from 'axios'
+const axios = require('axios')
 
 const getUsersData = ({ accessToken, tokenType, baseUrl }) => {
     return new Promise((resolve, reject) => {
         axios({
-            method: 'POST',
+            method: 'GET',
             url: baseUrl + "/odata/v2/EmpJob?$select=seqNumber,startDate,userId,userNav/defaultFullName,jobTitle,managerId,managerUserNav/defaultFullName&$expand=userNav,managerUserNav&$format=json", // https://cors-anywhere.herokuapp.com/
             headers: {
                 "Authorization": tokenType + " " + accessToken
             },
-            data: params,
         }).then((response) => {
-            console.log(response);
-            resolve(response)
+            // console.log(response);
+            resolve(response.data)
+        }).catch((error) => {
+            reject(error)
         })
     })
 }
@@ -41,7 +42,9 @@ const getAccessToken = (payload, assertion) => {
             data: params,
         }).then((response) => {
             resolve(response)
-            console.log("Get Access Token Response", response)
+            console.log("Get Access Token Response", response.data)
+        }).catch((error) => {
+            reject(error)
         })
     })
 }
@@ -61,7 +64,7 @@ const authentiateUser = (payload) => {
             },
             data: params,
         }).then((response) => {
-            console.log(response);
+            console.log(response.data);
             resolve({ payload: payload, data: response.data })
         }).catch((error) => {
             console.log(error)
@@ -72,9 +75,9 @@ const authentiateUser = (payload) => {
 
 module.exports = () => {
     const authenticateAndGetData = (payload) => {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             authentiateUser(payload).then((authResponse) => {
-                getAccessToken(payload, authResponse).then((tokenResponse) => {
+                getAccessToken(authResponse.payload, authResponse.data).then((tokenResponse) => {
                     getUsersData({ accessToken: tokenResponse.data.access_token, tokenType: tokenResponse.data.token_type, baseUrl: payload.API_BASE_URL }).then((data) => {
                         console.log("Final Data" + data)
                         resolve(data)
@@ -83,7 +86,7 @@ module.exports = () => {
             })
 
         })
-    }
+    };
     return {
         authenticateAndGetData
     }
