@@ -56,8 +56,8 @@ app.use('/awsadmin', awsadminRoutes);
 const askhrroutes = require('./routes/askhr/askhr');
 app.use('/hrroutes', askhrroutes);
 
-const askhrroutes = require('./routes/orgchart/orgchart');
-app.use('/orgchart', askhrroutes);
+const orgchartroutes = require('./routes/orgchart/orgchart');
+app.use('/orgchart', orgchartroutes);
 
 app.listen(config['port'], () => {
     console.log(`Server listening on port: ${config['port']}`);
