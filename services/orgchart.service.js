@@ -8,7 +8,11 @@
 
 const axios = require('axios')
 
-const getUsersData = ({ accessToken, tokenType, baseUrl }) => {
+const getUsersData = ({
+    accessToken,
+    tokenType,
+    baseUrl
+}) => {
     return new Promise((resolve, reject) => {
         axios({
             method: 'GET',
@@ -17,7 +21,7 @@ const getUsersData = ({ accessToken, tokenType, baseUrl }) => {
                 "Authorization": tokenType + " " + accessToken
             },
         }).then((response) => {
-            // console.log(response);
+            console.log(response);
             resolve(response.data)
         }).catch((error) => {
             reject(error)
@@ -42,7 +46,6 @@ const getAccessToken = (payload, assertion) => {
             data: params,
         }).then((response) => {
             resolve(response)
-            console.log("Get Access Token Response", response.data)
         }).catch((error) => {
             reject(error)
         })
@@ -64,8 +67,10 @@ const authentiateUser = (payload) => {
             },
             data: params,
         }).then((response) => {
-            console.log(response.data);
-            resolve({ payload: payload, data: response.data })
+            resolve({
+                payload: payload,
+                data: response.data
+            })
         }).catch((error) => {
             console.log(error)
         })
@@ -78,13 +83,15 @@ module.exports = () => {
         return new Promise(async (resolve, reject) => {
             authentiateUser(payload).then((authResponse) => {
                 getAccessToken(authResponse.payload, authResponse.data).then((tokenResponse) => {
-                    getUsersData({ accessToken: tokenResponse.data.access_token, tokenType: tokenResponse.data.token_type, baseUrl: payload.API_BASE_URL }).then((data) => {
-                        console.log("Final Data" + data)
-                        resolve(data)
+                    getUsersData({
+                        accessToken: tokenResponse.data.access_token,
+                        tokenType: tokenResponse.data.token_type,
+                        baseUrl: payload.API_BASE_URL
+                    }).then((response) => {
+                        resolve(response)
                     })
                 })
             })
-
         })
     };
     return {
