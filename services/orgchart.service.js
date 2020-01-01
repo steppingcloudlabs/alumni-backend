@@ -11,18 +11,24 @@ const axios = require('axios')
 const getUsersData = ({
     accessToken,
     tokenType,
-    baseUrl
+    url,
+    finalData
 }) => {
     return new Promise((resolve, reject) => {
         axios({
             method: 'GET',
-            url: baseUrl + "/odata/v2/EmpJob?$select=seqNumber,startDate,userId,userNav/defaultFullName,jobTitle,managerId,managerUserNav/defaultFullName&$expand=userNav,managerUserNav&$format=json", // https://cors-anywhere.herokuapp.com/
+            url: url, // https://cors-anywhere.herokuapp.com/
             headers: {
                 "Authorization": tokenType + " " + accessToken
             },
         }).then((response) => {
-            console.log(response);
-            resolve(response.data)
+            if (response && response.data && response.data.d && response.data.d.__next) {
+                finalData = finalData.concat(response.data.d.results)
+                getUsersData({ accessToken: accessToken, tokenType: tokenType, url: response.data.d.__next, finalData: finalData })
+            }
+            else {
+                resolve(finalData)
+            }
         }).catch((error) => {
             reject(error)
         })
@@ -86,11 +92,18 @@ module.exports = () => {
                     getUsersData({
                         accessToken: tokenResponse.data.access_token,
                         tokenType: tokenResponse.data.token_type,
-                        baseUrl: payload.API_BASE_URL
+                        url: payload.API_BASE_URL + payload.API_END_URL,
+                        finalData: []
                     }).then((response) => {
                         resolve(response)
+                    }).catch((error) => {
+                        reject(error)
                     })
+                }).catch((error) => {
+                    reject(error)
                 })
+            }).catch((error) => {
+                reject(error)
             })
         })
     };
