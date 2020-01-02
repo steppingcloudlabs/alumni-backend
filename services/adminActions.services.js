@@ -480,6 +480,44 @@ module.exports = () => {
                             skill,
                         });
                         const response = await master.save();
+                        const subject = "Registration Successful for Alumni Portal";
+        const body =
+          "Hi " + first_name_personal_information+"\n"+
+          "This is mail notifying successful registration for your credential on the Alumni Portal\n You can register now on the alumni portal\n"+
+         "Link to accesss the Portal:https://sc-alumni.s3.ap-south-1.amazonaws.com/index.html#/signup "+"\n Your Unique User Id:"+user_id;
+        const params = {
+          Source: config["from_adderess"],
+          Destination: {
+            ToAddresses: [personal_email_id]
+          },
+          ReplyToAddresses: [config["from_adderess"]],
+          Message: {
+            Body: {
+              Text: {
+                Charset: "UTF-8",
+                Data: body
+              }
+            },
+            Subject: {
+              Charset: "UTF-8",
+              Data: subject
+            }
+          }
+        };
+
+        // Create the promise and SES service object
+        const sendPromise = new AWS.SES({ apiVersion: "2010-12-01" })
+          .sendEmail(params)
+          .promise();
+
+        // Handle promise's fulfilled/rejected states
+        sendPromise
+          .then(function(data) {
+            resolve(data);
+          })
+          .catch(function(err) {
+            reject(err.stack);
+          })
                         // as soon as a user is created in masterdata then at the same momemt his document portal is created with document as not available
                         await personalinformation.insertMany({
                             userId: response.user_id,
