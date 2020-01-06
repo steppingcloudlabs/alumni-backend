@@ -484,7 +484,7 @@ module.exports = () => {
         const body =
           "Hi " + first_name_personal_information+"\n"+
           "This is mail notifying successful registration for your credential on the Alumni Portal\n You can register now on the alumni portal\n"+
-         "Link to accesss the Portal:https://sc-alumni.s3.ap-south-1.amazonaws.com/index.html#/signup "+"\n Your Unique User Id:"+user_id;
+         "Link to accesss the Portal:https://sc-alumni.s3.ap-south-1.amazonaws.com/index.html#/signup "+"\n Your Unique Employee Id:"+user_id;
         const params = {
           Source: config["from_adderess"],
           Destination: {
