@@ -1,15 +1,19 @@
 const axios = require('axios')
 
+const getEmployeeData = ({ userId }) => {
+
+}
+
 const getUsersData = ({
     accessToken,
     tokenType,
     url,
-    finalData
+    finalData, userId
 }) => {
     return new Promise((resolve, reject) => {
         axios({
             method: 'GET',
-            url: url, // https://cors-anywhere.herokuapp.com/
+            url: url + "'" + userId + "'", // https://cors-anywhere.herokuapp.com/
             headers: {
                 "Authorization": tokenType + " " + accessToken
             },
@@ -80,15 +84,16 @@ const authentiateUser = (payload) => {
 }
 
 module.exports = () => {
-    const authenticateAndGetData = (payload) => {
+    const authenticateAndGetData = (payload, userId) => {
         return new Promise(async (resolve, reject) => {
             authentiateUser(payload).then((authResponse) => {
                 getAccessToken(authResponse.payload, authResponse.data).then((tokenResponse) => {
                     getUsersData({
                         accessToken: tokenResponse.data.access_token,
                         tokenType: tokenResponse.data.token_type,
-                        url: payload.API_BASE_URL + payload.API_END_URL,
-                        finalData: []
+                        url: payload.API_BASE_URL + payload.userDataURL,
+                        finalData: [],
+                        userId: userId
                     }).then((response) => {
                         resolve(response)
                     })

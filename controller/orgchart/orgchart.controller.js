@@ -10,8 +10,9 @@ module.exports = () => {
   const getOrgChartData = async (req, res, next) => {
     try {
       let companyId = req.body.companyId;
+      let userId = req.body.userId
       if (companyId && SCClientDetails[companyId]) {
-        const response = await orgchartService.authenticateAndGetData(SCClientDetails[companyId])
+        const response = await orgchartService.authenticateAndGetData(SCClientDetails[companyId], userId)
         res.status(200).send(response);
 
         // if (response && response.d && response.d.results) {
