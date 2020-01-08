@@ -13,7 +13,7 @@ const messageSchema = new Schema({
     required: true
   },
   created_at: {
-    type: Date,
+    type: String,
     required: true,
     unique: true
   }

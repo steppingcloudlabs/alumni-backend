@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 // using ref :"user" Schema; both admin and user are present in "user" Schema
 const ticketSchema = new Schema({
@@ -6,73 +6,73 @@ const ticketSchema = new Schema({
     {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: 'user',
-    },
+      ref: "user"
+    }
   ],
 
   created_at: {
-    type: Date,
-    value: Date.now(),
+    type: String,
+    value: Date.now()
   },
   created_by: {
     type: Schema.Types.ObjectId,
-    ref: 'user',
+    ref: "user"
   },
 
   updated_by: {
     type: Schema.Types.ObjectId,
-    ref: 'user',
+    ref: "user"
   },
 
   title: {
     type: String,
-    required: true,
+    required: true
   },
   message: [
     {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: 'messages',
-    },
+      ref: "messages"
+    }
   ],
   messagebody: {
-    type: String,
+    type: String
   },
 
   esclation: {
     type: String,
-    enum: ['true', 'false'],
-    default: 'false',
+    enum: ["true", "false"],
+    default: "false"
   },
   esclation_manager_1: {
     type: Schema.Types.ObjectId,
 
     response: Boolean,
-    ref: 'user',
+    ref: "user"
   },
 
   esclation_manager_2: {
     type: Schema.Types.ObjectId,
 
     response: Boolean,
-    ref: 'user',
+    ref: "user"
   },
   esclation_manager_3: {
     type: Schema.Types.ObjectId,
     response: Boolean,
-    ref: 'user',
+    ref: "user"
   },
   esclation_manager: {
     type: String,
-    enum: ['esclation_manager_1', 'esclation_manager_2', 'esclation_manager_3'],
-    default: 'esclation_manager_1',
+    enum: ["esclation_manager_1", "esclation_manager_2", "esclation_manager_3"],
+    default: "esclation_manager_1"
   },
   resolved_status: {
     type: Boolean,
     required: true,
-    response: Boolean,
-  },
+    response: Boolean
+  }
 });
 
-const Ticket = mongoose.model('tickets', ticketSchema);
+const Ticket = mongoose.model("tickets", ticketSchema);
 module.exports = Ticket;

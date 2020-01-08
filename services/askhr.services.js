@@ -219,8 +219,8 @@ module.exports = () => {
           // Saveing current date in a variable and converitng into epoch
           const date = new Date(Date.now());
           const currentDate = date.setDate(date.getDate() + 0);
-          // console.log(escalationDate);
-          // console.log(currentDate);
+          console.log(escalationDate);
+          console.log(currentDate);
           // esclaation date is coming from the last admin response and user is asking queries from there but getting no response.
           if (escalationDate < currentDate) {
             let [findticket] = await Ticket.find({ _id });

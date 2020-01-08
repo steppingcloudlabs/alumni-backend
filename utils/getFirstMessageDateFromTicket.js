@@ -23,13 +23,13 @@ module.exports = () => {
             break;
           }
         }
-        // console.log(firstUserMessage);
+        console.log(firstUserMessage.created_at);
         // const newtime=firstUserMessage.created_at+new Date().getTime(new Date().setTime() + 900000 );
         // const okay= newtime.toString();
         const escalationDate = firstUserMessage.created_at.setDate(
           firstUserMessage.created_at.getDate() + 2
         );
-
+        // console.log(escalationDate)
         resolve(escalationDate);
       } catch (error) {
         reject(error);
