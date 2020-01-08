@@ -13,12 +13,10 @@ module.exports = () => {
       let userId = req.body.userId
       if (companyId && SCClientDetails[companyId]) {
         const response = await orgchartService.authenticateAndGetData(SCClientDetails[companyId], userId)
-        res.status(200).send(response);
-
-        // if (response && response.d && response.d.results) {
-        //   let formattedData = formatSapData(response.d.results)
-        //   res.status(200).send(formattedData);
-        // }
+        if (response) {
+          let formattedData = formatSapData(response.d.results)
+          res.status(200).send(formattedData);
+        }
       }
     } catch (error) {
       next(error);

@@ -1,9 +1,34 @@
 const axios = require('axios')
 
-const getEmployeeData = ({
-    userId
+const getAllEmployeePositionData = ({
+    userResponse, payload, tokenResponse
 }) => {
-
+    return new Promise((resolve, reject) => {
+        let requestURLS = []
+        requestURLS.push(payload.API_BASE_URL + payload.positionDataURL + "'" + userResponse.position + "'")
+        requestURLS.push(payload.API_BASE_URL + payload.userChildDataUrl + "'" + userResponse.managerId + "'")
+        requestURLS.push(payload.API_BASE_URL + payload.positionChildDataUrl + "'" + userResponse.position + "'")
+        Promise.all(requestURLS.map(url => {
+            return new Promise((resolve, reject) => {
+                axios({
+                    method: 'GET',
+                    url: url,
+                    headers: {
+                        "Authorization": tokenResponse.data.token_type + " " + tokenResponse.data.access_token
+                    },
+                }).then((response) => {
+                    resolve(response.data.d.results)
+                }).catch((error) => {
+                    reject(error)
+                })
+            })
+        })).then((allResponse) => {
+            allResponse.unshift(userResponse)
+            resolve(allResponse)
+        }).catch((error) => {
+            reject(error)
+        })
+    })
 }
 
 const getUsersDataById = ({
@@ -90,29 +115,9 @@ module.exports = () => {
                         finalData: [],
                         userId: userId
                     }).then((userResponse) => {
-                        let requestURLS = []
-                        requestURLS.push(payload.API_BASE_URL + payload.positionDataURL + "'" + userResponse.position + "'")
-                        requestURLS.push(payload.API_BASE_URL + payload.userChildDataUrl + "'" + userResponse.managerId + "'")
-                        requestURLS.push(payload.API_BASE_URL + payload.positionChildDataUrl + "'" + userResponse.position + "'")
-                        Promise.all(requestURLS.map(url => {
-                            return new Promise((resolve, reject) => {
-                                axios({
-                                    method: 'GET',
-                                    url: url,
-                                    headers: {
-                                        "Authorization": tokenResponse.data.token_type + " " + tokenResponse.data.access_token
-                                    },
-                                }).then((response) => {
-                                    resolve(response.data.d.results)
-                                }).catch((error) => {
-                                    reject(error)
-                                })
-                            })
-                        })).then((allResponse) => {
-                            allResponse.unshift(userResponse)
-                            resolve(allResponse)
+                        getAllEmployeePositionData({ userResponse: userResponse, payload: payload, tokenResponse: tokenResponse }).then((combinedResponse) => {
+                            resolve(combinedResponse)
                         })
-                        // resolve(userResponse)
                     }).catch((error) => {
                         console.log(error)
                     })
