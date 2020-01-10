@@ -14,7 +14,7 @@ module.exports = () => {
       if (companyId && SCClientDetails[companyId]) {
         const response = await orgchartService.authenticateAndGetData(SCClientDetails[companyId], userId)
         if (response) {
-          let formattedData = formatSapData(response.d.results)
+          let formattedData = formatSapData(response)
           res.status(200).send(formattedData);
         }
       }

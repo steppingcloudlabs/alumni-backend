@@ -17,50 +17,22 @@ module.exports = {
     },
 
     formatSapData: (resultArray) => {
-        let formattedData = []
-        for (let i = 0; i < resultArray.length; i++) {
-            let userData = {}
-            userData["text"] = {}
-            // userData.text["name"] = resultArray[i].userNav.defaultFullName;
-            userData.text["userId"] = resultArray[i].userId;
-            userData.text["jobTitle"] = resultArray[i].jobTitle;
-            userData.text["managerId"] = resultArray[i].managerId;
-            if (resultArray[i].userId == "CEO") {
-                formattedData.unshift(userData)
-            } else {
-                formattedData.push(userData)
-            }
-        }
-        let i = 0;
-        while (i < formattedData.length) {
-            let managerObj = formattedData.find((element) => {
-                if (element.text.userId === formattedData[i].text.managerId) {
-                    return element
-                } else {
-                    return undefined
-                }
+        let positionArray = []
+        let userDataArray = []
+        positionArray.push(resultArray[1][0])
+        positionArray.concat(resultArray[3])
+        userDataArray.push(resultArray[0])
+        userDataArray.concat(resultArray[2])
+        console.log(positionArray)
+        console.log(userDataArray)
+        for (let i = 0; i < positionArray.length; i++) {
+            let selectedUserData = userDataArray.find((element) => {
+                return element.position == positionArray[i].code
             })
-            if (managerObj) {
-                formattedData[i]["parent"] = managerObj;
-                i++;
-            } else {
-                formattedData.splice(i, 1)
+            let formatedData = {
+                
             }
         }
-        // for (let i = 0; i < formattedData.length; i++) {
-        //     let managerObj = formattedData.find((element) => {
-        //         if (element.text.userId === formattedData[i].text.managerId) {
-        //             return element
-        //         } else {
-        //             return undefined
-        //         }
-        //     })
-        //     if (managerObj) {
-        //         formattedData[i]["parent"] = managerObj;
-        //     } else {
-        //         formattedData.splice(i, 1)
-        //     }
-        // }
-        return formattedData
+        return resultArray
     }
 }
