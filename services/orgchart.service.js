@@ -6,7 +6,7 @@ const getAllEmployeePositionData = ({
     return new Promise((resolve, reject) => {
         let requestURLS = []
         requestURLS.push(payload.API_BASE_URL + payload.positionDataURL + "'" + userResponse.position + "'")
-        requestURLS.push(payload.API_BASE_URL + payload.userChildDataUrl + "'" + userResponse.managerId + "'")
+        requestURLS.push(payload.API_BASE_URL + payload.userChildDataUrl + "'" + userResponse.userId + "'")
         requestURLS.push(payload.API_BASE_URL + payload.positionChildDataUrl + "'" + userResponse.position + "'")
         Promise.all(requestURLS.map(url => {
             return new Promise((resolve, reject) => {

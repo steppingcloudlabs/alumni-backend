@@ -19,20 +19,45 @@ module.exports = {
     formatSapData: (resultArray) => {
         let positionArray = []
         let userDataArray = []
+        let finalArray = []
         positionArray.push(resultArray[1][0])
-        positionArray.concat(resultArray[3])
+        positionArray = positionArray.concat(resultArray[3])
         userDataArray.push(resultArray[0])
-        userDataArray.concat(resultArray[2])
+        userDataArray = userDataArray.concat(resultArray[2])
         console.log(positionArray)
         console.log(userDataArray)
         for (let i = 0; i < positionArray.length; i++) {
             let selectedUserData = userDataArray.find((element) => {
                 return element.position == positionArray[i].code
             })
-            let formatedData = {
-                
+            let formatedData = {}
+            if (selectedUserData) {
+                formatedData = {
+                    userId: selectedUserData.userId,
+                    userName: selectedUserData.userNav.defaultFullName,
+                    userDivision: selectedUserData.division,
+                    userManagerId: selectedUserData.managerId,
+                    userDepartmentId: selectedUserData.department,
+                    userPayGrade: selectedUserData.payGrade,
+                    positionId: positionArray[i].code,
+                    positionTitle: positionArray[i].positionTitle,
+                    positionCost: positionArray[i].costCenter,
+                    parentPosition: positionArray[i].parentPosition.code,
+                    positionVacant: false,
+                }
             }
+            else {
+                formatedData = {
+                    positionId: positionArray[i].code,
+                    positionTitle: positionArray[i].positionTitle,
+                    positionCost: positionArray[i].costCenter,
+                    parentPosition: positionArray[i].parentPosition.code,
+                    positionVacant: true,
+                }
+            }
+            finalArray.push(formatedData)
         }
-        return resultArray
+        return finalArray
     }
 }
+
