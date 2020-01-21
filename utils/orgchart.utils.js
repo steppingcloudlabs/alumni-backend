@@ -39,19 +39,18 @@ module.exports = {
                     userManagerId: selectedUserData.managerId,
                     userDepartmentId: selectedUserData.department,
                     userPayGrade: selectedUserData.payGrade,
-                    positionId: positionArray[i].code,
+                    id: positionArray[i].code,
                     positionTitle: positionArray[i].positionTitle,
                     positionCost: positionArray[i].costCenter,
-                    parentPosition: positionArray[i].parentPosition.code,
+                    pid: positionArray[i].parentPosition.code,
                     positionVacant: false,
                 }
-            }
-            else {
+            } else {
                 formatedData = {
-                    positionId: positionArray[i].code,
+                    id: positionArray[i].code,
                     positionTitle: positionArray[i].positionTitle,
                     positionCost: positionArray[i].costCenter,
-                    parentPosition: positionArray[i].parentPosition.code,
+                    pid: positionArray[i].parentPosition.code,
                     positionVacant: true,
                 }
             }
@@ -60,4 +59,3 @@ module.exports = {
         return finalArray
     }
 }
-
