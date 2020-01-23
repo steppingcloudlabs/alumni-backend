@@ -1,13 +1,16 @@
 const axios = require('axios')
 
 const getAllEmployeePositionData = ({
-    userResponse, payload, tokenResponse
+    userResponse,
+    payload,
+    tokenResponse,
+    effectiveDateTime
 }) => {
     return new Promise((resolve, reject) => {
         let requestURLS = []
-        requestURLS.push(payload.API_BASE_URL + payload.positionDataURL + "'" + userResponse.position + "'")
-        requestURLS.push(payload.API_BASE_URL + payload.userChildDataUrl + "'" + userResponse.userId + "'")
-        requestURLS.push(payload.API_BASE_URL + payload.positionChildDataUrl + "'" + userResponse.position + "'")
+        requestURLS.push(payload.API_BASE_URL + payload.positionDataURL + "code eq '" + userResponse.position + "' and effectiveStartDate le datetime'" + effectiveDateTime + "')")
+        requestURLS.push(payload.API_BASE_URL + payload.userChildDataUrl + "managerId eq '" + userResponse.userId + "' and startDate le datetime'" + effectiveDateTime + "')")
+        requestURLS.push(payload.API_BASE_URL + payload.positionChildDataUrl + "(parentPosition/code eq '" + userResponse.position + "' and effectiveStartDate le datetime'" + effectiveDateTime + "')")
         Promise.all(requestURLS.map(url => {
             return new Promise((resolve, reject) => {
                 axios({
@@ -36,12 +39,13 @@ const getUsersDataById = ({
     tokenType,
     url,
     finalData,
-    userId
+    userId,
+    effectiveDateTime
 }) => {
     return new Promise((resolve, reject) => {
         axios({
             method: 'GET',
-            url: url + "'" + userId + "'", // https://cors-anywhere.herokuapp.com/
+            url: url + "userId eq '" + userId + "' and startDate le datetime'" + effectiveDateTime + "')",
             headers: {
                 "Authorization": tokenType + " " + accessToken
             },
@@ -104,7 +108,7 @@ const authentiateUser = (payload) => {
 }
 
 module.exports = () => {
-    const authenticateAndGetData = (payload, userId) => {
+    const authenticateAndGetData = (payload, requestPayload) => {
         return new Promise(async (resolve, reject) => {
             authentiateUser(payload).then((authResponse) => {
                 getAccessToken(authResponse.payload, authResponse.data).then((tokenResponse) => {
@@ -113,9 +117,15 @@ module.exports = () => {
                         tokenType: tokenResponse.data.token_type,
                         url: payload.API_BASE_URL + payload.userDataURL,
                         finalData: [],
-                        userId: userId
+                        userId: requestPayload.userId,
+                        effectiveDateTime: requestPayload.effectiveDateTime
                     }).then((userResponse) => {
-                        getAllEmployeePositionData({ userResponse: userResponse, payload: payload, tokenResponse: tokenResponse }).then((combinedResponse) => {
+                        getAllEmployeePositionData({
+                            userResponse: userResponse,
+                            payload: payload,
+                            tokenResponse: tokenResponse,
+                            effectiveDateTime: requestPayload.effectiveDateTime
+                        }).then((combinedResponse) => {
                             resolve(combinedResponse)
                         })
                     }).catch((error) => {

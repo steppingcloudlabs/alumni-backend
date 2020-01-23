@@ -11,11 +11,15 @@ module.exports = () => {
     try {
       let companyId = req.body.companyId;
       let userId = req.body.userId
+      let effectiveDateTime = req.body.effectiveDateTime
       if (companyId && SCClientDetails[companyId]) {
-        const response = await orgchartService.authenticateAndGetData(SCClientDetails[companyId], userId)
+        const response = await orgchartService.authenticateAndGetData(SCClientDetails[companyId], {
+          userId: userId,
+          effectiveDateTime: effectiveDateTime
+        })
         if (response) {
-          let formattedData = formatSapData(response)
-          res.status(200).send(formattedData);
+          // let formattedData = formatSapData(response)
+          res.status(200).send(response);
         }
       }
     } catch (error) {
