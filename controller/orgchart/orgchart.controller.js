@@ -18,8 +18,8 @@ module.exports = () => {
           effectiveDateTime: effectiveDateTime
         })
         if (response) {
-          // let formattedData = formatSapData(response)
-          res.status(200).send(response);
+          let formattedData = formatSapData(response)
+          res.status(200).send(formattedData);
         }
       }
     } catch (error) {
