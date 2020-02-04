@@ -43,6 +43,7 @@ module.exports = {
                     employmentType: selectedUserData.employmentType,
                     costCenter: selectedUserData.costCenter,
                     fte: selectedUserData.fte,
+                    isRoot: selectedUserData.isRoot ? selectedUserData.isRoot : false,
                     resignationStatus: selectedUserData.employmentNav.customDate6 ? "On Notice Period" : null,
                     resignationDate: selectedUserData.employmentNav.customDate6 ? selectedUserData.employmentNav.customDate6 : null,
                     id: positionArray[i].code,

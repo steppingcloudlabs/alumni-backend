@@ -51,6 +51,7 @@ const getUsersDataById = ({
             },
         }).then((response) => {
             // finalData = finalData.concat(response.data.d.results)
+            response.data.d.results[0]['isRoot'] = true;
             resolve(response.data.d.results[0])
         }).catch((error) => {
             reject(error)
