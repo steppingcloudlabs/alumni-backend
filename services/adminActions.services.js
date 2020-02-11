@@ -467,7 +467,7 @@ module.exports = () => {
             resolve("founduser");
           } else {
             const {
-              relieving_date,
+              date_of_relieving,
               user_id,
               date_of_resignation,
               last_working_day_as_per_notice_period,
@@ -486,7 +486,7 @@ module.exports = () => {
               skill
             } = payload;
             const master = new masterdata({
-              relieving_date,
+              date_of_relieving,
               user_id,
               date_of_resignation,
               last_working_day_as_per_notice_period,
@@ -509,9 +509,9 @@ module.exports = () => {
             const body =
               "Hi " +
               first_name_personal_information +
-              "\n" +
+              "\n\n\n" +
               "This is mail notifying successful registration for your credential on the Alumni Portal\n You can register now on the alumni portal\n" +
-              "Link to accesss the Portal:https://sc-alumni.s3.ap-south-1.amazonaws.com/index.html#/signup " +
+              "Link to accesss the Portal:https://sc-alumni.s3.ap-south-1.amazonaws.com/index.html#/signup\n\n\n " +
               "\n Your Unique Employee Id:" +
               user_id;
             const params = {
@@ -580,7 +580,7 @@ module.exports = () => {
           const response = {
             skill: foundalumni.skill,
             _id: founduser._id,
-            relieving_date: foundalumni.relieving_date,
+            date_of_relieving: foundalumni.date_of_relieving,
             user_id: foundalumni.user_id,
             date_of_resignation: foundalumni.date_of_resignation,
             last_working_day_as_per_notice_period:
