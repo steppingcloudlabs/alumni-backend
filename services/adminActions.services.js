@@ -604,8 +604,7 @@ module.exports = () => {
               foundalumni.designation_job_information,
             linkedInlink: foundalumni.linkedInlink,
             gender: foundalumni.gender,
-            date_of_birth: foundalumni.date_of_birth,
-            relieving_date: foundalumni.relieving_date
+            date_of_birth: foundalumni.date_of_birth
           };
           resolve(response);
         }
