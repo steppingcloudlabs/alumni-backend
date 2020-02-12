@@ -8,6 +8,9 @@ const getAllEmployeePositionData = ({
 }) => {
     return new Promise((resolve, reject) => {
         let requestURLS = []
+        let urlReqAndProfileArray = []
+        let photoFilter = ""
+        let reqFilter = ""
         requestURLS.push(payload.API_BASE_URL + payload.positionDataURL + "code eq '" + userResponse.position + "' and effectiveStartDate le datetime'" + effectiveDateTime + "')")
         requestURLS.push(payload.API_BASE_URL + payload.userChildDataUrl + "managerId eq '" + userResponse.userId + "' and startDate le datetime'" + effectiveDateTime + "')")
         requestURLS.push(payload.API_BASE_URL + payload.positionChildDataUrl + "(parentPosition/code eq '" + userResponse.position + "' and effectiveStartDate le datetime'" + effectiveDateTime + "')")
@@ -20,6 +23,27 @@ const getAllEmployeePositionData = ({
                         "Authorization": tokenResponse.data.token_type + " " + tokenResponse.data.access_token
                     },
                 }).then((response) => {
+                    if (response.data.d && response.data.d.results && response.data.d.results.length && response.data.d.results[0].userId) {
+                        for (let i = 0; i < response.data.d.results.length; i++) {
+                            if (i < response.data.d.results.length - 1) {
+                                photoFilter = photoFilter + "userId eq '" + response.data.d.results[i].userId + "' or "
+                            } else {
+                                photoFilter = photoFilter + " userId eq '" + response.data.d.results[i].userId + "'"
+                            }
+                        }
+                    } else if (response.data.d && response.data.d.results && response.data.d.results.length && response.data.d.results[0].code) {
+                        if (reqFilter) {
+                            reqFilter = reqFilter + " or "
+                        }
+                        for (let i = 0; i < response.data.d.results.length; i++) {
+
+                            if (i < response.data.d.results.length - 1) {
+                                reqFilter = reqFilter + "positionNumber eq '" + response.data.d.results[i].code + "' or "
+                            } else {
+                                reqFilter = reqFilter + "positionNumber eq '" + response.data.d.results[i].code + "'"
+                            }
+                        }
+                    }
                     resolve(response.data.d.results)
                 }).catch((error) => {
                     reject(error)
@@ -27,7 +51,37 @@ const getAllEmployeePositionData = ({
             })
         })).then((allResponse) => {
             allResponse.unshift(userResponse)
-            resolve(allResponse)
+            if (photoFilter) {
+                photoFilter = photoFilter + " or "
+            }
+            photoFilter = photoFilter + "userId eq '" + userResponse.userId + "'";
+            urlReqAndProfileArray.push(payload.API_BASE_URL + payload.userProfileUrl + photoFilter + ")")
+            urlReqAndProfileArray.push(payload.API_BASE_URL + payload.reqDataUrl + reqFilter + ")")
+            Promise.all(urlReqAndProfileArray.map((url) => {
+                return new Promise((resolve, reject) => {
+                    axios({
+                        method: 'GET',
+                        url: url,
+                        headers: {
+                            "Authorization": tokenResponse.data.token_type + " " + tokenResponse.data.access_token
+                        },
+                    }).then((response) => {
+                        resolve(response.data.d.results)
+                    }).catch((error) => {
+                        reject(error)
+                    })
+
+                }).then((completeResponse) => {
+                    allResponse.push(completeResponse)
+                }).catch((error) => {
+                    reject(error)
+                })
+            })).then((completeResponse) => {
+                resolve(allResponse)
+            }).catch((error) => {
+                reject(error)
+            })
+            // resolve(allResponse)
         }).catch((error) => {
             reject(error)
         })
@@ -52,6 +106,26 @@ const getUsersDataById = ({
         }).then((response) => {
             // finalData = finalData.concat(response.data.d.results)
             response.data.d.results[0]['isRoot'] = true;
+            resolve(response.data.d.results[0])
+        }).catch((error) => {
+            reject(error)
+        })
+    })
+}
+
+const getUsersProfileById = ({
+    filter,
+    payload,
+    tokenResponse,
+}) => {
+    return new Promise((resolve, reject) => {
+        axios({
+            method: 'GET',
+            url: payload.API_BASE_URL + payload.userProfileUrl + filter,
+            headers: {
+                "Authorization": tokenResponse.data.token_type + " " + tokenResponse.data.access_token
+            },
+        }).then((response) => {
             resolve(response.data.d.results[0])
         }).catch((error) => {
             reject(error)
