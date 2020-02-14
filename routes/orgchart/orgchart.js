@@ -1,7 +1,7 @@
 const router = require('express-promise-router')();
-const askhrController = require('../../controller/orgchart/orgchart.controller')();
+const orgChartController = require('../../controller/orgchart/orgchart.controller')();
 router
-    .route('/getOrgChart')
-    .post((req, res, next) => orgChartController.getOrgChart(req, res, next));
+    .route('/getOrgChartData')
+    .post((req, res, next) => orgChartController.getOrgChartData(req, res, next));
 
 module.exports = router;

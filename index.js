@@ -22,7 +22,7 @@ app.use(
 );
 
 // CORS Headers
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE,");
   res.header(
@@ -58,8 +58,11 @@ app.use("/awsadmin", awsadminRoutes);
 const askhrroutes = require("./routes/askhr/askhr");
 app.use("/hrroutes", askhrroutes);
 
-const askhrroutes2 = require("./routes/orgchart/orgchart");
-app.use("/orgchart", askhrroutes2);
+const orgchartroutes = require('./routes/orgchart/orgchart');
+app.use('/orgchart', orgchartroutes);
+
+// const askhrroutes2 = require("./routes/orgchart/orgchart");
+// app.use("/orgchart", askhrroutes2);
 
 app.listen(config["port"], () => {
   console.log(`Server listening on port: ${config["port"]}`);
