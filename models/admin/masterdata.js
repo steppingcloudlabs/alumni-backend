@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 require("mongoose-type-url");
 
 const masterschema = new Schema({
-  relieving_date: {
+  date_of_relieving: {
     type: String
   },
   user_id: {

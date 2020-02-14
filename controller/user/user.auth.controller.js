@@ -10,8 +10,8 @@ module.exports = {
     const foundUser = await User.findOne({ email });
     if (foundUser) {
       res.status(200).send({
-        status: "200 OK",
-        result: "email is already in use"
+        status: "400",
+        error: "email is already in use"
       });
     }
     const response = await userServices.username(userid);
