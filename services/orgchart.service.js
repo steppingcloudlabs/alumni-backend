@@ -145,6 +145,7 @@ const getAccessToken = (payload, assertion) => {
         params.append('grant_type', payload.grantType);
         params.append('user_id', payload.userId);
         params.append('assertion', assertion);
+        console.log("Error Check", params)
         axios({
             method: 'POST',
             url: payload.API_BASE_URL + '/oauth/token', // https://cors-anywhere.herokuapp.com/
