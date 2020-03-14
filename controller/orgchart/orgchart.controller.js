@@ -19,6 +19,7 @@ module.exports = () => {
         })
         if (response) {
           let formattedData = formatSapData(response)
+          res.setHeader("Content-Type", "application/json")
           res.status(200).send(formattedData);
         }
       }
